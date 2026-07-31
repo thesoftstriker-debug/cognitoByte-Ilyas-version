@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
+import "@/styles/globals.css";
 import { FooterWrapper } from "@/components/layout/FooterWrapper";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { PageLoader } from "@/components/layout/PageLoader";
