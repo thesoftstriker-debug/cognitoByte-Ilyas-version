@@ -1,0 +1,194 @@
+[
+  {
+    "title": "Custom AI Agents",
+    "slug": "custom-ai-agents",
+    "order": 2,
+    "icon": "Brain",
+    "shortDescription": "From lead qualification to customer support, we build AI agents trained on your business data to handle real conversations, not scripted replies.",
+    "description": "A custom AI agent goes beyond a simple chatbot script — it's trained on your actual business context, so it can qualify leads, answer detailed questions, and take real actions inside your workflow.\n\nWe build agents using modern language models connected directly to your data sources, so responses stay accurate and relevant instead of generic. Agents can be deployed on your website, inside WhatsApp, or as part of an internal workflow that hands off to your team only when needed.",
+    "imageUrl": "",
+    "features": [
+      "Trained on your real business data",
+      "Can qualify leads and route conversations",
+      "Integrates with your existing tools",
+      "Escalates to a human when needed",
+      "Continuously improvable as your business grows"
+    ],
+    "process": [
+      {
+        "description": "We identify exactly what the agent needs to handle — support, sales, scheduling, etc.",
+        "step": "01",
+        "title": "Define the Job"
+      },
+      {
+        "title": "Feed Real Data",
+        "description": "We connect the agent to your actual business information so answers are accurate.",
+        "step": "02"
+      },
+      {
+        "title": "Test with Real Scenarios",
+        "description": "We run the agent through real conversation examples before launch.",
+        "step": "03"
+      },
+      {
+        "title": "Deploy & Monitor",
+        "description": "We launch the agent and set up simple monitoring so you can see how it performs.",
+        "step": "04"
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "title": "AI Chatbots for Websites",
+    "slug": "ai-chatbots",
+    "order": 3,
+    "icon": "MessageSquare",
+    "shortDescription": "Chatbots that actually know your business — powered by RAG (retrieval-augmented generation), so answers come from your real content, not generic responses.",
+    "description": "Generic chatbots frustrate visitors because they can't answer specific questions about your actual business. We build chatbots using retrieval-augmented generation (RAG), meaning the chatbot pulls answers directly from your real content — services, pricing, FAQs — instead of guessing.\n\nThe result is a chatbot that sounds knowledgeable because it actually is, backed by a knowledge base you control and can update anytime.",
+    "imageUrl": "",
+    "features": [
+      "Answers pulled from your real business content",
+      "Editable knowledge base — no code required to update",
+      "Captures and logs conversations for follow-up",
+      "Works alongside your contact form, not instead of it"
+    ],
+    "process": [
+      {
+        "step": "01",
+        "title": "Build the Knowledge Base",
+        "description": "We compile your services, FAQs, and policies into a structured knowledge source."
+      },
+      {
+        "description": "We wire up the chatbot to retrieve accurate answers from that knowledge base.",
+        "step": "02",
+        "title": "Connect the Model"
+      },
+      {
+        "description": "We test with real visitor questions to make sure answers stay accurate and on-brand.",
+        "step": "03",
+        "title": "Test for Accuracy"
+      },
+      {
+        "description": "The chatbot goes live on your website, ready to handle visitor questions.",
+        "step": "04",
+        "title": "Launch on Your Site"
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "title": "n8n Workflow Automation",
+    "slug": "n8n-workflow-automation",
+    "order": 1,
+    "icon": "Workflow",
+    "shortDescription": "We connect your tools — CRMs, spreadsheets, social platforms, email — into automated pipelines that run without you touching them.",
+    "description": "Most businesses lose hours every week to repetitive manual tasks: copying data between tools, sending the same follow-up emails, updating spreadsheets by hand. n8n workflow automation replaces that busywork with reliable, self-running pipelines.\n\nWe design workflows tailored to how your business actually operates — not generic templates. Whether it's syncing leads from a form into your CRM, automating your social media posting schedule, or triggering notifications when something needs attention, we build it to run in the background so you don't have to.\n\nEvery automation we deliver comes with clear documentation and a simple way to monitor it, so you're never locked out of understanding your own systems.",
+    "imageUrl": "",
+    "features": [
+      "Connects 300+ apps and platforms",
+      "Custom triggers and conditional logic",
+      "Error handling and failure alerts built in",
+      "Full documentation included",
+      "No ongoing coding required to manage"
+    ],
+    "process": [
+      {
+        "description": "We map out your current manual process and identify exactly where time is being lost.",
+        "step": "01",
+        "title": "Discovery Call"
+      },
+      {
+        "description": "We architect the automation logic — triggers, conditions, and data flow between your tools.",
+        "step": "02",
+        "title": "Workflow Design"
+      },
+      {
+        "title": "Build & Test",
+        "description": "We build the workflow in n8n and test it against real scenarios before going live.",
+        "step": "03"
+      },
+      {
+        "description": "You get a working automation plus a simple guide for monitoring and adjusting it.",
+        "step": "04",
+        "title": "Launch & Handoff"
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "title": "Social Media Content Automation",
+    "slug": "social-media-automation",
+    "order": 4,
+    "icon": "Zap",
+    "shortDescription": "Automated content generation and scheduling across Instagram, LinkedIn, and Facebook — from idea to published post.",
+    "description": "Consistent social media posting takes time most businesses don't have. We build automated content pipelines that generate post ideas, create visuals, and schedule publishing across multiple platforms — with a simple review step before anything goes live.\n\nThis runs on the same reliable automation infrastructure we use for internal workflows, so it keeps working in the background without daily manual effort.",
+    "imageUrl": "",
+    "features": [
+      "Multi-platform scheduling (Instagram, LinkedIn, Facebook)",
+      "AI-assisted content generation",
+      "Review step before publishing",
+      "Centralized tracking via spreadsheet or dashboard"
+    ],
+    "process": [
+      {
+        "description": "We define your posting cadence, tone, and content themes.",
+        "step": "01",
+        "title": "Content Strategy"
+      },
+      {
+        "description": "We set up the automated generation and scheduling workflow.",
+        "step": "02",
+        "title": "Build the Pipeline"
+      },
+      {
+        "step": "03",
+        "title": "Review & Refine",
+        "description": "We test the output and adjust prompts and formatting for quality."
+      },
+      {
+        "description": "The pipeline runs on schedule, with review checkpoints you control.",
+        "step": "04",
+        "title": "Go Live"
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "title": "Workflow & Systems Design",
+    "slug": "workflow-systems-design",
+    "order": 5,
+    "icon": "Settings",
+    "shortDescription": "We audit your current processes and design automation architecture that scales with you, not against you.",
+    "description": "Before building anything, it's worth stepping back and looking at how your business actually operates end-to-end. We audit your current processes, identify where automation will have the biggest impact, and design a system architecture that grows with your business instead of becoming another tool to maintain.",
+    "imageUrl": "",
+    "features": [
+      "Full process audit",
+      "Automation roadmap with priorities",
+      "Architecture designed to scale",
+      "Clear recommendations, no jargon"
+    ],
+    "process": [
+      {
+        "title": "Audit",
+        "description": "We map your current workflows end-to-end.",
+        "step": "01"
+      },
+      {
+        "description": "We flag the highest-impact automation opportunities.",
+        "step": "02",
+        "title": "Identify Priorities"
+      },
+      {
+        "description": "We create a phased plan for implementation.",
+        "step": "03",
+        "title": "Design the Roadmap"
+      },
+      {
+        "description": "We help you implement, either fully managed or guided.",
+        "step": "04",
+        "title": "Support Execution"
+      }
+    ],
+    "isActive": true
+  }
+]

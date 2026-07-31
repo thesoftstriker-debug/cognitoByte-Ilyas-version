@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Enterprise",
+    "price": "Custom",
+    "period": "",
+    "description": "For businesses needing custom AI agents and full workflow architecture.",
+    "features": [
+      "Unlimited workflows",
+      "Custom AI agent development",
+      "Dedicated support",
+      "Ongoing optimization"
+    ],
+    "isPopular": false,
+    "ctaText": "Contact Us",
+    "order": 3,
+    "isActive": true
+  },
+  {
+    "name": "Growth",
+    "price": "$599",
+    "period": "one-time",
+    "description": "For businesses ready to automate multiple workflows or add an AI chatbot.",
+    "features": [
+      "Up to 3 automated workflows",
+      "Custom AI chatbot with knowledge base",
+      "Unlimited connected apps",
+      "Priority support for 30 days"
+    ],
+    "isPopular": true,
+    "ctaText": "Get Started",
+    "order": 2,
+    "isActive": true
+  },
+  {
+    "name": "Starter",
+    "price": "$299",
+    "period": "one-time",
+    "description": "For businesses automating their first repetitive workflow.",
+    "features": [
+      "1 automated workflow",
+      "Up to 3 connected apps",
+      "Basic error alerts",
+      "Documentation included"
+    ],
+    "isPopular": false,
+    "ctaText": "Get Started",
+    "order": 1,
+    "isActive": true
+  }
+]

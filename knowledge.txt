@@ -1,0 +1,107 @@
+# CognitoByte — AI Automation Agency
+# This file is the source of truth for the chatbot.
+# Edit this file to update what the chatbot knows.
+# After editing, update the data in your MongoDB collection.
+
+## About CognitoByte
+CognitoByte is an AI Automation Agency based in Islamabad, Pakistan. We help businesses worldwide automate repetitive tasks, build AI agents, and create custom chatbots. Our mission is to give every business the efficiency of a large enterprise team — without the headcount.
+
+## Services
+
+### n8n Automations
+We design, build, and maintain custom n8n workflows. n8n is a powerful open-source automation tool that connects 300+ apps. We handle:
+- App integrations (Gmail, Slack, Notion, Shopify, CRMs, databases, and more)
+- Scheduled and event-triggered workflows
+- Error handling, retries, and monitoring
+- Documentation and handoff
+
+### AI Agents
+Autonomous AI systems that complete complex, multi-step tasks end-to-end:
+- Lead research and qualification
+- Document reading and data extraction
+- Email drafting and scheduling
+- Web browsing and form completion
+- Customer follow-up sequences
+
+### Chatbot Building
+Custom AI chatbots trained on your business knowledge:
+- Website chat widgets
+- WhatsApp bots
+- Slack/Teams bots
+- Internal HR or support bots
+- Trained on your docs, FAQs, policies
+
+### Workflow Design
+Strategic automation consulting before we build anything:
+- Full process audit
+- ROI analysis per automation
+- Visual workflow maps
+- Priority automation roadmap
+
+## Pricing
+
+### Starter — $499/month
+Best for: Small businesses automating their first workflows
+- 3 automations per month
+- Up to 5 app integrations
+- Email support (48-hour response)
+- Basic error handling
+- Monthly performance report
+
+### Growth — $999/month (Most Popular)
+Best for: Growing teams needing more power
+- 10 automations per month
+- Unlimited app integrations
+- Priority support (24-hour response)
+- AI chatbot included
+- Advanced error handling & retries
+- Bi-weekly strategy calls
+- Detailed analytics dashboard
+
+### Enterprise — Custom Pricing
+Best for: Companies scaling aggressively
+- Unlimited automations
+- Dedicated account manager
+- AI agents & custom chatbots
+- SLA guarantee
+- On-call support
+- Custom API integrations
+- Team training sessions
+- Monthly executive reports
+
+## How It Works (Our Process)
+1. Free Discovery Call: We learn about your business, current tools, and pain points.
+2. Workflow Design: We map out exactly what we'll build and estimate time savings.
+3. Build & Test: We build the automation and test every edge case.
+4. Handoff: You get full access, documentation, and a walkthrough.
+5. Support: Ongoing maintenance available on all plans.
+
+## Technology Stack
+- Automation: n8n, Make.com
+- AI: OpenAI GPT-4, Groq, Claude
+- Databases: MongoDB, Airtable, PostgreSQL
+- Languages: Python, Node.js/TypeScript
+- Integrations: REST APIs, Webhooks, Zapier
+
+## Contact
+- Website contact form: /contact
+- Email: hello@cognitobyte.com
+- We reply within 24 hours
+- Free 30-minute discovery call available
+
+## FAQ
+
+Q: How long does it take to build an automation?
+A: Simple automations take 3-5 days. Complex multi-step workflows or AI agents typically take 1-2 weeks.
+
+Q: Do I need technical knowledge?
+A: No. We handle everything. We explain what we built in plain English and train your team.
+
+Q: What if something breaks?
+A: All plans include error handling and alerts. We fix bugs free of charge during the first 30 days.
+
+Q: Can you integrate with [specific tool]?
+A: If it has an API, we can almost certainly connect it. Ask us in the contact form.
+
+Q: Is my data safe?
+A: Yes. We follow security best practices. We never store your data beyond what's needed for the integration.
