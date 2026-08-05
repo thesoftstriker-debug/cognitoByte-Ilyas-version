@@ -94,57 +94,63 @@ export default async function ServicesPage() {
                       Learn More <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
-                  {service.features?.length ? (
-                    <div className="bg-gray-50 rounded-2xl p-6">
-                      
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
-                        What&apos;s included
-                      </p>
-                      <ul className="space-y-3">
-                        
-                        {service.features.map((f: string, fi: number) => (
-                          <li
-                            key={fi}
-                            className="flex items-start gap-3 text-sm text-gray-700"
-                          >
+                  {service.imageUrl || service.features?.length ? (
+                    <div className="space-y-6">
+                      {service.imageUrl && (
+                        <div className="relative aspect-video rounded-2xl overflow-hidden">
+                          <Image
+                            src={service.imageUrl}
+                            alt={service.title ?? ""}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      {service.features?.length ? (
+                        <div className="bg-gray-50 rounded-2xl p-6">
+                          
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                            What&apos;s included
+                          </p>
+                          <ul className="space-y-3">
                             
-                            <span className="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 mt-0.5">
-                              
-                              <svg
-                                className="w-3 h-3"
-                                fill="currentColor"
-                                viewBox="0 0 12 12"
+                            {service.features.map((f: string, fi: number) => (
+                              <li
+                                key={fi}
+                                className="flex items-start gap-3 text-sm text-gray-700"
                               >
                                 
-                                <path
-                                  d="M10 3L5 9 2 6"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  fill="none"
-                                />
-                              </svg>
-                            </span>
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : service.imageUrl ? (
-                    <div className="relative aspect-video rounded-2xl overflow-hidden">
-                      <Image
-                        src={service.imageUrl}
-                        alt={service.title ?? ""}
-                        fill
-                        className="object-cover"
-                      />
+                                <span className="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 mt-0.5">
+                                  
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="currentColor"
+                                    viewBox="0 0 12 12"
+                                  >
+                                    
+                                    <path
+                                      d="M10 3L5 9 2 6"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      fill="none"
+                                    />
+                                  </svg>
+                                </span>
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
                     </div>
                   ) : null}
                 </div>
               </div>
             );
           })}
+          {!services.length && <p className="py-24 text-center text-gray-500">Data is currently unavailable. Please try again later.</p>}
         </div>
       </section>
     </div>

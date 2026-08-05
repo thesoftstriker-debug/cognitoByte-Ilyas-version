@@ -287,7 +287,14 @@ export default function AdminServicesPage() {
                 services.map((s) => (
                   <tr key={s._id} className="hover:bg-gray-50">
                     <td className="px-4 py-3 text-gray-500 text-xs">{s.order}</td>
-                    <td className="px-4 py-3 font-medium">{s.title}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {s.imageUrl && (
+                          <img src={s.imageUrl} alt={s.title} className="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0" />
+                        )}
+                        <span className="font-medium">{s.title}</span>
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{s.icon}</td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{s.features?.length || 0} features</td>
                     <td className="px-4 py-3">

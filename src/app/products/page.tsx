@@ -2,6 +2,10 @@
 import { Suspense, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/store/cartSlice";
+import toast from "react-hot-toast";
+import { ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -24,12 +28,18 @@ interface ProductItem {
 
 function ProductsContent() {
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const activeCategory = searchParams.get("category") || "All";
   const limit = 12;
+
+  const handleAddToCart = (product: ProductItem) => {
+    dispatch(addItem({ productId: product._id, name: product.name, price: product.price, slug: product.slug, imageUrl: product.imageUrl }));
+    toast.success(`${product.name} added to cart`);
+  };
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -99,20 +109,33 @@ function ProductsContent() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
-              <Link
+              <div
                 key={product._id}
-                href={`/products/${product.slug}`}
-                className="card p-5 block hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+                className="card rounded-2xl overflow-hidden flex flex-col hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">
-                    {product.category}
-                  </span>
-                  <span className="text-lg font-bold font-mono">${product.price.toFixed(2)}</span>
+                <Link href={`/products/${product.slug}`} className="block flex-1">
+                  {product.imageUrl && (
+                    <div className="relative w-full h-40 -mt-0">
+                      <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover" />
+                    </div>
+                  )}
+                  <div className="p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">
+                      {product.category}
+                    </span>
+                    <span className="text-lg font-bold font-mono">${product.price.toFixed(2)}</span>
+                  </div>
+                    <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                    <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
+                  </div>
+                </Link>
+                <div className="px-5 pb-5">
+                  <button onClick={() => handleAddToCart(product)} className="btn-primary text-xs py-1.5 px-3 gap-1.5">
+                    <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
+                  </button>
                 </div>
-                <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
-              </Link>
+              </div>
             ))}
           </div>
         )}

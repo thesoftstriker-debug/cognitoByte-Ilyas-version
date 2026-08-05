@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { readFileSync } from "fs";
-import { join } from "path";
+import { getBlogPosts, getPricingFromDb, getProjectsFromDb, getServicesFromDb } from "@/lib/data";
 
 function getGroq() {
   const key = process.env.GROQ_API_KEY;
@@ -20,19 +19,10 @@ Keep answers concise, helpful, and professional. Use bullet points when listing 
 KNOWLEDGE BASE:
 {knowledge}`;
 
-function loadJSON(file: string): any {
-  try {
-    return JSON.parse(readFileSync(join(process.cwd(), "src", "data", file), "utf-8"));
-  } catch {
-    return [];
-  }
-}
-
-function buildKnowledge(): string {
-  const services = loadJSON("service.json");
-  const pricing = loadJSON("pricing.json");
-  const projects = loadJSON("project.json");
-  const blog = loadJSON("blog.json");
+async function buildKnowledge(): Promise<string> {
+  const [services, pricing, projects, blog] = await Promise.all([
+    getServicesFromDb(), getPricingFromDb(), getProjectsFromDb(), getBlogPosts(),
+  ]);
 
   let knowledge = "SERVICES:\n";
   if (services?.length) {
@@ -82,7 +72,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
     }
 
-    const knowledge = buildKnowledge();
+    const knowledge = await buildKnowledge();
     const systemPrompt = SYSTEM_PROMPT.replace("{knowledge}", knowledge);
     const recentMessages = messages.slice(-10);
 

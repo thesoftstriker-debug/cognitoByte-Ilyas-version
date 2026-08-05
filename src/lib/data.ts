@@ -1,83 +1,51 @@
-import { readFileSync } from "fs";
-import { join } from "path";
 import { getMongoDb } from "./mongodb";
 
-const DATA_DIR = join(process.cwd(), "src", "data");
-
-function loadJSON<T>(file: string): T[] {
+export async function getServicesFromDb(): Promise<any[]> {
   try {
-    return JSON.parse(readFileSync(join(DATA_DIR, file), "utf-8"));
+    const db = await getMongoDb();
+    return await db.collection("services").find({ isActive: true }).sort({ order: 1, createdAt: -1 }).toArray();
   } catch {
     return [];
   }
 }
 
-export function getServices() {
-  return loadJSON<any>("service.json");
-}
-
-export function getServiceBySlug(slug: string) {
-  return getServices().find((s: any) => s.slug === slug) || null;
-}
-
-export function getProjects() {
-  return loadJSON<any>("project.json");
-}
-
-export function getProjectBySlug(slug: string) {
-  return getProjects().find((p: any) => p.slug === slug) || null;
-}
-
-export function getPricing() {
-  return loadJSON<any>("pricing.json");
-}
-
-export async function getServicesFromDb() {
-  try {
-    const db = await getMongoDb();
-    return await db.collection("services").find({ isActive: true }).sort({ order: 1, createdAt: -1 }).toArray();
-  } catch {
-    return getServices();
-  }
-}
-
-export async function getServiceBySlugFromDb(slug: string) {
+export async function getServiceBySlugFromDb(slug: string): Promise<any | null> {
   try {
     const db = await getMongoDb();
     return await db.collection("services").findOne({ slug, isActive: true });
   } catch {
-    return getServiceBySlug(slug);
+    return null;
   }
 }
 
-export async function getProjectsFromDb() {
+export async function getProjectsFromDb(): Promise<any[]> {
   try {
     const db = await getMongoDb();
     return await db.collection("projects").find({ isActive: true }).sort({ publishedAt: -1, createdAt: -1 }).toArray();
   } catch {
-    return getProjects();
+    return [];
   }
 }
 
-export async function getProjectBySlugFromDb(slug: string) {
+export async function getProjectBySlugFromDb(slug: string): Promise<any | null> {
   try {
     const db = await getMongoDb();
     return await db.collection("projects").findOne({ slug, isActive: true });
   } catch {
-    return getProjectBySlug(slug);
+    return null;
   }
 }
 
-export async function getPricingFromDb() {
+export async function getPricingFromDb(): Promise<any[]> {
   try {
     const db = await getMongoDb();
     return await db.collection("pricing").find({ isActive: true }).sort({ order: 1 }).toArray();
   } catch {
-    return getPricing();
+    return [];
   }
 }
 
-export async function getBlogPosts() {
+export async function getBlogPosts(): Promise<any[]> {
   try {
     const db = await getMongoDb();
     return await db.collection("blogs").find({ isActive: true }).sort({ publishedAt: -1 }).toArray();
@@ -86,7 +54,7 @@ export async function getBlogPosts() {
   }
 }
 
-export async function getBlogPostBySlug(slug: string) {
+export async function getBlogPostBySlug(slug: string): Promise<any | null> {
   try {
     const db = await getMongoDb();
     return await db.collection("blogs").findOne({ slug, isActive: true });

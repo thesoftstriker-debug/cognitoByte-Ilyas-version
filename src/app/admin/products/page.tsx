@@ -18,6 +18,7 @@ interface ProductData {
   price: number;
   category: ProductCategory;
   isActive: boolean;
+  imageUrl?: string;
   createdAt: string;
 }
 
@@ -316,7 +317,14 @@ export default function AdminProductsPage() {
               ) : (
                 products.map((p) => (
                   <tr key={p._id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium">{p.name}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {p.imageUrl && (
+                          <img src={p.imageUrl} alt={p.name} className="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0" />
+                        )}
+                        <span className="font-medium">{p.name}</span>
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{p.category}</td>
                     <td className="px-4 py-3 font-mono">${p.price.toFixed(2)}</td>
                     <td className="px-4 py-3">

@@ -277,7 +277,14 @@ export default function AdminBlogsPage() {
               ) : (
                 blogs.map((b) => (
                   <tr key={b._id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium max-w-xs truncate">{b.title}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3 max-w-xs">
+                        {b.imageUrl && (
+                          <img src={b.imageUrl} alt={b.title} className="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0" />
+                        )}
+                        <span className="font-medium truncate">{b.title}</span>
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{b.category || "—"}</td>
                     <td className="px-4 py-3 text-gray-500 text-xs">
                       {b.publishedAt ? new Date(b.publishedAt).toLocaleDateString() : "—"}

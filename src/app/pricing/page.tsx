@@ -37,7 +37,7 @@ export default async function PricingPage() {
         <div className="max-w-5xl mx-auto">
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-            
+            {!data.length && <p className="col-span-full py-24 text-center text-gray-500">Data is currently unavailable. Please try again later.</p>}
             {data
               .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
               .map((plan: any) => (

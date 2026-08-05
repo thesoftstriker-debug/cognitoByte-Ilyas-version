@@ -31,7 +31,7 @@ export default async function ProjectsPage() {
           </p>
         </div>
       </section>
-      <ProjectsGrid projects={projects} />
+      {projects.length ? <ProjectsGrid projects={projects} /> : <p className="py-24 text-center text-gray-500">Data is currently unavailable. Please try again later.</p>}
     </div>
   );
 }

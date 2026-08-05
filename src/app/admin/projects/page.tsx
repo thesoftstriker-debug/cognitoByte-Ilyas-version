@@ -334,7 +334,14 @@ export default function AdminProjectsPage() {
               ) : (
                 projects.map((p) => (
                   <tr key={p._id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium">{p.title}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {p.imageUrl && (
+                          <img src={p.imageUrl} alt={p.title} className="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0" />
+                        )}
+                        <span className="font-medium">{p.title}</span>
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{p.category}</td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{p.client}</td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{(p.tags || []).join(", ")}</td>

@@ -41,7 +41,7 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    dispatch(addItem({ productId: product._id, name: product.name, price: product.price, slug: product.slug }));
+    dispatch(addItem({ productId: product._id, name: product.name, price: product.price, slug: product.slug, imageUrl: product.imageUrl }));
     toast.success("Added to cart");
   };
 
@@ -74,6 +74,11 @@ export default function ProductDetailPage() {
           <ArrowLeft className="w-4 h-4" /> Back to products
         </Link>
         <div className="card p-6 sm:p-8">
+          {product.imageUrl && (
+            <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden mb-6">
+              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+            </div>
+          )}
           <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
             <div>
               <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">
@@ -84,8 +89,8 @@ export default function ProductDetailPage() {
             <div className="text-3xl font-bold font-mono text-brand-600">${product.price.toFixed(2)}</div>
           </div>
           <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
-          <button onClick={handleAddToCart} className="btn-primary">
-            <ShoppingCart className="w-5 h-5" /> Add to Cart
+          <button onClick={handleAddToCart} className="btn-primary text-sm py-2 px-4">
+            <ShoppingCart className="w-4 h-4" /> Add to Cart
           </button>
         </div>
       </div>
