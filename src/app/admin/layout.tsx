@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, Package, Briefcase, Wrench, FileText, Tag, LogOut, ChevronLeft, Zap } from "lucide-react";
+import { LayoutDashboard, Users, Package, Briefcase, Wrench, FileText, Tag, LogOut, ChevronLeft, Zap, Receipt } from "lucide-react";
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -12,6 +12,7 @@ const sidebarLinks = [
   { href: "/admin/services", label: "Services", icon: Wrench },
   { href: "/admin/projects", label: "Projects", icon: Briefcase },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/orders", label: "Orders", icon: Receipt },
   { href: "/admin/blogs", label: "Blog", icon: FileText },
   { href: "/admin/pricing", label: "Pricing", icon: Tag },
 ];
@@ -39,7 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!user || user.role !== "admin") return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 flex">
+    <div className={cn("bg-gray-50 pt-16 flex", !collapsed && "h-screen overflow-hidden")}>
       {!collapsed && (
         <div className="fixed inset-0 top-16 bg-black/20 z-20 md:hidden" onClick={() => setCollapsed(true)} />
       )}
@@ -94,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
         </div>
       </aside>
-      <main className={cn("flex-1 min-w-0 transition-all duration-200 p-6", collapsed ? "ml-16" : "ml-60")}>
+      <main className={cn("flex-1 min-w-0 transition-all duration-200 p-6 overflow-y-auto h-full", collapsed && "ml-16", !collapsed && "ml-60")}>
         {children}
       </main>
     </div>

@@ -15,7 +15,9 @@ export default function LoginPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await login(email, password);
+      const redirect =
+        new URLSearchParams(window.location.search).get("redirect") || "/";
+      await login(email, password, redirect);
       toast.success("Welcome back!");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed";

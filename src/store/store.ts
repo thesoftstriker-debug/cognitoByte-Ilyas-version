@@ -3,6 +3,8 @@ import cartReducer, { type CartItem } from "./cartSlice";
 
 const STORAGE_KEY = "cognitobyte-cart";
 
+export { STORAGE_KEY };
+
 function loadCart(): CartItem[] {
   if (typeof window === "undefined") return [];
   try {

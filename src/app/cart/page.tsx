@@ -1,19 +1,69 @@
 "use client";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { removeItem, updateQuantity, clearCart } from "@/store/cartSlice";
 import type { RootState } from "@/store/store";
+import { useAuth } from "@/components/auth/AuthProvider";
 import toast from "react-hot-toast";
 import { Minus, Plus, Trash2, ShoppingCart, ArrowLeft, ShoppingBag } from "lucide-react";
 
 export default function CartPage() {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const { user } = useAuth();
+  const [whatsapp, setWhatsapp] = useState("");
   const items = useSelector((s: RootState) => s.cart.items);
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
+  useEffect(() => {
+    fetch("/api/orders/config")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d?.whatsapp && setWhatsapp(d.whatsapp))
+      .catch(() => {});
+  }, []);
+
   const handleCheckout = () => {
-    toast.success("Checkout is coming soon. Contact us to complete your order.");
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent("/cart")}`);
+      return;
+    }
+    const phone = whatsapp.replace(/[^0-9]/g, "");
+    const orderItems = items
+      .map((i, idx) => `${idx + 1}. ${i.name}\n      Qty: ${i.quantity}   Price: $${(i.price * i.quantity).toFixed(2)}`)
+      .join("\n");
+    const orderText = [
+      "*NEW ORDER — CognitoByte*",
+      "--------------------------------",
+      orderItems,
+      "--------------------------------",
+      `*Total: $${subtotal.toFixed(2)}*`,
+    ].join("\n");
+
+    // Open WhatsApp synchronously (before any await) so popups aren't blocked.
+    if (phone) {
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(orderText)}`, "_blank");
+    } else {
+      toast.error("WhatsApp number is not configured.");
+    }
+
+    // Send the order email in the background.
+    fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items }),
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          toast.success("Order sent! We'll confirm on WhatsApp.");
+        } else {
+          const data = await res.json().catch(() => null);
+          toast.error(data?.error || "Order email failed to send.");
+        }
+      })
+      .catch(() => toast.error("Failed to send order. Please try again."));
   };
 
   if (items.length === 0) {

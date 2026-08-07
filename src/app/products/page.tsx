@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/store/cartSlice";
+import { useAuth } from "@/components/auth/AuthProvider";
 import toast from "react-hot-toast";
 import { ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,7 @@ interface ProductItem {
 function ProductsContent() {
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
+  const { user } = useAuth();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -131,9 +133,11 @@ function ProductsContent() {
                   </div>
                 </Link>
                 <div className="px-5 pb-5">
-                  <button onClick={() => handleAddToCart(product)} className="btn-primary text-xs py-1.5 px-3 gap-1.5">
-                    <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
-                  </button>
+                  {user?.role !== "admin" && (
+                    <button onClick={() => handleAddToCart(product)} className="btn-primary text-xs py-1.5 px-3 gap-1.5">
+                      <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

@@ -1,12 +1,22 @@
 import { ObjectId } from "mongodb";
 import { getMongoDb } from "../mongodb";
 
+export interface StoredCartItem {
+  productId: string;
+  name: string;
+  price: number;
+  slug: string;
+  imageUrl?: string;
+  quantity: number;
+}
+
 export interface UserDoc {
   _id?: ObjectId;
   name: string;
   email: string;
   password: string;
   role: "user" | "admin";
+  cartItems?: StoredCartItem[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,4 +78,18 @@ export async function updateUserRole(id: string, role: "user" | "admin") {
 export async function deleteUserById(id: string) {
   const db = await getMongoDb();
   return db.collection("users").deleteOne({ _id: new ObjectId(id) });
+}
+
+export async function getUserCart(userId: string): Promise<StoredCartItem[]> {
+  const db = await getMongoDb();
+  const user = await db.collection("users").findOne({ _id: new ObjectId(userId) });
+  return (user?.cartItems as StoredCartItem[]) || [];
+}
+
+export async function saveUserCart(userId: string, items: StoredCartItem[]) {
+  const db = await getMongoDb();
+  return db.collection("users").updateOne(
+    { _id: new ObjectId(userId) },
+    { $set: { cartItems: items, updatedAt: new Date() } }
+  );
 }

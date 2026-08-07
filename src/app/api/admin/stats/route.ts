@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   if (auth instanceof NextResponse) return auth;
   try {
     const db = await getMongoDb();
-    const [users, services, projects, products, blogs, pricing] =
+    const [users, services, projects, products, blogs, pricing, orders] =
       await Promise.all([
         db.collection("users").countDocuments(),
         db.collection("services").countDocuments(),
@@ -15,8 +15,9 @@ export async function GET(request: NextRequest) {
         db.collection("products").countDocuments(),
         db.collection("blogs").countDocuments(),
         db.collection("pricing").countDocuments(),
+        db.collection("orders").countDocuments(),
       ]);
-    return NextResponse.json({ users, services, projects, products, blogs, pricing });
+    return NextResponse.json({ users, services, projects, products, blogs, pricing, orders });
   } catch (error) {
     console.error("Stats error:", error);
     return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });

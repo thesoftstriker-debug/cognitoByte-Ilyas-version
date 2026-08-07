@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { Menu, X, LogIn, ShoppingCart, LogOut, LayoutDashboard } from "lucide-react";
+import { STORAGE_KEY } from "@/store/store";
+import { clearCart } from "@/store/cartSlice";
+import { Menu, X, LogIn, ShoppingCart, LogOut, LayoutDashboard, Package } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 
 const navLinks = [
@@ -22,10 +24,13 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const dispatch = useDispatch();
   const cartCount = useSelector((s: RootState) => s.cart.items.reduce((sum, i) => sum + i.quantity, 0));
 
   const handleLogout = async () => {
     await fetch("/api/auth/me", { method: "DELETE" });
+    dispatch(clearCart());
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
     window.location.href = "/";
   };
 
@@ -60,7 +65,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 whitespace-nowrap",
+                  "px-2 py-2 rounded-lg text-[13px] font-medium transition-colors duration-150 whitespace-nowrap",
                   pathname === link.href || pathname.startsWith(link.href + "/")
                     ? "text-brand-600 bg-brand-50"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
@@ -75,6 +80,11 @@ export function Navbar() {
           <div className="hidden lg:flex items-center justify-end gap-1.5">
             {loading ? null : user ? (
               <>
+                {user.role !== "admin" && (
+                  <Link href="/my-orders" className="btn-ghost text-xs py-1.5 px-3">
+                    My Orders
+                  </Link>
+                )}
                 {user.role === "admin" && (
                   <Link href="/admin" className="btn-ghost text-xs py-1.5 px-3">
                     Dashboard
@@ -89,17 +99,21 @@ export function Navbar() {
                 <LogIn className="w-4 h-4" /> Sign In
               </Link>
             )}
-            <Link href="/cart" className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors" aria-label="Cart">
-              <ShoppingCart className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-brand-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-            <Link href="/contact" className="btn-primary text-xs py-2 px-4">
-              Get Started
-            </Link>
+            {user?.role !== "admin" && (
+              <Link href="/cart" className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors" aria-label="Cart">
+                <ShoppingCart className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-brand-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            )}
+            {user?.role !== "admin" && (
+              <Link href="/contact" className="btn-primary text-xs py-2 px-4">
+                Get Started
+              </Link>
+            )}
           </div>
 
           {/* Mobile right — cart, and for users logout/admin outside the hamburger */}
@@ -114,14 +128,16 @@ export function Navbar() {
                 <LogOut className="w-4 h-4" /> Logout
               </button>
             )}
-            <Link href="/cart" className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900" aria-label="Cart">
-              <ShoppingCart className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-brand-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+            {user?.role !== "admin" && (
+              <Link href="/cart" className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900" aria-label="Cart">
+                <ShoppingCart className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-brand-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            )}
             {!loading && !user && (
               <Link href="/login" className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900" aria-label="Sign In">
                 <LogIn className="w-4 h-4" /> Login
@@ -158,6 +174,11 @@ export function Navbar() {
             </Link>
           ))}
           <div className="pt-3 flex flex-col items-start gap-2 border-t border-gray-100 mt-2">
+            {!loading && user && user.role !== "admin" && (
+              <Link href="/my-orders" className="btn-ghost justify-center text-sm">
+                <Package className="w-4 h-4" /> My Orders
+              </Link>
+            )}
             {loading ? null : user ? null : (
               <Link href="/login" className="btn-ghost justify-center text-sm">
                 <LogIn className="w-4 h-4" /> Sign In

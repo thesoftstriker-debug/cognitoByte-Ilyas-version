@@ -4,8 +4,9 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/store/cartSlice";
+import { useAuth } from "@/components/auth/AuthProvider";
 import toast from "react-hot-toast";
-import { ArrowLeft, ShoppingCart } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Zap } from "lucide-react";
 
 interface ProductDetail {
   _id: string;
@@ -20,6 +21,7 @@ interface ProductDetail {
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const dispatch = useDispatch();
+  const { user } = useAuth();
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -89,9 +91,14 @@ export default function ProductDetailPage() {
             <div className="text-3xl font-bold font-mono text-brand-600">${product.price.toFixed(2)}</div>
           </div>
           <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
-          <button onClick={handleAddToCart} className="btn-primary text-sm py-2 px-4">
-            <ShoppingCart className="w-4 h-4" /> Add to Cart
-          </button>
+          {user?.role !== "admin" && (
+            <button onClick={handleAddToCart} className="btn-primary text-sm py-2 px-4">
+              <ShoppingCart className="w-4 h-4" /> Add to Cart
+            </button>
+          )}
+          <p className="flex items-center gap-1.5 text-sm text-gray-500 mt-4">
+            <Zap className="w-4 h-4 text-brand-500" /> Instant access after purchase — no waiting, delivered right to your account.
+          </p>
         </div>
       </div>
     </div>

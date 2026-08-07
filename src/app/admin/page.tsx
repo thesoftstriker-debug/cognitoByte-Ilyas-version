@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { Users, Package, Wrench, Briefcase, FileText, Tag } from "lucide-react";
+import { Users, Package, Wrench, Briefcase, FileText, Tag, Receipt } from "lucide-react";
 
-const DEFAULT_STATS = { users: 0, services: 0, projects: 0, products: 0, blogs: 0, pricing: 0 };
+const DEFAULT_STATS = { users: 0, services: 0, projects: 0, products: 0, blogs: 0, pricing: 0, orders: 0 };
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -24,6 +24,7 @@ export default function AdminDashboard() {
           products: data.products || 0,
           blogs: data.blogs || 0,
           pricing: data.pricing || 0,
+          orders: data.orders || 0,
         });
       })
       .catch(() => setCounts(DEFAULT_STATS))
@@ -32,6 +33,7 @@ export default function AdminDashboard() {
 
   const stats = [
     { label: "Users", value: counts.users, icon: Users },
+    { label: "Orders", value: counts.orders, icon: Receipt },
     { label: "Services", value: counts.services, icon: Wrench },
     { label: "Projects", value: counts.projects, icon: Briefcase },
     { label: "Products", value: counts.products, icon: Package },

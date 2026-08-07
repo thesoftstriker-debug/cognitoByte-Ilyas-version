@@ -1,7 +1,9 @@
 import { getServicesFromDb, getProjectsFromDb } from "@/lib/data";
+import { findAllProducts } from "@/lib/models/Product";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProjectsPreview } from "@/components/sections/ProjectsPreview";
+import { ProductsPreview } from "@/components/sections/ProductsPreview";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { CtaSection } from "@/components/sections/CtaSection";
 import { StatsSection } from "@/components/sections/StatsSection";
@@ -36,11 +38,13 @@ const HERO = {
 export default async function HomePage() {
   const services = await getServicesFromDb();
   const projects = await getProjectsFromDb();
+  const { products } = await findAllProducts(undefined, undefined, 1, 3);
   return (
     <>
       <HeroSection hero={HERO} /> <StatsSection stats={HERO.stats} />
       <ServicesSection services={services} />
       <ProjectsPreview projects={projects.slice(0, 3)} />
+      <ProductsPreview products={products as unknown as Array<{ name: string; slug: string; description: string; price: number; category: string; imageUrl?: string }>} />
       <TestimonialsSection />
       <CtaSection />
     </>

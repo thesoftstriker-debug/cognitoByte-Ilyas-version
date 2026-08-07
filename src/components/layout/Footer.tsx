@@ -103,7 +103,7 @@ export function Footer() {
         </div>
         <div className="mt-8 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
           <p>© {currentYear} CognitoByte. All rights reserved.</p>
-          <p className="text-gray-600">Built with Next.js · Sanity · MongoDB</p>
+          <p className="text-gray-600">Built with Next.js · MongoDB</p>
         </div>
       </div>
     </footer>

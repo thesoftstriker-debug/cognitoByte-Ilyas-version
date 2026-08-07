@@ -1,6 +1,9 @@
 "use client";
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { clearCart } from "@/store/cartSlice";
+import { STORAGE_KEY } from "@/store/store";
 
 interface User {
   id: string;
@@ -12,7 +15,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, redirect?: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -23,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const fetchUser = useCallback(async () => {
     try {
@@ -59,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [user]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, redirect = "/") => {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -68,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
     setUser(data.user);
-    router.push("/");
+    router.push(redirect);
   };
 
   const signup = async (name: string, email: string, password: string) => {
@@ -86,6 +90,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     await fetch("/api/auth/me", { method: "DELETE" });
     setUser(null);
+    dispatch(clearCart());
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
     router.push("/");
   };
 
