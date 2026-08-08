@@ -17,7 +17,7 @@ interface OrderData {
   _id: string;
   items: OrderItem[];
   total: number;
-  status: "pending" | "delivered";
+  status: "pending" | "processing" | "completed" | "delivered" | "cancelled";
   createdAt: string;
 }
 
@@ -57,6 +57,21 @@ export default function MyOrdersPage() {
     );
   }
 
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "completed":
+      case "delivered":
+        return <span className="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">Completed</span>;
+      case "processing":
+        return <span className="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">Processing</span>;
+      case "cancelled":
+        return <span className="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">Cancelled</span>;
+      case "pending":
+      default:
+        return <span className="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">Pending</span>;
+    }
+  };
+
   return (
     <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -66,50 +81,55 @@ export default function MyOrdersPage() {
         </div>
 
         <div className="space-y-4">
-          {orders.map((order) => (
-            <div key={order._id} className="card p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-xs text-gray-400">
-                  Order #{order._id.slice(-6)} · {new Date(order.createdAt).toLocaleDateString()}
-                </div>
-                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${order.status === "delivered" ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"}`}>
-                  {order.status === "delivered" ? "Delivered" : "Pending"}
-                </span>
-              </div>
-              <div className="space-y-3">
-                {order.items.map((item, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    {item.imageUrl ? (
-                      <img src={item.imageUrl} alt={item.name} className="w-16 h-16 rounded-lg object-cover border border-gray-200 shrink-0" />
-                    ) : (
-                      <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
-                        <ShoppingBag className="w-6 h-6 text-gray-300" />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{item.name}</p>
-                      <p className="text-sm text-gray-500">Qty {item.quantity} · ${item.price.toFixed(2)}</p>
-                    </div>
-                    {order.status === "delivered" ? (
-                      item.fileUrl ? (
-                        <a href={item.fileUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-1.5 px-3 shrink-0">
-                          <Download className="w-3.5 h-3.5" /> Download
-                        </a>
-                      ) : (
-                        <span className="text-xs text-gray-400 shrink-0">No file</span>
-                      )
-                    ) : (
-                      <span className="text-xs text-gray-400 shrink-0">Awaiting delivery</span>
-                    )}
+          {orders.map((order) => {
+            const isFinished = order.status === "completed" || order.status === "delivered";
+            return (
+              <div key={order._id} className="card p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-xs text-gray-400">
+                    Order #{order._id.slice(-6)} · {new Date(order.createdAt).toLocaleDateString()}
                   </div>
-                ))}
+                  {getStatusBadge(order.status)}
+                </div>
+                <div className="space-y-3">
+                  {order.items.map((item, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      {item.imageUrl ? (
+                        <img src={item.imageUrl} alt={item.name} className="w-16 h-16 rounded-lg object-cover border border-gray-200 shrink-0" />
+                      ) : (
+                        <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+                          <ShoppingBag className="w-6 h-6 text-gray-300" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{item.name}</p>
+                        <p className="text-sm text-gray-500">Qty {item.quantity} · ${item.price.toFixed(2)}</p>
+                      </div>
+                      {isFinished ? (
+                        item.fileUrl ? (
+                          <a href={item.fileUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-1.5 px-3 shrink-0">
+                            <Download className="w-3.5 h-3.5" /> Download
+                          </a>
+                        ) : (
+                          <span className="text-xs text-gray-400 shrink-0">No file</span>
+                        )
+                      ) : order.status === "cancelled" ? (
+                        <span className="text-xs text-rose-500 font-medium shrink-0">Order Cancelled</span>
+                      ) : order.status === "processing" ? (
+                        <span className="text-xs text-blue-500 font-medium shrink-0">Processing</span>
+                      ) : (
+                        <span className="text-xs text-amber-500 font-medium shrink-0">Awaiting delivery</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                  <span className="text-sm text-gray-500">Total: </span>
+                  <span className="text-base font-bold font-mono ml-2">${order.total.toFixed(2)}</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
-                <span className="text-sm text-gray-500">Total: </span>
-                <span className="text-base font-bold font-mono ml-2">${order.total.toFixed(2)}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

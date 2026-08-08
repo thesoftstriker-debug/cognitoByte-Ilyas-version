@@ -11,7 +11,7 @@ export interface OrderItemDoc {
   fileUrl?: string;
 }
 
-export type OrderStatus = "pending" | "delivered";
+export type OrderStatus = "pending" | "processing" | "completed" | "delivered" | "cancelled";
 
 export interface OrderDoc {
   _id?: ObjectId;
