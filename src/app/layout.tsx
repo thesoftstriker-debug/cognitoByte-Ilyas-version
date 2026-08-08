@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Navbar } from "@/components/layout/Navbar";
+import { AppShell } from "@/components/layout/AppShell";
 import "@/styles/globals.css";
 import { FooterWrapper } from "@/components/layout/FooterWrapper";
-import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { PageLoader } from "@/components/layout/PageLoader";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "@/store/Providers";
@@ -67,10 +66,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased">
         <PageLoader />
         <Providers>
-          <Navbar />
+          <AppShell />
           <main>{children}</main>
           <FooterWrapper />
-          <ChatbotWidget />
           <Toaster position="bottom-right" toastOptions={{ style: { fontFamily: "Inter, sans-serif" } }} />
         </Providers>
       </body>

@@ -67,3 +67,13 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     { $set: { status, updatedAt: new Date() } }
   );
 }
+
+export async function updateOrderDetails(id: string, status: OrderStatus, items?: OrderItemDoc[]) {
+  const db = await getMongoDb();
+  const updateData: any = { status, updatedAt: new Date() };
+  if (items) updateData.items = items;
+  return db.collection("orders").updateOne(
+    { _id: new ObjectId(id) },
+    { $set: updateData }
+  );
+}

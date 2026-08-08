@@ -64,6 +64,9 @@ export default function CartPage() {
         }
       })
       .catch(() => toast.error("Failed to send order. Please try again."));
+
+    // Clear cart locally and sync with server
+    dispatch(clearCart());
   };
 
   if (items.length === 0) {

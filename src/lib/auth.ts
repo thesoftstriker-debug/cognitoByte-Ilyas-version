@@ -56,3 +56,7 @@ export async function requireAuth(
   }
   return { ...payload, role: user.role };
 }
+
+export async function requireAdmin(request: NextRequest) {
+  return requireAuth(request, ["admin"]);
+}

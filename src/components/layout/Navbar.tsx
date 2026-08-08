@@ -20,7 +20,12 @@ const navLinks = [
   { href: "/blog", label: "Blog" },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  isCartOpen: boolean;
+  onCartOpen: () => void;
+}
+
+export function Navbar({ isCartOpen, onCartOpen }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { user, loading } = useAuth();
@@ -100,14 +105,18 @@ export function Navbar() {
               </Link>
             )}
             {user?.role !== "admin" && (
-              <Link href="/cart" className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors" aria-label="Cart">
+              <button
+                onClick={onCartOpen}
+                className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                aria-label="Cart"
+              >
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-brand-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
-              </Link>
+              </button>
             )}
             {user?.role !== "admin" && (
               <Link href="/contact" className="btn-primary text-xs py-2 px-4">
@@ -129,14 +138,18 @@ export function Navbar() {
               </button>
             )}
             {user?.role !== "admin" && (
-              <Link href="/cart" className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900" aria-label="Cart">
+              <button
+                onClick={onCartOpen}
+                className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                aria-label="Cart"
+              >
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-brand-500 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
-              </Link>
+              </button>
             )}
             {!loading && !user && (
               <Link href="/login" className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900" aria-label="Sign In">
@@ -157,7 +170,7 @@ export function Navbar() {
     </header>
     {isOpen && (
       <>
-        <div className="fixed inset-0 top-16 z-40 md:hidden" onClick={() => setIsOpen(false)} />
+        <div className="fixed inset-0 top-16 z-40 lg:hidden bg-black/20 backdrop-blur-xs" onClick={() => setIsOpen(false)} />
         <div className="fixed left-0 right-0 top-16 z-50 lg:hidden bg-white border-b border-gray-100 py-4 px-6 animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto flex flex-col items-start gap-1 shadow-lg">
           {navLinks.map((link) => (
             <Link

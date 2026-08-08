@@ -13,8 +13,9 @@ const sidebarLinks = [
   { href: "/admin/projects", label: "Projects", icon: Briefcase },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/orders", label: "Orders", icon: Receipt },
+  { href: "/admin/coupons", label: "Coupons", icon: Tag },
   { href: "/admin/blogs", label: "Blog", icon: FileText },
-  { href: "/admin/pricing", label: "Pricing", icon: Tag },
+  { href: "/admin/pricing", label: "Pricing", icon: Zap },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

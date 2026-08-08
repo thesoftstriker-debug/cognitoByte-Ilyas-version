@@ -1,25 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth";
-import { updateOrderStatus, type OrderStatus } from "@/lib/models/Order";
+import { requireAdmin } from "@/lib/auth";
+import { updateOrderDetails, type OrderStatus, type OrderItemDoc } from "@/lib/models/Order";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const auth = await requireAuth(request, ["admin"]);
-  if (auth instanceof NextResponse) return auth;
+  const admin = await requireAdmin(request);
+  if (admin instanceof NextResponse) return admin;
+
   try {
-    const body = await request.json();
-    const status = body?.status as OrderStatus;
-    if (status !== "pending" && status !== "delivered") {
-      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    const { status, items } = (await request.json()) as {
+      status: OrderStatus;
+      items?: OrderItemDoc[];
+    };
+    if (!status) {
+      return NextResponse.json({ error: "Status is required" }, { status: 400 });
     }
-    const result = await updateOrderStatus(params.id, status);
-    if (result.matchedCount === 0) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 });
-    }
-    return NextResponse.json({ success: true, status });
-  } catch {
+    await updateOrderDetails(params.id, status, items);
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("Admin order update error:", err);
     return NextResponse.json({ error: "Failed to update order" }, { status: 500 });
   }
 }
