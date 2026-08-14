@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getServicesFromDb, getProjectsFromDb } from "@/lib/data";
+import { getServicesFromDb, getProjectsFromDb, getBlogPosts } from "@/lib/data";
+import { findAllProducts } from "@/lib/models/Product";
 
 const BASE_URL = "https://cognitobyte.com";
 
@@ -15,7 +16,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];
 
-  const [services, projects] = await Promise.all([getServicesFromDb(), getProjectsFromDb()]);
+  const [services, projects, blogs, products] = await Promise.all([
+    getServicesFromDb(),
+    getProjectsFromDb(),
+    getBlogPosts(),
+    findAllProducts(),
+  ]);
   const serviceRoutes = services.map((s: any) => ({
     url: `${BASE_URL}/services/${s.slug}`,
     lastModified: new Date(),
@@ -30,5 +36,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...projectRoutes];
+  const blogRoutes = blogs.map((b: any) => ({
+    url: `${BASE_URL}/blog/${b.slug}`,
+    lastModified: b.updatedAt ? new Date(b.updatedAt) : new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  const productRoutes = products.products.map((p: any) => ({
+    url: `${BASE_URL}/products/${p.slug}`,
+    lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...projectRoutes, ...blogRoutes, ...productRoutes];
 }

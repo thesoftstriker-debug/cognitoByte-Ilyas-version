@@ -14,11 +14,26 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getBlogPostBySlug(params.slug);
+  const images = post?.imageUrl ? [{ url: post.imageUrl, width: 1600, height: 900, alt: post.title }] : [];
   return {
     title: post?.title || "Blog Post",
     description: post?.excerpt || "",
     alternates: {
       canonical: `/blog/${params.slug}`,
+    },
+    openGraph: {
+      type: "article",
+      title: post?.title || "Blog Post",
+      description: post?.excerpt || "",
+      url: `/blog/${params.slug}`,
+      publishedTime: post?.publishedAt,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post?.title || "Blog Post",
+      description: post?.excerpt || "",
+      images,
     },
   };
 }
@@ -29,6 +44,23 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.excerpt,
+            image: post.imageUrl,
+            datePublished: post.publishedAt,
+            dateModified: post.updatedAt,
+            author: { "@type": "Organization", name: "CognitoByte", url: "https://cognitobyte.com" },
+            publisher: { "@type": "Organization", name: "CognitoByte" },
+            mainEntityOfPage: `https://cognitobyte.com/blog/${post.slug}`,
+          }),
+        }}
+      />
       <article>
         <section className="bg-white py-16 px-4 border-b border-gray-100">
           <div className="max-w-3xl mx-auto">

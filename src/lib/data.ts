@@ -45,10 +45,14 @@ export async function getPricingFromDb(): Promise<any[]> {
   }
 }
 
-export async function getBlogPosts(): Promise<any[]> {
+export async function getBlogPosts(sort: "new" | "old" = "new"): Promise<any[]> {
   try {
     const db = await getMongoDb();
-    return await db.collection("blogs").find({ isActive: true }).sort({ publishedAt: -1 }).toArray();
+    return await db
+      .collection("blogs")
+      .find({ isActive: true })
+      .sort({ publishedAt: sort === "old" ? 1 : -1 })
+      .toArray();
   } catch {
     return [];
   }

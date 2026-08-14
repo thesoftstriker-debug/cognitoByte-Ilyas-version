@@ -64,6 +64,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  name: SITE.name,
+                  url: BASE_URL,
+                  logo: `${BASE_URL}/logo-text.png`,
+                  description: SITE.description,
+                },
+                {
+                  "@type": "WebSite",
+                  name: SITE.name,
+                  url: BASE_URL,
+                  description: SITE.description,
+                },
+              ],
+            }),
+          }}
+        />
         <PageLoader />
         <Providers>
           <AppShell />

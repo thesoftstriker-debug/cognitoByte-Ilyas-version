@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, Package, Briefcase, Wrench, FileText, Tag, LogOut, ChevronLeft, Zap, Receipt } from "lucide-react";
+import { LayoutDashboard, Users, Package, Briefcase, Wrench, FileText, Tag, LogOut, ChevronLeft, Zap, Receipt, Eye } from "lucide-react";
 
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -83,6 +83,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
         <div className="p-2 border-t border-gray-100">
+          <Link
+            href="/admin/visits"
+            className={cn(
+              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mb-1",
+              pathname === "/admin/visits"
+                ? "text-brand-600 bg-brand-50"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+            )}
+            title="Visits"
+          >
+            <Eye className="w-5 h-5 shrink-0" />
+            {!collapsed && <span className="truncate">Visits</span>}
+          </Link>
           {!collapsed && (
             <div className="px-3 py-2 text-xs text-gray-400 truncate">{user.email}</div>
           )}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Calendar, Clock, PenLine } from "lucide-react";
 import { getBlogPosts } from "@/lib/data";
 import { formatDate } from "@/lib/utils";
+import BlogSortSelect from "@/components/blog/BlogSortSelect";
 
 export const dynamic = "force-dynamic";
 
@@ -23,8 +24,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   news: "bg-gray-100 text-gray-700",
 };
 
-export default async function BlogPage() {
-  const data = await getBlogPosts();
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: { sort?: string };
+}) {
+  const sort = searchParams.sort === "old" ? "old" : "new";
+  const data = await getBlogPosts(sort);
 
   return (
     <div className="pt-16">
@@ -59,8 +65,15 @@ export default async function BlogPage() {
               </Link>
             </div>
           ) : (
-            /* ── Blog grid ── */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <>
+              <div className="flex items-center justify-between mb-8">
+                <p className="text-sm text-gray-500">
+                  {data.length} articles
+                </p>
+                <BlogSortSelect value={sort} />
+              </div>
+              {/* ── Blog grid ── */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.map((post: any) => (
                 <Link
                   key={post.slug}
@@ -113,7 +126,8 @@ export default async function BlogPage() {
                   </div>
                 </Link>
               ))}
-            </div>
+              </div>
+            </>
           )}
         </div>
       </section>

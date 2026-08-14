@@ -13,8 +13,15 @@ declare global {
 }
 
 export async function getMongoDb(): Promise<Db> {
-  // Return cached DB if already connected
-  if (global._mongoDb) return global._mongoDb;
+  // Validate cached client is still connected, otherwise drop it so we reconnect.
+  if (global._mongoClient) {
+    try {
+      await global._mongoClient.db("CognitoByte").command({ ping: 1 });
+    } catch {
+      global._mongoClient = undefined;
+      global._mongoDb = undefined;
+    }
+  }
 
   if (!uri) throw new Error("Missing MONGODB_URL environment variable");
 
