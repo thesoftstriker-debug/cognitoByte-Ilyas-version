@@ -1,13 +1,9 @@
-"use client";
-import { Suspense, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { addItem } from "@/store/cartSlice";
-import { useAuth } from "@/components/auth/AuthProvider";
-import toast from "react-hot-toast";
-import { ShoppingCart, Heart } from "lucide-react";
+import { findAllProducts } from "@/lib/models/Product";
 import { cn } from "@/lib/utils";
+import { ProductCard } from "./ProductCard";
+
+export const dynamic = "force-dynamic";
 
 const CATEGORIES = [
   "All",
@@ -17,51 +13,54 @@ const CATEGORIES = [
   "Creative & Visual Design",
 ] as const;
 
-interface ProductItem {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl?: string;
+interface ProductsPageProps {
+  searchParams: { category?: string; page?: string };
 }
 
-function ProductsContent() {
-  const searchParams = useSearchParams();
-  const dispatch = useDispatch();
-  const { user } = useAuth();
-  const [products, setProducts] = useState<ProductItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const activeCategory = searchParams.get("category") || "All";
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const activeCategory = searchParams.category || "All";
+  const rawPage = parseInt(searchParams.page || "1", 10);
+  const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
   const limit = 12;
 
-  const handleAddToCart = (product: ProductItem) => {
-    dispatch(addItem({ productId: product._id, name: product.name, price: product.price, slug: product.slug, imageUrl: product.imageUrl }));
-    toast.success(`${product.name} added to cart`);
-  };
+  let products: Array<{
+    _id: string;
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    category: string;
+    imageUrl?: string;
+  }> = [];
+  let total = 0;
 
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
-      if (activeCategory !== "All") params.set("category", activeCategory);
-      const res = await fetch(`/api/products?${params}`);
-      const data = await res.json();
-      setProducts(data.products || []);
-      setTotal(data.total || 0);
-    } catch {
-      setProducts([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [page, activeCategory]);
+  try {
+    const result = await findAllProducts(
+      activeCategory === "All" ? undefined : activeCategory,
+      undefined,
+      page,
+      limit
+    );
+    products = result.products.map((p: any) => ({
+      _id: p._id.toString(),
+      name: p.name,
+      slug: p.slug,
+      description: p.description,
+      price: p.price,
+      category: p.category,
+      imageUrl: p.imageUrl ?? undefined,
+    }));
+    total = result.total;
+  } catch {
+    products = [];
+    total = 0;
+  }
 
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+  const totalPages = Math.ceil(total / limit);
+  const baseQuery =
+    activeCategory === "All"
+      ? ""
+      : `category=${encodeURIComponent(activeCategory)}&`;
 
   return (
     <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
@@ -75,7 +74,8 @@ function ProductsContent() {
 
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           {CATEGORIES.map((cat) => {
-            const href = cat === "All" ? "/products" : `/products?category=${encodeURIComponent(cat)}`;
+            const href =
+              cat === "All" ? "/products" : `/products?category=${encodeURIComponent(cat)}`;
             return (
               <Link
                 key={cat}
@@ -94,100 +94,45 @@ function ProductsContent() {
           })}
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="card p-5 animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-3" />
-                <div className="h-3 bg-gray-200 rounded w-full mb-2" />
-                <div className="h-3 bg-gray-200 rounded w-1/2" />
-              </div>
-            ))}
-          </div>
-        ) : products.length === 0 ? (
+        {products.length === 0 ? (
           <div className="text-center py-16 text-gray-400">
             <p className="text-lg">No products found in this category</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
-              <div
-                key={product._id}
-                className="card rounded-2xl overflow-hidden flex flex-col hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
-              >
-                <div className="relative">
-                  <Link href={`/products/${product.slug}`} className="block">
-                    {product.imageUrl ? (
-                      <div className="relative w-full h-40">
-                        <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-300">
-                        <ShoppingCart className="w-8 h-8" />
-                      </div>
-                    )}
-                  </Link>
-                </div>
-                <div className="p-5 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-start justify-between mb-3">
-                      <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">
-                        {product.category}
-                      </span>
-                      <span className="text-lg font-bold font-mono text-gray-900">${product.price.toFixed(2)}</span>
-                    </div>
-                    <Link href={`/products/${product.slug}`} className="font-semibold text-lg mb-1 text-gray-900 hover:text-brand-600 block line-clamp-1">
-                      {product.name}
-                    </Link>
-                    <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
-                  </div>
-                  <div className="pt-4 mt-3 border-t border-gray-100 flex items-center justify-between">
-                    {user?.role !== "admin" && (
-                      <button onClick={() => handleAddToCart(product)} className="btn-primary text-xs py-1.5 px-3 gap-1.5">
-                        <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
-                      </button>
-                    )}
-                    <Link href={`/products/${product.slug}`} className="text-xs font-medium text-brand-600 hover:underline ml-auto">
-                      Details &rarr;
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         )}
 
         {total > limit && (
           <div className="flex justify-center gap-3 mt-10">
-            <button
-              disabled={page <= 1}
-              onClick={() => setPage(page - 1)}
-              className="px-4 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40"
+            <Link
+              href={page > 1 ? `?${baseQuery}page=${page - 1}` : `?${baseQuery}page=1`}
+              scroll={false}
+              aria-disabled={page <= 1}
+              className={cn(
+                "px-4 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40",
+                page <= 1 && "opacity-40 pointer-events-none"
+              )}
             >
               Previous
-            </button>
-            <button
-              disabled={page >= Math.ceil(total / limit)}
-              onClick={() => setPage(page + 1)}
-              className="px-4 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40"
+            </Link>
+            <Link
+              href={page < totalPages ? `?${baseQuery}page=${page + 1}` : `?${baseQuery}page=${page}`}
+              scroll={false}
+              aria-disabled={page >= totalPages}
+              className={cn(
+                "px-4 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40",
+                page >= totalPages && "opacity-40 pointer-events-none"
+              )}
             >
               Next
-            </button>
+            </Link>
           </div>
         )}
       </div>
     </div>
-  );
-}
-
-export default function ProductsPage() {
-  return (
-    <Suspense fallback={
-      <div className="pt-28 pb-20 px-4 flex items-center justify-center">
-        <div className="animate-spin w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full" />
-      </div>
-    }>
-      <ProductsContent />
-    </Suspense>
   );
 }

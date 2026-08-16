@@ -15,8 +15,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } catch {
     // DB unavailable — fall back to generic metadata
   }
+  const title =
+    name === "n8n"
+      ? "n8n Marketing & Copywriting Workflow | CognitoByte"
+      : name === "Product"
+        ? "Product"
+        : `${name} | CognitoByte`;
   return {
-    title: name,
+    title,
     description,
     alternates: {
       canonical: `/products/${params.slug}`,

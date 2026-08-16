@@ -29,7 +29,7 @@ const HERO = {
   ctaSecondary: "See Pricing",
   image: "/images/hero-main.png",
   stats: [
-    { value: "18+", label: "Automations Built" },
+    { value: "50+", label: "Automations Built" },
     { value: "10x", label: "Average Time Saved" },
     { value: "100%", label: "Client Satisfaction" },
   ],

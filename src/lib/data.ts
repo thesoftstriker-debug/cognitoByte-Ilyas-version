@@ -1,9 +1,15 @@
 import { getMongoDb } from "./mongodb";
 
+function toPlain<T>(doc: T | null): T | null {
+  if (!doc) return doc;
+  return JSON.parse(JSON.stringify(doc));
+}
+
 export async function getServicesFromDb(): Promise<any[]> {
   try {
     const db = await getMongoDb();
-    return await db.collection("services").find({ isActive: true }).sort({ order: 1, createdAt: -1 }).toArray();
+    const docs = await db.collection("services").find({ isActive: true }).sort({ order: 1, createdAt: -1 }).toArray();
+    return docs.map((d) => toPlain(d));
   } catch {
     return [];
   }
@@ -12,7 +18,8 @@ export async function getServicesFromDb(): Promise<any[]> {
 export async function getServiceBySlugFromDb(slug: string): Promise<any | null> {
   try {
     const db = await getMongoDb();
-    return await db.collection("services").findOne({ slug, isActive: true });
+    const doc = await db.collection("services").findOne({ slug, isActive: true });
+    return toPlain(doc);
   } catch {
     return null;
   }
@@ -21,7 +28,8 @@ export async function getServiceBySlugFromDb(slug: string): Promise<any | null> 
 export async function getProjectsFromDb(): Promise<any[]> {
   try {
     const db = await getMongoDb();
-    return await db.collection("projects").find({ isActive: true }).sort({ publishedAt: -1, createdAt: -1 }).toArray();
+    const docs = await db.collection("projects").find({ isActive: true }).sort({ publishedAt: -1, createdAt: -1 }).toArray();
+    return docs.map((d) => toPlain(d));
   } catch {
     return [];
   }
@@ -30,7 +38,8 @@ export async function getProjectsFromDb(): Promise<any[]> {
 export async function getProjectBySlugFromDb(slug: string): Promise<any | null> {
   try {
     const db = await getMongoDb();
-    return await db.collection("projects").findOne({ slug, isActive: true });
+    const doc = await db.collection("projects").findOne({ slug, isActive: true });
+    return toPlain(doc);
   } catch {
     return null;
   }
@@ -39,7 +48,8 @@ export async function getProjectBySlugFromDb(slug: string): Promise<any | null> 
 export async function getPricingFromDb(): Promise<any[]> {
   try {
     const db = await getMongoDb();
-    return await db.collection("pricing").find({ isActive: true }).sort({ order: 1 }).toArray();
+    const docs = await db.collection("pricing").find({ isActive: true }).sort({ order: 1 }).toArray();
+    return docs.map((d) => toPlain(d));
   } catch {
     return [];
   }
@@ -48,11 +58,12 @@ export async function getPricingFromDb(): Promise<any[]> {
 export async function getBlogPosts(sort: "new" | "old" = "new"): Promise<any[]> {
   try {
     const db = await getMongoDb();
-    return await db
+    const docs = await db
       .collection("blogs")
       .find({ isActive: true })
       .sort({ publishedAt: sort === "old" ? 1 : -1 })
       .toArray();
+    return docs.map((d) => toPlain(d));
   } catch {
     return [];
   }
@@ -61,7 +72,8 @@ export async function getBlogPosts(sort: "new" | "old" = "new"): Promise<any[]> 
 export async function getBlogPostBySlug(slug: string): Promise<any | null> {
   try {
     const db = await getMongoDb();
-    return await db.collection("blogs").findOne({ slug, isActive: true });
+    const doc = await db.collection("blogs").findOne({ slug, isActive: true });
+    return toPlain(doc);
   } catch {
     return null;
   }
