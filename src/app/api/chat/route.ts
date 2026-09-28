@@ -230,7 +230,7 @@ export async function POST(req: NextRequest) {
     try {
       const groq = getGroq();
       const response = await groq.chat.completions.create({
-        model: "llama-3.1-8b-instant",
+        model: "openai/gpt-oss-20b",
         messages: [
           { role: "system", content: systemPrompt },
           ...recentMessages.map((m: { role: string; content: string }) => ({

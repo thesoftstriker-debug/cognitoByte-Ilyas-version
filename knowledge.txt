@@ -1,5 +1,0 @@
-# CognitoByte — Site Feature Ideas / Roadmap
-
-- Checkout flow — real payment (Stripe); manual WhatsApp/email checkout is already live
-- Product file delivery — auto-email the purchased file on delivery (download link after delivery is already live)
-- Related products on detail page
