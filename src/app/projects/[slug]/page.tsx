@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Tag } from "lucide-react";
 import { getProjectBySlugFromDb } from "@/lib/data";
-import { getYouTubeEmbedUrl, formatDate, CATEGORY_LABELS } from "@/lib/utils";
+import { getYouTubeEmbedUrl, isDirectVideoUrl, formatDate, CATEGORY_LABELS } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +30,7 @@ export default async function ProjectPage({ params }: Props) {
   const videoEmbedUrl = project.videoUrl
     ? getYouTubeEmbedUrl(project.videoUrl)
     : null;
+  const isDirectVideo = project.videoUrl ? isDirectVideoUrl(project.videoUrl) : false;
 
   return (
     <div className="pt-16">
@@ -85,7 +86,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <section className="section-padding bg-white">
         <div className="max-w-4xl mx-auto">
-          {project.imageUrl && !videoEmbedUrl && (
+          {project.imageUrl && !videoEmbedUrl && !isDirectVideo && (
             <div className="relative aspect-video rounded-2xl overflow-hidden mb-10">
               <Image
                 src={project.imageUrl}
@@ -104,6 +105,18 @@ export default async function ProjectPage({ params }: Props) {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"
+              />
+            </div>
+          )}
+
+          {isDirectVideo && (
+            <div className="relative aspect-video rounded-2xl overflow-hidden mb-10 shadow-xl bg-black">
+              <video
+                src={project.videoUrl}
+                controls
+                playsInline
+                poster={project.imageUrl || undefined}
+                className="absolute inset-0 w-full h-full object-contain"
               />
             </div>
           )}

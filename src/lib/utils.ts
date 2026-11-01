@@ -16,6 +16,14 @@ export function getYouTubeEmbedUrl(url: string): string | null {
   }
   return null;
 }
+
+/** Returns true if the URL is a direct video file (Cloudinary, S3, etc.) */
+export function isDirectVideoUrl(url: string): boolean {
+  if (!url) return false;
+  // Must not be a YouTube link
+  if (/youtube\.com|youtu\.be/.test(url)) return false;
+  return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(url) || url.includes("cloudinary.com/") && url.includes("/video/");
+}
 export function formatDate(dateString: string): string {
   if (!dateString) return "";
   return new Date(dateString).toLocaleDateString("en-US", {

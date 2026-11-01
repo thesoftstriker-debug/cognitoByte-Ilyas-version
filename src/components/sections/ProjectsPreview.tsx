@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { CATEGORY_LABELS } from "@/lib/utils";
 
 interface ProjectItem {
@@ -9,6 +9,7 @@ interface ProjectItem {
   category: string;
   shortDescription: string;
   imageUrl: string;
+  videoUrl?: string;
   results: Array<{ metric: string; label: string }>;
 }
 
@@ -44,6 +45,14 @@ export function ProjectsPreview({ projects }: { projects: ProjectItem[] }) {
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-gray-600 text-4xl font-bold">{project.title[0]}</div>
+                  </div>
+                )}
+                {/* Play icon overlay for video projects */}
+                {project.videoUrl && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-brand-500 transition-colors duration-300 shadow-lg">
+                      <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                    </div>
                   </div>
                 )}
                 {project.category && (
