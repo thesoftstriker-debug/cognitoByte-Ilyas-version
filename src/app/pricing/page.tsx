@@ -45,7 +45,7 @@ export default async function PricingPage() {
                   className={cn(
                     "rounded-3xl border p-8 relative flex flex-col justify-between transition-all duration-300 backdrop-blur-xl",
                     plan.isPopular
-                      ? "bg-gradient-to-b from-brand-600 via-indigo-600 to-purple-700 border-brand-400 text-white shadow-[0_0_40px_rgba(79,110,247,0.35)] md:-translate-y-3 md:scale-105"
+                      ? "bg-gradient-to-b from-gray-900 via-[#0d1226] to-gray-900 border-2 border-brand-400 text-white shadow-[0_0_50px_rgba(2,132,199,0.35)] md:-translate-y-3 md:scale-105"
                       : "bg-gray-900/80 border-white/10 hover:border-brand-500/50 hover:shadow-[0_0_35px_rgba(79,110,247,0.22)] hover:-translate-y-1 text-white",
                   )}
                 >
@@ -115,10 +115,10 @@ export default async function PricingPage() {
                   <Link
                     href="/contact"
                     className={cn(
-                      "w-full text-center font-bold py-3.5 rounded-xl transition-all duration-200 inline-block shadow-md hover:-translate-y-0.5 active:translate-y-0",
+                      "w-full text-center font-bold py-3.5 rounded-xl transition-all duration-200 inline-block",
                       plan.isPopular
-                        ? "bg-white text-brand-600 hover:bg-brand-50 hover:shadow-xl hover:shadow-brand-950/20"
-                        : "btn-primary justify-center w-full",
+                        ? "btn-primary shadow-xl shadow-brand-500/25"
+                        : "btn-secondary",
                     )}
                   >
                     {plan.ctaText || "Get Started"}

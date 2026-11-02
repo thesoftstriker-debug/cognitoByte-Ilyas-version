@@ -71,13 +71,13 @@ export default async function ProjectPage({ params }: Props) {
       </section>
 
       {project.results?.length > 0 && (
-        <div className="bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-600 shadow-inner">
+        <div className="bg-[#0b0d18] border-y border-white/10 shadow-lg">
           <div className="max-w-4xl mx-auto px-4 py-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center divide-x divide-white/10">
               {project.results.map((r: any, i: number) => (
                 <div key={i} className="px-2">
-                  <p className="text-3xl sm:text-4xl font-black text-white tracking-tight">{r.metric}</p>
-                  <p className="text-brand-100 text-xs sm:text-sm font-medium mt-1">{r.label}</p>
+                  <p className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-indigo-200 to-purple-300 tracking-tight">{r.metric}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm font-medium mt-1">{r.label}</p>
                 </div>
               ))}
             </div>
@@ -163,12 +163,12 @@ export default async function ProjectPage({ params }: Props) {
                 </div>
               )}
 
-              <div className="bg-gradient-to-br from-brand-600 via-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl shadow-brand-500/20 border border-brand-400/30">
-                <h3 className="font-black text-lg mb-2">Want similar results?</h3>
-                <p className="text-brand-100 text-sm mb-5 leading-relaxed">
+              <div className="bg-gradient-to-b from-gray-900/90 to-gray-950/90 rounded-3xl p-6 text-white shadow-xl border border-white/10 backdrop-blur-xl">
+                <h3 className="font-black text-lg mb-2 text-white">Want similar results?</h3>
+                <p className="text-gray-400 text-sm mb-5 leading-relaxed">
                   Let&apos;s talk about your automation needs and how we can replicate this for you.
                 </p>
-                <Link href="/contact" className="inline-flex w-full justify-center bg-white text-brand-600 font-bold text-sm px-4 py-3 rounded-xl hover:bg-brand-50 transition-all shadow-md active:scale-95">
+                <Link href="/contact" className="btn-primary inline-flex w-full justify-center text-sm py-3">
                   Start a Project
                 </Link>
               </div>

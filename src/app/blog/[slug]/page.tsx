@@ -154,20 +154,20 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             {/* Bottom Callout */}
-            <div className="mt-16 p-8 sm:p-10 bg-gradient-to-br from-brand-600 via-brand-500 to-indigo-700 rounded-3xl text-white text-center shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="mt-16 p-8 sm:p-10 bg-gradient-to-b from-gray-900/90 via-gray-900/50 to-gray-950/90 border border-white/10 rounded-3xl text-white text-center shadow-2xl relative overflow-hidden backdrop-blur-xl">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold uppercase tracking-wider mb-4 border border-white/20">
-                  <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-white/10">
+                  <Sparkles className="w-3.5 h-3.5 text-brand-400" />
                   Free Automation Blueprint
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black mb-3">Ready to automate your operations?</h3>
-                <p className="text-brand-100 mb-6 max-w-lg mx-auto text-sm sm:text-base">
+                <h3 className="text-2xl sm:text-3xl font-black mb-3 text-white">Ready to automate your operations?</h3>
+                <p className="text-gray-400 mb-6 max-w-lg mx-auto text-sm sm:text-base">
                   Book a free 30-minute discovery call and let&apos;s map out your high-ROI workflows.
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex bg-white text-brand-600 font-bold px-8 py-3.5 rounded-xl hover:bg-brand-50 hover:shadow-xl transition-all"
+                  className="btn-primary inline-flex px-8 py-3.5"
                 >
                   Book Discovery Call
                 </Link>

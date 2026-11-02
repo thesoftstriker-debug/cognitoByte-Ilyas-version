@@ -103,14 +103,14 @@ export default async function ServicePage({ params }: Props) {
                 </div>
               )}
 
-              <div className="bg-gradient-to-br from-brand-600 via-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl shadow-brand-500/25 border border-brand-400/30">
-                <h3 className="font-black text-lg mb-2">Ready to get started?</h3>
-                <p className="text-brand-100 text-sm mb-5 leading-relaxed">
+              <div className="bg-gradient-to-b from-gray-900/90 to-gray-950/90 rounded-3xl p-6 text-white shadow-xl border border-white/10 backdrop-blur-xl">
+                <h3 className="font-black text-lg mb-2 text-white">Ready to get started?</h3>
+                <p className="text-gray-400 text-sm mb-5 leading-relaxed">
                   Book a free discovery call and we&apos;ll scope your project.
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 bg-white text-brand-600 font-bold text-sm px-5 py-3 rounded-xl hover:bg-brand-50 transition-all w-full justify-center shadow-md active:scale-95"
+                  className="btn-primary inline-flex items-center gap-2 text-sm py-3 w-full justify-center"
                 >
                   Book Free Call <ArrowRight className="w-4 h-4" />
                 </Link>
