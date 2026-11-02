@@ -1,6 +1,8 @@
 import { getServicesFromDb, getProjectsFromDb } from "@/lib/data";
 import { findAllProducts } from "@/lib/models/Product";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { TechMarquee } from "@/components/sections/TechMarquee";
+import { ShowcaseSlider } from "@/components/sections/ShowcaseSlider";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProjectsPreview } from "@/components/sections/ProjectsPreview";
 import { ProductsPreview } from "@/components/sections/ProductsPreview";
@@ -41,7 +43,10 @@ export default async function HomePage() {
   const { products } = await findAllProducts(undefined, undefined, 1, 3);
   return (
     <>
-      <HeroSection hero={HERO} /> <StatsSection stats={HERO.stats} />
+      <HeroSection hero={HERO} />
+      <TechMarquee />
+      <StatsSection stats={HERO.stats} />
+      <ShowcaseSlider />
       <ServicesSection services={services} />
       <ProjectsPreview projects={projects.slice(0, 3)} />
       <ProductsPreview products={products as unknown as Array<{ name: string; slug: string; description: string; price: number; category: string; imageUrl?: string }>} />

@@ -18,35 +18,35 @@ export default async function PricingPage() {
     <div className="pt-16">
       
       {/* Header */}
-      <section className="relative bg-gradient-to-b from-white via-brand-50/30 to-gray-50 py-24 px-4 text-center border-b border-gray-100 overflow-hidden">
-        <div className="absolute top-0 right-1/3 w-[500px] h-[300px] bg-brand-100/50 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
+      <section className="relative bg-gradient-to-b from-[#0c0e1a] via-[#08090f] to-[#08090f] py-24 px-4 text-center border-b border-white/10 overflow-hidden">
+        <div className="absolute top-0 right-1/3 w-[500px] h-[300px] bg-brand-500/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
         <div className="relative max-w-3xl mx-auto">
           <div className="label-tag mb-6 mx-auto w-fit">Transparent Pricing</div>
-          <h1 className="text-5xl sm:text-6xl font-black text-gray-950 mb-5 tracking-tight">
+          <h1 className="text-5xl sm:text-6xl font-black text-white mb-5 tracking-tight">
             Predictable plans. Real ROI.
           </h1>
-          <p className="text-xl text-gray-500 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-400 max-w-xl mx-auto leading-relaxed">
             No hidden fees. No surprises. Pick a plan and start automating within days.
           </p>
         </div>
       </section>
       {/* Plans */}
-      <section className="section-padding bg-gray-50">
+      <section className="section-padding bg-[#08090f]">
         
         <div className="max-w-5xl mx-auto">
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-            {!data.length && <p className="col-span-full py-24 text-center text-gray-500">Data is currently unavailable. Please try again later.</p>}
+            {!data.length && <p className="col-span-full py-24 text-center text-gray-400 bg-gray-900/40 rounded-3xl border border-white/10">Data is currently unavailable. Please try again later.</p>}
             {data
               .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
               .map((plan: any) => (
                 <div
                   key={plan.name}
                   className={cn(
-                    "rounded-3xl border p-8 relative flex flex-col justify-between transition-all duration-300",
+                    "rounded-3xl border p-8 relative flex flex-col justify-between transition-all duration-300 backdrop-blur-xl",
                     plan.isPopular
-                      ? "bg-gradient-to-b from-brand-600 to-brand-700 border-brand-500 text-white shadow-2xl shadow-brand-500/30 md:-translate-y-3 md:scale-105"
-                      : "bg-white border-gray-200/80 hover:border-brand-200 hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1",
+                      ? "bg-gradient-to-b from-brand-600 via-indigo-600 to-purple-700 border-brand-400 text-white shadow-[0_0_40px_rgba(79,110,247,0.35)] md:-translate-y-3 md:scale-105"
+                      : "bg-gray-900/80 border-white/10 hover:border-brand-500/50 hover:shadow-[0_0_35px_rgba(79,110,247,0.22)] hover:-translate-y-1 text-white",
                   )}
                 >
                   
@@ -60,17 +60,14 @@ export default async function PricingPage() {
                   <div>
                     <div className="mb-6">
                       <h3
-                        className={cn(
-                          "text-xl font-bold mb-2",
-                          plan.isPopular ? "text-white" : "text-gray-950",
-                        )}
+                        className="text-xl font-bold mb-2 text-white"
                       >
                         {plan.name}
                       </h3>
                       <p
                         className={cn(
                           "text-sm leading-relaxed",
-                          plan.isPopular ? "text-brand-100" : "text-gray-500",
+                          plan.isPopular ? "text-brand-100" : "text-gray-400",
                         )}
                       >
                         {plan.description}
@@ -78,10 +75,7 @@ export default async function PricingPage() {
                     </div>
                     <div className="mb-8">
                       <span
-                        className={cn(
-                          "text-5xl font-black tracking-tight",
-                          plan.isPopular ? "text-white" : "text-gray-950",
-                        )}
+                        className="text-5xl font-black tracking-tight text-white"
                       >
                         {plan.price}
                       </span>
@@ -104,12 +98,12 @@ export default async function PricingPage() {
                               "w-4 h-4 shrink-0 mt-0.5",
                               plan.isPopular
                                 ? "text-brand-200"
-                                : "text-brand-500",
+                                : "text-brand-400",
                             )}
                           />
                           <span
                             className={
-                              plan.isPopular ? "text-brand-100" : "text-gray-700"
+                              plan.isPopular ? "text-brand-100" : "text-gray-300"
                             }
                           >
                             {f}
@@ -124,7 +118,7 @@ export default async function PricingPage() {
                       "w-full text-center font-bold py-3.5 rounded-xl transition-all duration-200 inline-block shadow-md hover:-translate-y-0.5 active:translate-y-0",
                       plan.isPopular
                         ? "bg-white text-brand-600 hover:bg-brand-50 hover:shadow-xl hover:shadow-brand-950/20"
-                        : "bg-brand-500 text-white hover:bg-brand-600 hover:shadow-lg hover:shadow-brand-500/25",
+                        : "btn-primary justify-center w-full",
                     )}
                   >
                     {plan.ctaText || "Get Started"}
@@ -135,13 +129,11 @@ export default async function PricingPage() {
           {/* FAQ / Note */}
           <div className="mt-16 text-center">
             
-            <p className="text-gray-500 text-sm mb-4">
-              
+            <p className="text-gray-400 text-sm mb-4">
               All plans include a free 30-minute onboarding call. Not sure which
               plan fits? Let&apos;s talk.
             </p>
             <Link href="/contact" className="btn-secondary">
-              
               Talk to us first <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

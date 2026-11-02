@@ -69,28 +69,28 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs transition-opacity animate-fade-in"
+        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Drawer — compact size for all screens */}
-      <div className="fixed inset-y-0 right-0 z-50 w-[85vw] max-w-sm bg-white shadow-2xl flex flex-col transform transition-transform duration-300 animate-slide-left border-l border-gray-100">
+      {/* Drawer */}
+      <div className="fixed inset-y-0 right-0 z-50 w-[88vw] max-w-sm bg-[#0b0d18]/95 backdrop-blur-2xl shadow-2xl flex flex-col transform transition-transform duration-300 animate-slide-left border-l border-white/10 text-white">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-b from-gray-50/80 to-white">
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between bg-white/5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600">
+            <div className="w-8 h-8 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400">
               <ShoppingBag className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="font-bold text-gray-950 text-base leading-tight">Your Cart</h2>
-              <span className="text-[11px] text-gray-500 font-medium">
+              <h2 className="font-bold text-white text-base leading-tight">Your Cart</h2>
+              <span className="text-[11px] text-gray-400 font-medium">
                 {totalCount} {totalCount === 1 ? "item" : "items"} selected
               </span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 active:scale-95 transition-all"
+            className="p-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
           >
             <X className="w-5 h-5" />
           </button>
@@ -99,12 +99,12 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         {/* Content */}
         {items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
               <ShoppingBag className="w-8 h-8 text-brand-400" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Your cart is empty</h3>
-            <p className="text-sm text-gray-500 mb-6 max-w-xs">
-              Explore our digital assets and templates to get started.
+            <h3 className="text-lg font-bold text-white mb-1">Your cart is empty</h3>
+            <p className="text-sm text-gray-400 mb-6 max-w-xs">
+              Explore our digital assets and production workflows to get started.
             </p>
             <button onClick={onClose} className="btn-primary text-sm py-2.5 px-5">
               Browse Digital Assets
@@ -113,17 +113,17 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         ) : (
           <>
             {/* Items list */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 divide-y divide-gray-100">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 divide-y divide-white/5">
               {items.map((item) => (
                 <div key={item.productId} className="pt-4 first:pt-0 flex gap-3">
                   {item.imageUrl ? (
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-16 h-16 rounded-xl object-cover border border-gray-100 shrink-0"
+                      className="w-16 h-16 rounded-xl object-cover border border-white/10 shrink-0"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
                       <ShoppingBag className="w-6 h-6 text-gray-400" />
                     </div>
                   )}
@@ -132,11 +132,11 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     <Link
                       href={`/products/${item.slug}`}
                       onClick={onClose}
-                      className="font-medium text-sm text-gray-900 hover:text-brand-600 truncate block"
+                      className="font-medium text-sm text-white hover:text-brand-300 truncate block transition-colors"
                     >
                       {item.name}
                     </Link>
-                    <p className="text-xs text-gray-500 font-mono mt-0.5">
+                    <p className="text-xs text-brand-300 font-mono mt-0.5">
                       ${item.price.toFixed(2)}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
@@ -149,11 +149,11 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             })
                           )
                         }
-                        className="p-1 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600"
+                        className="p-1 rounded-md border border-white/10 hover:bg-white/10 text-gray-300"
                       >
                         <Minus className="w-3 h-3" />
                       </button>
-                      <span className="text-xs font-semibold w-5 text-center">{item.quantity}</span>
+                      <span className="text-xs font-semibold w-5 text-center text-white">{item.quantity}</span>
                       <button
                         onClick={() =>
                           dispatch(
@@ -163,7 +163,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             })
                           )
                         }
-                        className="p-1 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600"
+                        className="p-1 rounded-md border border-white/10 hover:bg-white/10 text-gray-300"
                       >
                         <Plus className="w-3 h-3" />
                       </button>
@@ -171,12 +171,12 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   </div>
 
                   <div className="flex flex-col items-end justify-between shrink-0">
-                    <span className="font-bold text-sm font-mono text-gray-900">
+                    <span className="font-bold text-sm font-mono text-white">
                       ${(item.price * item.quantity).toFixed(2)}
                     </span>
                     <button
                       onClick={() => dispatch(removeItem(item.productId))}
-                      className="text-gray-400 hover:text-red-500 p-1"
+                      className="text-gray-400 hover:text-red-400 p-1 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -186,7 +186,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             </div>
 
             {/* Footer */}
-            <div className="p-4 sm:p-5 border-t border-gray-100 bg-gray-50/50 space-y-3">
+            <div className="p-4 sm:p-5 border-t border-white/10 bg-white/5 space-y-3">
               {/* Coupon code form */}
               <form onSubmit={handleApplyCoupon} className="flex gap-2">
                 <div className="relative flex-1">
@@ -196,7 +196,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                     placeholder="Coupon Code"
-                    className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-black/40 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
                   />
                 </div>
                 <button
@@ -209,7 +209,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               </form>
 
               {appliedCode && (
-                <div className="flex items-center justify-between text-xs bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg border border-emerald-200">
+                <div className="flex items-center justify-between text-xs bg-emerald-500/10 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/20">
                   <span className="flex items-center gap-1 font-semibold">
                     <Check className="w-3.5 h-3.5" /> Code: {appliedCode}
                   </span>
@@ -218,20 +218,20 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               )}
 
               {/* Totals */}
-              <div className="space-y-1 text-xs text-gray-600">
+              <div className="space-y-1 text-xs text-gray-300">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-mono">${rawSubtotal.toFixed(2)}</span>
+                  <span className="font-mono text-white">${rawSubtotal.toFixed(2)}</span>
                 </div>
                 {discountAmount > 0 && (
-                  <div className="flex justify-between text-emerald-600">
+                  <div className="flex justify-between text-emerald-400">
                     <span>Discount</span>
                     <span className="font-mono">-${discountAmount.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-200">
+                <div className="flex justify-between text-base font-bold text-white pt-2 border-t border-white/10">
                   <span>Total</span>
-                  <span className="font-mono">${finalTotal.toFixed(2)}</span>
+                  <span className="font-mono text-brand-300">${finalTotal.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -247,13 +247,13 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   <Link
                     href="/cart"
                     onClick={onClose}
-                    className="flex-1 btn-secondary justify-center text-xs py-2"
+                    className="flex-1 btn-secondary justify-center text-xs py-2 text-center"
                   >
                     View Full Cart
                   </Link>
                   <button
                     onClick={() => dispatch(clearCart())}
-                    className="btn-ghost text-xs text-red-500 hover:bg-red-50 px-3"
+                    className="px-3 text-xs text-red-400 hover:text-red-300 hover:bg-white/5 rounded-xl transition-colors"
                   >
                     Clear
                   </button>

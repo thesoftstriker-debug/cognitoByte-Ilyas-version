@@ -34,56 +34,56 @@ export function ProductCard({ product }: { product: ProductItem }) {
   };
 
   return (
-    <div className="card group rounded-2xl overflow-hidden flex flex-col hover:shadow-xl hover:shadow-brand-500/10 hover:border-brand-200 transition-all duration-300 hover:-translate-y-1 bg-white">
-      <div className="relative overflow-hidden bg-gray-100">
+    <div className="card group rounded-3xl overflow-hidden flex flex-col hover:shadow-[0_0_35px_rgba(79,110,247,0.22)] hover:border-brand-500/50 transition-all duration-300 hover:-translate-y-1.5 bg-gray-900/80 border border-white/10 backdrop-blur-xl">
+      <div className="relative overflow-hidden bg-gray-950">
         <Link href={`/products/${product.slug}`} className="block">
           {product.imageUrl ? (
-            <div className="relative w-full h-44 overflow-hidden">
+            <div className="relative w-full h-48 overflow-hidden">
               <img
                 src={product.imageUrl}
                 alt={product.name}
-                className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               />
             </div>
           ) : (
-            <div className="w-full h-44 bg-gradient-to-br from-brand-50 to-indigo-50 flex items-center justify-center text-brand-300">
+            <div className="w-full h-48 bg-gradient-to-br from-brand-950 to-gray-900 flex items-center justify-center text-brand-400/40">
               <ShoppingCart className="w-10 h-10" />
             </div>
           )}
         </Link>
       </div>
-      <div className="p-5 flex-1 flex flex-col justify-between">
+      <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-brand-600 bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
+          <div className="flex items-center justify-between mb-3.5">
+            <span className="text-xs font-bold text-brand-300 bg-brand-500/15 border border-brand-500/30 px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
               {product.category}
             </span>
-            <span className="text-lg font-bold font-mono text-gray-950">
+            <span className="text-xl font-black font-mono text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
               ${product.price.toFixed(2)}
             </span>
           </div>
           <Link
             href={`/products/${product.slug}`}
-            className="font-bold text-lg mb-1.5 text-gray-950 group-hover:text-brand-600 transition-colors block line-clamp-1"
+            className="font-bold text-lg mb-2 text-white group-hover:text-brand-300 transition-colors block line-clamp-1"
           >
             {product.name}
           </Link>
-          <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed mb-4">
             {product.description}
           </p>
         </div>
-        <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between">
+        <div className="pt-4 mt-auto border-t border-white/10 flex items-center justify-between">
           {user?.role !== "admin" && (
             <button
               onClick={handleAddToCart}
-              className="btn-primary text-xs py-2 px-3.5 gap-1.5 shadow-md shadow-brand-500/20 active:scale-95 cursor-pointer"
+              className="btn-primary text-xs py-2 px-4 gap-1.5 shadow-md shadow-brand-500/20 active:scale-95 cursor-pointer"
             >
               <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
             </button>
           )}
           <Link
             href={`/products/${product.slug}`}
-            className="text-xs font-semibold text-brand-600 hover:text-brand-700 transition-colors ml-auto flex items-center gap-1 group-hover:translate-x-0.5"
+            className="text-xs font-semibold text-brand-300 hover:text-white transition-colors ml-auto flex items-center gap-1 group-hover:translate-x-0.5"
           >
             Details &rarr;
           </Link>

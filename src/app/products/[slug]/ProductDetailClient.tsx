@@ -131,51 +131,53 @@ export function ProductDetailClient({
   };
 
   return (
-    <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 bg-[#08090f] text-white min-h-screen">
       <div className="max-w-4xl mx-auto space-y-8">
         <Link
           href="/products"
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors group"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to products
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" /> Back to products
         </Link>
 
         {/* Product Details Card */}
-        <div className="card p-6 sm:p-8">
+        <div className="bg-gray-900/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
           {product.imageUrl && (
-            <div className="relative w-full h-56 sm:h-72 rounded-xl overflow-hidden mb-6">
+            <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-6 border border-white/10">
               <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
             </div>
           )}
           <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-bold text-brand-300 bg-brand-500/10 border border-brand-500/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
                   {product.category}
                 </span>
-                <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
+                <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
                   <Star className="w-4 h-4 fill-amber-400" /> {avgRating} ({reviewCount} reviews)
                 </div>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold mt-3 text-gray-900">{product.name}</h1>
+              <h1 className="text-2xl sm:text-3xl font-black mt-3 text-white tracking-tight">{product.name}</h1>
             </div>
-            <div className="text-3xl font-bold font-mono text-brand-600">${product.price.toFixed(2)}</div>
+            <div className="text-3xl font-black font-mono text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-indigo-300">
+              ${product.price.toFixed(2)}
+            </div>
           </div>
 
-          <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
+          <p className="text-gray-300 leading-relaxed mb-8">{product.description}</p>
 
           <div className="flex flex-wrap items-center gap-3">
             {user?.role !== "admin" && (
-              <button onClick={handleAddToCart} className="btn-primary text-sm py-2.5 px-5 gap-2">
+              <button onClick={handleAddToCart} className="btn-primary text-sm py-2.5 px-6 gap-2">
                 <ShoppingCart className="w-4 h-4" /> Add to Cart
               </button>
             )}
             <button
               onClick={handleWishlistToggle}
-              className={`p-2.5 rounded-xl border transition-colors flex items-center gap-2 text-sm font-medium ${
+              className={`p-2.5 px-4 rounded-xl border transition-all flex items-center gap-2 text-sm font-medium ${
                 inWishlist
-                  ? "bg-rose-50 border-rose-200 text-rose-600"
-                  : "border-gray-200 hover:bg-gray-50 text-gray-700"
+                  ? "bg-rose-500/10 border-rose-500/30 text-rose-400"
+                  : "bg-white/5 border-white/10 hover:bg-white/10 text-gray-300"
               }`}
             >
               <Heart className={`w-5 h-5 ${inWishlist ? "fill-rose-500 text-rose-500" : ""}`} />
@@ -183,36 +185,36 @@ export function ProductDetailClient({
             </button>
           </div>
 
-          <p className="flex items-center gap-1.5 text-xs text-gray-500 mt-6 pt-4 border-t border-gray-100">
-            <Zap className="w-4 h-4 text-brand-500 shrink-0" /> Instant access after purchase — no waiting, delivered right to your account.
+          <p className="flex items-center gap-2 text-xs text-gray-400 mt-6 pt-4 border-t border-white/10">
+            <Zap className="w-4 h-4 text-brand-400 shrink-0" /> Instant access after purchase — zero wait time, delivered directly to your account.
           </p>
         </div>
 
         {/* Customer Reviews Section */}
-        <div className="card p-6 sm:p-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="bg-gray-900/80 border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6 backdrop-blur-xl shadow-2xl">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div>
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 Customer Reviews
               </h2>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Rating breakdown based on verified buyers
+              <p className="text-xs text-gray-400 mt-0.5">
+                Verified reviews from real operators
               </p>
             </div>
             <div className="text-right">
-              <div className="flex items-center gap-1 text-amber-500 font-bold text-lg">
+              <div className="flex items-center gap-1 text-amber-400 font-bold text-lg">
                 <Star className="w-5 h-5 fill-amber-400" /> {avgRating} / 5
               </div>
-              <span className="text-xs text-gray-400">{reviewCount} total reviews</span>
+              <span className="text-xs text-gray-500">{reviewCount} total reviews</span>
             </div>
           </div>
 
           {/* Add Review Form */}
           {user ? (
-            <form onSubmit={handleReviewSubmit} className="bg-gray-50/50 p-4 rounded-xl space-y-3 border border-gray-100">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-700">Write a Review</h3>
+            <form onSubmit={handleReviewSubmit} className="bg-white/5 p-5 rounded-2xl space-y-3 border border-white/10">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-300">Write a Review</h3>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600">Rating:</span>
+                <span className="text-xs text-gray-400">Rating:</span>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -223,7 +225,7 @@ export function ProductDetailClient({
                     >
                       <Star
                         className={`w-5 h-5 ${
-                          star <= newRating ? "text-amber-400 fill-amber-400" : "text-gray-300"
+                          star <= newRating ? "text-amber-400 fill-amber-400" : "text-gray-600"
                         }`}
                       />
                     </button>
@@ -233,10 +235,10 @@ export function ProductDetailClient({
               <textarea
                 required
                 rows={3}
-                placeholder="Share your thoughts about this digital product..."
+                placeholder="Share your experience with this automation template..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                className="w-full p-3 text-sm rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none"
+                className="w-full p-3 text-sm rounded-xl bg-black/40 border border-white/10 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-brand-500/30 focus:border-brand-400 focus:outline-none"
               />
               <div className="flex justify-end">
                 <button type="submit" disabled={submittingReview} className="btn-primary text-xs py-2 px-4 gap-1.5">
@@ -245,28 +247,28 @@ export function ProductDetailClient({
               </div>
             </form>
           ) : (
-            <div className="p-4 bg-gray-50 rounded-xl text-center text-xs text-gray-500">
-              Please <Link href="/login" className="text-brand-600 underline font-semibold">Sign In</Link> to post a review.
+            <div className="p-4 bg-white/5 rounded-2xl text-center text-xs text-gray-400 border border-white/5">
+              Please <Link href="/login" className="text-brand-400 underline font-semibold">Sign In</Link> to post a review.
             </div>
           )}
 
           {/* Reviews List */}
-          <div className="space-y-4 divide-y divide-gray-100">
+          <div className="space-y-4 divide-y divide-white/5">
             {reviews.length === 0 ? (
               <p className="text-sm text-gray-400 py-2">No customer reviews yet. Be the first to leave a review!</p>
             ) : (
               reviews.map((rev) => (
                 <div key={rev._id} className="pt-4 first:pt-0 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-sm text-gray-900">{rev.userName}</span>
-                    <span className="text-[11px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                    <span className="font-semibold text-sm text-white">{rev.userName}</span>
+                    <span className="text-[11px] text-gray-500">{new Date(rev.createdAt).toLocaleDateString()}</span>
                   </div>
                   <div className="flex gap-0.5 text-amber-400">
                     {[1, 2, 3, 4, 5].map((s) => (
-                      <Star key={s} className={`w-3.5 h-3.5 ${s <= rev.rating ? "fill-amber-400" : "text-gray-200"}`} />
+                      <Star key={s} className={`w-3.5 h-3.5 ${s <= rev.rating ? "fill-amber-400" : "text-gray-700"}`} />
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 pt-1">{rev.comment}</p>
+                  <p className="text-sm text-gray-300 pt-1">{rev.comment}</p>
                 </div>
               ))
             )}

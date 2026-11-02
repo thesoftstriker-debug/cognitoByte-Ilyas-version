@@ -50,36 +50,36 @@ export default async function ServicesPage() {
         </div>
       </section>
       {/* Services list */}
-      <section className="section-padding bg-gray-50/50">
+      <section className="section-padding bg-[#08090f]">
         <div className="container-tight space-y-10">
           {services.map((service: any, i: number) => {
             const IconComponent = ICON_MAP[service.icon || "Zap"] || Zap;
             return (
               <div
                 key={service.slug}
-                className="card p-8 lg:p-10 group bg-white border border-gray-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 rounded-3xl"
+                className="card p-8 lg:p-10 group bg-gray-900/80 border border-white/10 hover:border-brand-500/50 hover:shadow-[0_0_35px_rgba(79,110,247,0.22)] transition-all duration-300 rounded-3xl backdrop-blur-xl"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                   <div>
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-brand-50 group-hover:bg-brand-500 flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-brand-500/30">
-                        <IconComponent className="w-7 h-7 text-brand-500 group-hover:text-white transition-colors duration-300" />
+                      <div className="w-14 h-14 rounded-2xl bg-brand-500/15 border border-brand-500/30 group-hover:bg-brand-500 flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(79,110,247,0.5)]">
+                        <IconComponent className="w-7 h-7 text-brand-300 group-hover:text-white transition-colors duration-300" />
                       </div>
                       <div>
-                        <span className="text-xs font-bold text-brand-500 tracking-widest uppercase">
+                        <span className="text-xs font-bold text-brand-400 tracking-widest uppercase">
                           Service {String(i + 1).padStart(2, "0")}
                         </span>
-                        <h2 className="text-2xl font-bold text-gray-950 group-hover:text-brand-600 transition-colors">
+                        <h2 className="text-2xl font-bold text-white group-hover:text-brand-300 transition-colors">
                           {service.title}
                         </h2>
                       </div>
                     </div>
-                    <p className="text-gray-600 leading-relaxed mb-8 text-base">
+                    <p className="text-gray-300 leading-relaxed mb-8 text-base">
                       {service.shortDescription}
                     </p>
                     <Link
                       href={`/services/${service.slug}`}
-                      className="btn-primary shadow-lg shadow-brand-500/20"
+                      className="btn-primary shadow-lg shadow-brand-500/25"
                     >
                       Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
@@ -87,27 +87,27 @@ export default async function ServicesPage() {
                   {service.imageUrl || service.features?.length ? (
                     <div className="space-y-6">
                       {service.imageUrl && (
-                        <div className="relative aspect-video rounded-2xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
+                        <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl border border-white/10 group-hover:border-brand-500/30 transition-all">
                           <Image
                             src={service.imageUrl}
                             alt={service.title ?? ""}
                             fill
-                            className="object-cover group-hover:scale-103 transition-transform duration-500"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                           />
                         </div>
                       )}
                       {service.features?.length ? (
-                        <div className="bg-gray-50/90 border border-gray-100 rounded-2xl p-6">
-                          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                        <div className="bg-black/40 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
+                          <p className="text-xs font-bold text-brand-400 uppercase tracking-widest mb-4">
                             What&apos;s included
                           </p>
                           <ul className="space-y-3">
                             {service.features.map((f: string, fi: number) => (
                               <li
                                 key={fi}
-                                className="flex items-start gap-3 text-sm text-gray-700 font-medium"
+                                className="flex items-start gap-3 text-sm text-gray-300 font-medium"
                               >
-                                <span className="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                                <span className="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-brand-500/50">
                                   <svg
                                     className="w-3 h-3"
                                     fill="currentColor"
@@ -135,7 +135,7 @@ export default async function ServicesPage() {
               </div>
             );
           })}
-          {!services.length && <p className="py-24 text-center text-gray-500">Data is currently unavailable. Please try again later.</p>}
+          {!services.length && <p className="py-24 text-center text-gray-400 bg-gray-900/40 rounded-3xl border border-white/10">Data is currently unavailable. Please try again later.</p>}
         </div>
       </section>
     </div>

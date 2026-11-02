@@ -78,7 +78,7 @@ export function ChatbotWidget() {
       {/* Chat window */}
       <div
         className={cn(
-          "fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-80 max-w-sm transition-all duration-300 origin-bottom-right",
+          "fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-84 max-w-sm transition-all duration-300 origin-bottom-right",
           isOpen
             ? "scale-100 opacity-100 pointer-events-auto"
             : "scale-95 opacity-0 pointer-events-none",
@@ -86,18 +86,24 @@ export function ChatbotWidget() {
       >
         <div
           className={cn(
-            "rounded-3xl shadow-2xl border flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-300",
-            isAdmin ? "border-indigo-200/80 bg-white/95 shadow-indigo-500/15" : "border-gray-200/80 bg-white/95 shadow-brand-500/15"
+            "rounded-3xl shadow-2xl border flex flex-col overflow-hidden backdrop-blur-2xl transition-all duration-300 bg-[#0c0e1a]/95 text-white",
+            isAdmin
+              ? "border-indigo-500/30 shadow-indigo-500/20"
+              : "border-white/10 shadow-brand-500/20"
           )}
-          style={{ height: "65vh", maxHeight: "480px" }}
+          style={{ height: "65vh", maxHeight: "490px" }}
         >
           {/* Header */}
-          <div className={cn(
-            "px-4 py-3 flex items-center justify-between shrink-0 shadow-sm",
-            isAdmin ? "bg-gradient-to-r from-indigo-600 via-indigo-500 to-brand-600" : "bg-gradient-to-r from-brand-600 to-brand-500"
-          )}>
+          <div
+            className={cn(
+              "px-4 py-3 flex items-center justify-between shrink-0 shadow-sm border-b border-white/10",
+              isAdmin
+                ? "bg-gradient-to-r from-indigo-700 via-indigo-600 to-brand-700"
+                : "bg-gradient-to-r from-brand-600 to-indigo-600"
+            )}
+          >
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-xs">
+              <div className="w-8 h-8 bg-white/15 rounded-xl flex items-center justify-center backdrop-blur-xs">
                 {isAdmin ? (
                   <ShieldCheck className="w-4 h-4 text-white" />
                 ) : (
@@ -110,7 +116,7 @@ export function ChatbotWidget() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 </p>
                 <p className="text-white/80 text-[10px]">
-                  {isAdmin ? "Full data access enabled" : "Usually replies instantly"}
+                  {isAdmin ? "Full live DB query access" : "Replies in <1 second"}
                 </p>
               </div>
             </div>
@@ -133,25 +139,31 @@ export function ChatbotWidget() {
                 )}
               >
                 {msg.role === "assistant" && (
-                  <div className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-auto mr-2 mb-0.5",
-                    isAdmin ? "bg-indigo-100" : "bg-brand-100"
-                  )}>
+                  <div
+                    className={cn(
+                      "w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-auto mr-2 mb-0.5 border",
+                      isAdmin
+                        ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                        : "bg-brand-500/20 border-brand-500/30 text-brand-300"
+                    )}
+                  >
                     {isAdmin ? (
-                      <ShieldCheck className="w-3 h-3 text-indigo-600" />
+                      <ShieldCheck className="w-3 h-3" />
                     ) : (
-                      <Bot className="w-3 h-3 text-brand-500" />
+                      <Bot className="w-3 h-3" />
                     )}
                   </div>
                 )}
                 <div
                   className={cn(
-                    msg.role === "user" ? "chat-bubble-user" : "chat-bubble-bot",
-                    "leading-relaxed",
+                    "text-xs sm:text-sm rounded-2xl px-3.5 py-2.5 max-w-[85%] leading-relaxed",
+                    msg.role === "user"
+                      ? "bg-gradient-to-r from-brand-500 to-indigo-600 text-white rounded-br-xs shadow-md"
+                      : "bg-white/5 border border-white/10 text-gray-200 rounded-bl-xs"
                   )}
                 >
                   {msg.role === "assistant" ? (
-                    <div className="prose-chat">
+                    <div className="prose-chat text-gray-200 space-y-1">
                       <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                   ) : (
@@ -162,21 +174,23 @@ export function ChatbotWidget() {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className={cn(
-                  "w-6 h-6 rounded-full flex items-center justify-center shrink-0 mr-2 mb-0.5",
-                  isAdmin ? "bg-indigo-100" : "bg-brand-100"
-                )}>
+                <div
+                  className={cn(
+                    "w-6 h-6 rounded-full flex items-center justify-center shrink-0 mr-2 mb-0.5 border",
+                    isAdmin
+                      ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                      : "bg-brand-500/20 border-brand-500/30 text-brand-300"
+                  )}
+                >
                   {isAdmin ? (
-                    <ShieldCheck className="w-3 h-3 text-indigo-600" />
+                    <ShieldCheck className="w-3 h-3" />
                   ) : (
-                    <Bot className="w-3 h-3 text-brand-500" />
+                    <Bot className="w-3 h-3" />
                   )}
                 </div>
-                <div className="chat-bubble-bot flex items-center gap-1.5">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />
-                  <span className="text-gray-400 text-xs">
-                    {isAdmin ? "Fetching data..." : "Thinking..."}
-                  </span>
+                <div className="bg-white/5 border border-white/10 rounded-2xl rounded-bl-xs px-3.5 py-2.5 flex items-center gap-1.5 text-xs text-gray-400">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-brand-400" />
+                  <span>{isAdmin ? "Querying database..." : "Thinking..."}</span>
                 </div>
               </div>
             )}
@@ -184,18 +198,17 @@ export function ChatbotWidget() {
           </div>
 
           {/* Input */}
-          <div className="border-t border-gray-100 p-2 sm:p-3 shrink-0">
-            <div className={cn(
-              "flex items-center gap-2 rounded-xl px-3 py-2",
-              isAdmin ? "bg-indigo-50/60" : "bg-gray-50"
-            )}>
+          <div className="border-t border-white/10 p-2 sm:p-3 shrink-0 bg-white/5">
+            <div className="flex items-center gap-2 rounded-xl px-3 py-1.5 bg-black/40 border border-white/10">
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={isAdmin ? "Ask about revenue, orders, products..." : "Ask me anything..."}
-                className="flex-1 bg-transparent text-xs sm:text-sm outline-none text-gray-900 placeholder:text-gray-400"
+                placeholder={
+                  isAdmin ? "Ask about revenue, orders, products..." : "Ask me anything..."
+                }
+                className="flex-1 bg-transparent text-xs sm:text-sm outline-none text-white placeholder:text-gray-500"
                 disabled={isLoading}
               />
               <button
@@ -204,15 +217,17 @@ export function ChatbotWidget() {
                 className={cn(
                   "w-8 h-8 rounded-lg flex items-center justify-center transition-all",
                   input.trim() && !isLoading
-                    ? isAdmin ? "bg-indigo-600 text-white hover:bg-indigo-700" : "bg-brand-500 text-white hover:bg-brand-600"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed",
+                    ? "bg-gradient-to-r from-brand-500 to-indigo-600 text-white hover:brightness-110 shadow-sm"
+                    : "bg-white/5 text-gray-600 cursor-not-allowed"
                 )}
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
             </div>
-            <p className="text-center text-gray-400 text-[10px] mt-1.5">
-              {isAdmin ? "🔒 Admin mode · Live data access" : "Powered by Groq · Only knows about CognitoByte"}
+            <p className="text-center text-gray-500 text-[10px] mt-1.5">
+              {isAdmin
+                ? "🔒 Admin mode · Live system context"
+                : "Powered by Groq LPU · Specialized CognitoByte Assistant"}
             </p>
           </div>
         </div>
@@ -222,12 +237,12 @@ export function ChatbotWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed bottom-6 right-4 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group",
+          "fixed bottom-6 right-4 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group border border-white/15",
           isOpen
-            ? "bg-gray-900 shadow-gray-900/30"
+            ? "bg-gray-900 text-white"
             : isAdmin
-            ? "bg-gradient-to-br from-indigo-600 to-brand-600 hover:from-indigo-700 hover:to-brand-700 shadow-indigo-500/30 glow-brand-sm"
-            : "bg-gradient-to-br from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-brand-500/35 glow-brand-sm",
+            ? "bg-gradient-to-br from-indigo-600 via-indigo-500 to-brand-600 text-white shadow-indigo-500/40"
+            : "bg-gradient-to-br from-brand-500 via-brand-600 to-indigo-600 text-white shadow-brand-500/40"
         )}
         aria-label="Open chat"
       >
@@ -240,10 +255,12 @@ export function ChatbotWidget() {
         )}
         {/* Pulse ring */}
         {!isOpen && (
-          <span className={cn(
-            "absolute inset-0 rounded-full animate-ping opacity-25 pointer-events-none",
-            isAdmin ? "bg-indigo-400" : "bg-brand-400"
-          )} />
+          <span
+            className={cn(
+              "absolute inset-0 rounded-full animate-ping opacity-30 pointer-events-none",
+              isAdmin ? "bg-indigo-400" : "bg-brand-400"
+            )}
+          />
         )}
       </button>
     </>

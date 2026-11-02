@@ -7,7 +7,7 @@ import { removeItem, updateQuantity, clearCart } from "@/store/cartSlice";
 import type { RootState } from "@/store/store";
 import { useAuth } from "@/components/auth/AuthProvider";
 import toast from "react-hot-toast";
-import { Minus, Plus, Trash2, ShoppingCart, ArrowLeft, ShoppingBag } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingCart, ArrowLeft, ShoppingBag, Zap } from "lucide-react";
 
 export default function CartPage() {
   const router = useRouter();
@@ -71,14 +71,14 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center mx-auto mb-6">
+      <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 bg-[#08090f] text-white min-h-screen">
+        <div className="max-w-2xl mx-auto text-center py-16">
+          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 shadow-xl">
             <ShoppingBag className="w-8 h-8 text-brand-400" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Your cart is empty</h1>
-          <p className="text-gray-500 mb-6">
-            Browse our digital assets and add something you like to your cart.
+          <h1 className="text-2xl sm:text-3xl font-black mb-2 text-white">Your cart is empty</h1>
+          <p className="text-gray-400 mb-8 text-sm sm:text-base">
+            Explore our enterprise digital assets, automation templates, and agent systems.
           </p>
           <Link href="/products" className="btn-primary">
             Browse Digital Assets
@@ -89,53 +89,63 @@ export default function CartPage() {
   }
 
   return (
-    <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 bg-[#08090f] text-white min-h-screen">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <ShoppingCart className="w-6 h-6 text-brand-500" /> Your Cart
+          <h1 className="text-2xl sm:text-3xl font-black flex items-center gap-2 tracking-tight">
+            <ShoppingCart className="w-6 h-6 text-brand-400" /> Your Shopping Cart
           </h1>
-          <span className="text-sm text-gray-500">{count} {count === 1 ? "item" : "items"}</span>
+          <span className="text-xs sm:text-sm text-gray-400 font-medium">{count} {count === 1 ? "item" : "items"}</span>
         </div>
 
         <div className="space-y-3">
           {items.map((item) => (
-            <div key={item.productId} className="card p-4 flex items-center gap-4">
+            <div
+              key={item.productId}
+              className="bg-gray-900/80 border border-white/10 rounded-2xl p-4 flex items-center gap-4 backdrop-blur-md hover:border-brand-500/30 transition-all shadow-lg"
+            >
               {item.imageUrl ? (
-                <img src={item.imageUrl} alt={item.name} className="w-20 h-20 rounded-xl object-cover border border-gray-200 shrink-0" />
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="w-20 h-20 rounded-xl object-cover border border-white/10 shrink-0"
+                />
               ) : (
-                <div className="w-20 h-20 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                  <ShoppingBag className="w-6 h-6 text-gray-300" />
+                <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                  <ShoppingBag className="w-6 h-6 text-gray-400" />
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <Link href={`/products/${item.slug}`} className="font-semibold text-gray-900 hover:text-brand-600 truncate block">
+                <Link
+                  href={`/products/${item.slug}`}
+                  className="font-bold text-white hover:text-brand-300 truncate block transition-colors"
+                >
                   {item.name}
                 </Link>
-                <p className="text-sm text-gray-500 font-mono">${item.price.toFixed(2)} each</p>
+                <p className="text-xs sm:text-sm text-brand-300 font-mono mt-0.5">${item.price.toFixed(2)} each</p>
                 <div className="flex items-center gap-2 mt-2">
                   <button
                     onClick={() => dispatch(updateQuantity({ productId: item.productId, quantity: item.quantity - 1 }))}
-                    className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600"
+                    className="p-1 rounded-md border border-white/10 hover:bg-white/10 text-gray-300 transition-colors"
                     aria-label="Decrease quantity"
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="text-sm font-semibold w-6 text-center">{item.quantity}</span>
+                  <span className="text-xs sm:text-sm font-semibold w-6 text-center text-white">{item.quantity}</span>
                   <button
                     onClick={() => dispatch(updateQuantity({ productId: item.productId, quantity: item.quantity + 1 }))}
-                    className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600"
+                    className="p-1 rounded-md border border-white/10 hover:bg-white/10 text-gray-300 transition-colors"
                     aria-label="Increase quantity"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
               <div className="flex flex-col items-end gap-3 shrink-0">
-                <span className="font-bold font-mono">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-bold font-mono text-white">${(item.price * item.quantity).toFixed(2)}</span>
                 <button
                   onClick={() => dispatch(removeItem(item.productId))}
-                  className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+                  className="p-1.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-white/5 transition-colors"
                   aria-label="Remove item"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -145,25 +155,32 @@ export default function CartPage() {
           ))}
         </div>
 
-        <div className="card p-6 mt-6">
+        <div className="bg-gray-900/80 border border-white/10 rounded-2xl p-6 mt-6 backdrop-blur-md shadow-xl">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm text-gray-500">Subtotal</span>
-            <span className="text-xl font-bold font-mono">${subtotal.toFixed(2)}</span>
+            <span className="text-sm text-gray-400">Subtotal</span>
+            <span className="text-2xl font-black font-mono text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-indigo-300">
+              ${subtotal.toFixed(2)}
+            </span>
           </div>
-          <p className="text-xs text-gray-400 mb-4">
-            Digital items are delivered instantly after checkout.
+          <p className="flex items-center gap-1.5 text-xs text-gray-400 mb-6">
+            <Zap className="w-3.5 h-3.5 text-brand-400" /> Digital assets are unlocked in your account instantly upon checkout.
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <button onClick={handleCheckout} className="btn-primary text-xs py-2 px-4 justify-center">
+            <button onClick={handleCheckout} className="btn-primary text-sm py-2.5 px-6 justify-center">
               Proceed to Checkout
             </button>
-            <button onClick={() => dispatch(clearCart())} className="btn-secondary text-xs py-2 px-4 justify-center">
+            <button onClick={() => dispatch(clearCart())} className="btn-secondary text-sm py-2.5 px-6 justify-center">
               Clear Cart
             </button>
           </div>
-          <Link href="/products" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mt-4">
-            <ArrowLeft className="w-4 h-4" /> Continue shopping
-          </Link>
+          <div className="mt-6 pt-4 border-t border-white/10">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" /> Continue shopping
+            </Link>
+          </div>
         </div>
       </div>
     </div>

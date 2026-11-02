@@ -85,10 +85,10 @@ export default async function ProjectPage({ params }: Props) {
         </div>
       )}
 
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[#08090f] text-gray-100">
         <div className="max-w-4xl mx-auto">
           {project.imageUrl && !videoEmbedUrl && !isDirectVideo && (
-            <div className="relative aspect-video rounded-2xl overflow-hidden mb-10">
+            <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl border border-white/10">
               <Image
                 src={project.imageUrl}
                 alt={project.title}
@@ -99,7 +99,7 @@ export default async function ProjectPage({ params }: Props) {
           )}
 
           {videoEmbedUrl && (
-            <div className="relative aspect-video rounded-2xl overflow-hidden mb-10 shadow-xl">
+            <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl border border-white/10">
               <iframe
                 src={videoEmbedUrl}
                 title={project.title}
@@ -111,7 +111,7 @@ export default async function ProjectPage({ params }: Props) {
           )}
 
           {isDirectVideo && (
-            <div className="relative aspect-video rounded-2xl overflow-hidden mb-10 shadow-xl bg-black">
+            <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl bg-black border border-white/15">
               <video
                 src={project.videoUrl}
                 controls
@@ -125,21 +125,25 @@ export default async function ProjectPage({ params }: Props) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-8">
               {project.challenges && (
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">The Challenge</h2>
-                  <p className="text-gray-600 leading-relaxed">{project.challenges}</p>
+                <div className="card p-7 bg-gray-900/70 border border-white/10 rounded-3xl">
+                  <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" /> The Challenge
+                  </h2>
+                  <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{project.challenges}</p>
                 </div>
               )}
               {project.solution && (
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">Our Solution</h2>
-                  <p className="text-gray-600 leading-relaxed">{project.solution}</p>
+                <div className="card p-7 bg-gray-900/70 border border-white/10 rounded-3xl">
+                  <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" /> Our Solution
+                  </h2>
+                  <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{project.solution}</p>
                 </div>
               )}
               {project.description && (
                 <div className="prose-custom">
                   {project.description.split("\n\n").map((p: string, i: number) => (
-                    <p key={i} className="text-gray-700 leading-relaxed mb-4">{p}</p>
+                    <p key={i} className="text-gray-300 leading-relaxed mb-4 text-base">{p}</p>
                   ))}
                 </div>
               )}
@@ -147,24 +151,24 @@ export default async function ProjectPage({ params }: Props) {
 
             <div className="space-y-6">
               {project.tags?.length > 0 && (
-                <div className="card p-5">
-                  <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-brand-500" /> Tech Stack
+                <div className="card p-6 bg-gray-900/80 border border-white/10 rounded-3xl">
+                  <h3 className="font-bold text-white mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
+                    <Tag className="w-4 h-4 text-brand-400" /> Tech Stack
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag: string, i: number) => (
-                      <span key={i} className="bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">{tag}</span>
+                      <span key={i} className="bg-brand-500/10 border border-brand-500/25 text-brand-300 text-xs font-semibold px-3 py-1.5 rounded-full">{tag}</span>
                     ))}
                   </div>
                 </div>
               )}
 
-              <div className="bg-brand-500 rounded-2xl p-5 text-white">
-                <h3 className="font-bold mb-2">Want similar results?</h3>
-                <p className="text-brand-100 text-sm mb-4">
-                  Let&apos;s talk about your automation needs.
+              <div className="bg-gradient-to-br from-brand-600 via-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl shadow-brand-500/20 border border-brand-400/30">
+                <h3 className="font-black text-lg mb-2">Want similar results?</h3>
+                <p className="text-brand-100 text-sm mb-5 leading-relaxed">
+                  Let&apos;s talk about your automation needs and how we can replicate this for you.
                 </p>
-                <Link href="/contact" className="inline-flex w-full justify-center bg-white text-brand-600 font-bold text-sm px-4 py-2.5 rounded-xl hover:bg-brand-50 transition-colors">
+                <Link href="/contact" className="inline-flex w-full justify-center bg-white text-brand-600 font-bold text-sm px-4 py-3 rounded-xl hover:bg-brand-50 transition-all shadow-md active:scale-95">
                   Start a Project
                 </Link>
               </div>
