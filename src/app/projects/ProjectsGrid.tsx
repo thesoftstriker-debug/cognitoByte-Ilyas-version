@@ -21,6 +21,7 @@ const FILTERS = [
   { value: "ai-agent", label: "AI Agent" },
   { value: "chatbot", label: "Chatbot" },
   { value: "workflow", label: "Workflow" },
+  { value: "web-dev", label: "Web Dev" },
 ];
 
 export function ProjectsGrid({ projects }: { projects: ProjectItem[] }) {

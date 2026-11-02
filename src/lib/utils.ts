@@ -44,4 +44,5 @@ export const CATEGORY_LABELS: Record<string, string> = {
   "ai-agent": "AI Agent",
   chatbot: "Chatbot",
   workflow: "Workflow Design",
+  "web-dev": "Web Development",
 };
