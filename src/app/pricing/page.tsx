@@ -18,25 +18,24 @@ export default async function PricingPage() {
     <div className="pt-16">
       
       {/* Header */}
-      <section className="bg-white py-24 px-4 text-center border-b border-gray-100">
-        
-        <div className="label-tag mb-6 mx-auto w-fit">Pricing</div>
-        <h1 className="text-5xl sm:text-6xl font-bold text-gray-950 mb-4">
-          
-          Simple, transparent pricing
-        </h1>
-        <p className="text-xl text-gray-500 max-w-xl mx-auto">
-          
-          No hidden fees. No surprises. Pick a plan and start automating within
-          days.
-        </p>
+      <section className="relative bg-gradient-to-b from-white via-brand-50/30 to-gray-50 py-24 px-4 text-center border-b border-gray-100 overflow-hidden">
+        <div className="absolute top-0 right-1/3 w-[500px] h-[300px] bg-brand-100/50 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
+        <div className="relative max-w-3xl mx-auto">
+          <div className="label-tag mb-6 mx-auto w-fit">Transparent Pricing</div>
+          <h1 className="text-5xl sm:text-6xl font-black text-gray-950 mb-5 tracking-tight">
+            Predictable plans. Real ROI.
+          </h1>
+          <p className="text-xl text-gray-500 max-w-xl mx-auto leading-relaxed">
+            No hidden fees. No surprises. Pick a plan and start automating within days.
+          </p>
+        </div>
       </section>
       {/* Plans */}
       <section className="section-padding bg-gray-50">
         
         <div className="max-w-5xl mx-auto">
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             {!data.length && <p className="col-span-full py-24 text-center text-gray-500">Data is currently unavailable. Please try again later.</p>}
             {data
               .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
@@ -44,99 +43,90 @@ export default async function PricingPage() {
                 <div
                   key={plan.name}
                   className={cn(
-                    "rounded-2xl border p-8 relative",
+                    "rounded-3xl border p-8 relative flex flex-col justify-between transition-all duration-300",
                     plan.isPopular
-                      ? "bg-brand-500 border-brand-600 shadow-2xl shadow-brand-500/30 scale-105"
-                      : "bg-white border-gray-100 shadow-sm",
+                      ? "bg-gradient-to-b from-brand-600 to-brand-700 border-brand-500 text-white shadow-2xl shadow-brand-500/30 md:-translate-y-3 md:scale-105"
+                      : "bg-white border-gray-200/80 hover:border-brand-200 hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1",
                   )}
                 >
                   
                   {plan.isPopular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      
-                      <span className="bg-amber-400 text-amber-900 text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
-                        
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                      <span className="bg-amber-400 text-amber-950 text-xs font-black uppercase tracking-wider px-4 py-1 rounded-full whitespace-nowrap shadow-md">
                         ★ Most Popular
                       </span>
                     </div>
                   )}
-                  <div className="mb-6">
-                    
-                    <h3
-                      className={cn(
-                        "text-lg font-bold mb-1",
-                        plan.isPopular ? "text-white" : "text-gray-900",
-                      )}
-                    >
-                      
-                      {plan.name}
-                    </h3>
-                    <p
-                      className={cn(
-                        "text-sm leading-relaxed",
-                        plan.isPopular ? "text-brand-100" : "text-gray-500",
-                      )}
-                    >
-                      
-                      {plan.description}
-                    </p>
-                  </div>
-                  <div className="mb-8">
-                    
-                    <span
-                      className={cn(
-                        "text-5xl font-bold",
-                        plan.isPopular ? "text-white" : "text-gray-950",
-                      )}
-                    >
-                      
-                      {plan.price}
-                    </span>
-                    {plan.period && (
-                      <span
+                  <div>
+                    <div className="mb-6">
+                      <h3
                         className={cn(
-                          "text-sm ml-1",
+                          "text-xl font-bold mb-2",
+                          plan.isPopular ? "text-white" : "text-gray-950",
+                        )}
+                      >
+                        {plan.name}
+                      </h3>
+                      <p
+                        className={cn(
+                          "text-sm leading-relaxed",
                           plan.isPopular ? "text-brand-100" : "text-gray-500",
                         )}
                       >
-                        
-                        {plan.period}
+                        {plan.description}
+                      </p>
+                    </div>
+                    <div className="mb-8">
+                      <span
+                        className={cn(
+                          "text-5xl font-black tracking-tight",
+                          plan.isPopular ? "text-white" : "text-gray-950",
+                        )}
+                      >
+                        {plan.price}
                       </span>
-                    )}
-                  </div>
-                  <ul className="space-y-3 mb-8">
-                    
-                    {plan.features?.map((f: string, i: number) => (
-                      <li key={i} className="flex items-start gap-3 text-sm">
-                        
-                        <CheckCircle2
-                          className={cn(
-                            "w-4 h-4 shrink-0 mt-0.5",
-                            plan.isPopular
-                              ? "text-brand-200"
-                              : "text-brand-500",
-                          )}
-                        />
+                      {plan.period && (
                         <span
-                          className={
-                            plan.isPopular ? "text-brand-100" : "text-gray-700"
-                          }
+                          className={cn(
+                            "text-sm font-medium ml-1",
+                            plan.isPopular ? "text-brand-200" : "text-gray-400",
+                          )}
                         >
-                          {f}
+                          {plan.period}
                         </span>
-                      </li>
-                    ))}
-                  </ul>
+                      )}
+                    </div>
+                    <ul className="space-y-3.5 mb-8">
+                      {plan.features?.map((f: string, i: number) => (
+                        <li key={i} className="flex items-start gap-3 text-sm">
+                          <CheckCircle2
+                            className={cn(
+                              "w-4 h-4 shrink-0 mt-0.5",
+                              plan.isPopular
+                                ? "text-brand-200"
+                                : "text-brand-500",
+                            )}
+                          />
+                          <span
+                            className={
+                              plan.isPopular ? "text-brand-100" : "text-gray-700"
+                            }
+                          >
+                            {f}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                   <Link
                     href="/contact"
                     className={cn(
-                      "w-full text-center font-bold py-3 rounded-xl transition-all inline-block",
+                      "w-full text-center font-bold py-3.5 rounded-xl transition-all duration-200 inline-block shadow-md hover:-translate-y-0.5 active:translate-y-0",
                       plan.isPopular
-                        ? "bg-white text-brand-600 hover:bg-brand-50"
-                        : "bg-brand-500 text-white hover:bg-brand-600",
+                        ? "bg-white text-brand-600 hover:bg-brand-50 hover:shadow-xl hover:shadow-brand-950/20"
+                        : "bg-brand-500 text-white hover:bg-brand-600 hover:shadow-lg hover:shadow-brand-500/25",
                     )}
                   >
-                    
                     {plan.ctaText || "Get Started"}
                   </Link>
                 </div>

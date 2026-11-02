@@ -34,49 +34,50 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <div className="pt-16">
-      <section className="bg-gray-950 py-20 px-4">
-        <div className="max-w-4xl mx-auto">
+      <section className="relative bg-gray-950 py-20 px-4 overflow-hidden border-b border-gray-900">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[300px] bg-brand-500/10 blur-3xl rounded-full pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm mb-8 transition-colors group"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Projects
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" /> Back to Projects
           </Link>
 
           {project.category && (
-            <span className="inline-block text-xs font-bold bg-brand-500 text-white px-3 py-1 rounded-full mb-4">
+            <span className="inline-block text-xs font-bold bg-brand-500 text-white px-3.5 py-1 rounded-full mb-4 shadow-sm shadow-brand-500/25">
               {CATEGORY_LABELS[project.category] || project.category}
             </span>
           )}
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight leading-tight">
             {project.title}
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mb-6">
+          <p className="text-xl text-gray-300 max-w-2xl mb-6 leading-relaxed">
             {project.shortDescription}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 font-medium">
             {project.client && (
               <span>
-                Client: <span className="text-gray-300">{project.client}</span>
+                Client: <span className="text-white font-semibold">{project.client}</span>
               </span>
             )}
             {project.publishedAt && (
-              <span>{formatDate(project.publishedAt)}</span>
+              <span>• {formatDate(project.publishedAt)}</span>
             )}
           </div>
         </div>
       </section>
 
       {project.results?.length > 0 && (
-        <div className="bg-brand-500">
+        <div className="bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-600 shadow-inner">
           <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center divide-x divide-white/10">
               {project.results.map((r: any, i: number) => (
-                <div key={i}>
-                  <p className="text-3xl font-bold text-white">{r.metric}</p>
-                  <p className="text-brand-100 text-sm">{r.label}</p>
+                <div key={i} className="px-2">
+                  <p className="text-3xl sm:text-4xl font-black text-white tracking-tight">{r.metric}</p>
+                  <p className="text-brand-100 text-xs sm:text-sm font-medium mt-1">{r.label}</p>
                 </div>
               ))}
             </div>

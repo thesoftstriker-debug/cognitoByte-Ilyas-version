@@ -81,11 +81,11 @@ export function ContactForm() {
     );
   }
   const inputClass =
-    "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-400 transition-all";
+    "w-full bg-gray-50/70 border border-gray-200/90 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/25 focus:border-brand-500 focus:bg-white transition-all duration-200";
   const labelClass =
-    "block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5";
+    "block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2";
   return (
-    <div className="card p-8">
+    <div className="card p-8 sm:p-10 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 bg-white">
       
       <form onSubmit={handleSubmit} className="space-y-5">
         
@@ -196,18 +196,18 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={formState === "loading"}
-          className="btn-primary w-full justify-center py-3.5 text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+          className="btn-primary w-full justify-center py-4 text-base font-bold shadow-lg shadow-brand-500/25 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer active:scale-98"
         >
           
           {formState === "loading" ? (
             <>
               
-              <Loader2 className="w-4 h-4 animate-spin" /> Sending...
+              <Loader2 className="w-5 h-5 animate-spin" /> Sending...
             </>
           ) : (
             <>
               
-              <Send className="w-4 h-4" /> Send Message
+              <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" /> Send Message
             </>
           )}
         </button>

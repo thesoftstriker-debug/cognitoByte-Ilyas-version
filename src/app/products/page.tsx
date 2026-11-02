@@ -66,13 +66,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-3">Digital Assets</h1>
-          <p className="text-gray-500 max-w-xl mx-auto">
+          <div className="label-tag mb-4 mx-auto w-fit">Marketplace</div>
+          <h1 className="text-4xl sm:text-5xl font-black text-gray-950 mb-4 tracking-tight">Digital Assets</h1>
+          <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Premium prompts, templates, and digital products to accelerate your workflow
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <div className="flex flex-wrap justify-center gap-2.5 mb-12">
           {CATEGORIES.map((cat) => {
             const href =
               cat === "All" ? "/products" : `/products?category=${encodeURIComponent(cat)}`;
@@ -82,10 +83,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 href={href}
                 scroll={false}
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                  "px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border cursor-pointer active:scale-95",
                   activeCategory === cat
-                    ? "bg-brand-500 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    ? "bg-brand-500 text-white border-brand-500 shadow-md shadow-brand-500/25"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-brand-200 hover:text-brand-600 hover:bg-brand-50/40"
                 )}
               >
                 {cat}
@@ -95,8 +96,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
 
         {products.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
-            <p className="text-lg">No products found in this category</p>
+          <div className="text-center py-20 text-gray-400 bg-gray-50/50 rounded-3xl border border-gray-100">
+            <p className="text-lg font-medium">No products found in this category</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -107,13 +108,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         )}
 
         {total > limit && (
-          <div className="flex justify-center gap-3 mt-10">
+          <div className="flex justify-center gap-3 mt-12">
             <Link
               href={page > 1 ? `?${baseQuery}page=${page - 1}` : `?${baseQuery}page=1`}
               scroll={false}
               aria-disabled={page <= 1}
               className={cn(
-                "px-4 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40",
+                "px-5 py-2.5 text-sm font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all hover:border-brand-200 disabled:opacity-40 active:scale-95",
                 page <= 1 && "opacity-40 pointer-events-none"
               )}
             >
@@ -124,7 +125,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               scroll={false}
               aria-disabled={page >= totalPages}
               className={cn(
-                "px-4 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40",
+                "px-5 py-2.5 text-sm font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all hover:border-brand-200 disabled:opacity-40 active:scale-95",
                 page >= totalPages && "opacity-40 pointer-events-none"
               )}
             >

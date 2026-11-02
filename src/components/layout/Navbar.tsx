@@ -55,7 +55,7 @@ export function Navbar({ isCartOpen, onCartOpen }: NavbarProps) {
 
   return (
     <>
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-gray-100/80 shadow-sm shadow-gray-100/50 transition-all duration-300">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-3 items-center h-16">
           {/* Logo — left col */}
@@ -70,10 +70,10 @@ export function Navbar({ isCartOpen, onCartOpen }: NavbarProps) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-2 py-2 rounded-lg text-[13px] font-medium transition-colors duration-150 whitespace-nowrap",
+                  "px-3 py-2 rounded-xl text-[13px] font-medium transition-all duration-150 whitespace-nowrap",
                   pathname === link.href || pathname.startsWith(link.href + "/")
-                    ? "text-brand-600 bg-brand-50"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                    ? "text-brand-600 bg-brand-50 shadow-sm shadow-brand-100"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/80"
                 )}
               >
                 {link.label}
@@ -171,7 +171,7 @@ export function Navbar({ isCartOpen, onCartOpen }: NavbarProps) {
     {isOpen && (
       <>
         <div className="fixed inset-0 top-16 z-40 lg:hidden bg-black/20 backdrop-blur-xs" onClick={() => setIsOpen(false)} />
-        <div className="fixed left-0 right-0 top-16 z-50 lg:hidden bg-white border-b border-gray-100 py-4 px-6 animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto flex flex-col items-start gap-1 shadow-lg">
+        <div className="fixed left-0 right-0 top-16 z-50 lg:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 py-4 px-6 animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto flex flex-col items-start gap-1 shadow-xl shadow-gray-200/40">
           {navLinks.map((link) => (
             <Link
               key={link.href}

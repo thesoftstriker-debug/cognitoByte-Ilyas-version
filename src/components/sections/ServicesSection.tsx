@@ -34,12 +34,12 @@ export function ServicesSection({ services }: { services: any[] }) {
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
-                className="card p-7 group cursor-pointer hover:border-brand-200"
+                className="card p-7 group cursor-pointer hover:border-brand-300 hover:ring-1 hover:ring-brand-200"
               >
                 
                 <div className="flex items-start gap-4">
                   
-                  <div className="w-12 h-12 rounded-xl bg-brand-50 group-hover:bg-brand-500 flex items-center justify-center shrink-0 transition-colors duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-50 group-hover:bg-brand-500 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-brand-500/30">
                     
                     <IconComponent className="w-6 h-6 text-brand-500 group-hover:text-white transition-colors duration-300" />
                   </div>
@@ -55,7 +55,7 @@ export function ServicesSection({ services }: { services: any[] }) {
                     </p>
                   </div>
                 </div>
-                <div className="mt-5 flex items-center text-brand-500 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="mt-5 flex items-center text-brand-500 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-0 group-hover:translate-x-1">
                   
                   Learn more <ArrowRight className="w-4 h-4 ml-1" />
                 </div>

@@ -50,19 +50,19 @@
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5;
+    @apply inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-900 font-semibold px-6 py-3 rounded-lg border border-gray-200 transition-all duration-200 hover:-translate-y-0.5;
+    @apply inline-flex items-center gap-2 bg-white hover:bg-gray-50 active:bg-gray-100 text-gray-900 font-semibold px-6 py-3 rounded-xl border border-gray-200 hover:border-brand-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium px-4 py-2 rounded-lg transition-colors duration-200 hover:bg-gray-100;
+    @apply inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium px-4 py-2 rounded-xl transition-all duration-150 hover:bg-gray-100 active:bg-gray-200;
   }
 
   .card {
-    @apply bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300;
+    @apply bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-0.5 transition-all duration-300;
   }
 
   .section-padding {
@@ -78,7 +78,7 @@
   }
 
   .label-tag {
-    @apply inline-flex items-center gap-1.5 text-brand-600 bg-brand-50 text-xs font-semibold px-3 py-1 rounded-full border border-brand-100 uppercase tracking-wide;
+    @apply inline-flex items-center gap-1.5 text-brand-600 bg-brand-50 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-100 uppercase tracking-widest shadow-sm;
   }
 
   .prose-custom {
@@ -86,7 +86,11 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-transparent;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/60 rounded-2xl shadow-lg;
   }
 
   /* Chatbot widget */
@@ -148,4 +152,20 @@
 .dot-pattern {
   background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+/* Glow effects */
+.glow-brand {
+  box-shadow: 0 0 40px -8px rgba(79, 110, 247, 0.4), 0 4px 24px -4px rgba(79, 110, 247, 0.2);
+}
+.glow-brand-sm {
+  box-shadow: 0 0 20px -4px rgba(79, 110, 247, 0.3);
+}
+
+/* Gradient border card */
+.card-gradient-border {
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #4F6EF7, #9db4ff) border-box;
+  border: 1.5px solid transparent;
+  border-radius: 1rem;
 }

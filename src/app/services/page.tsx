@@ -34,100 +34,85 @@ export default async function ServicesPage() {
     <div className="pt-16">
       
       {/* Header */}
-      <section className="bg-gray-950 py-24 px-4">
-        
-        <div className="max-w-4xl mx-auto text-center">
-          
-          <div className="label-tag bg-gray-800 border-gray-700 text-brand-400 mb-6 mx-auto w-fit">
-            Services
+      <section className="relative bg-gray-950 py-24 px-4 overflow-hidden border-b border-gray-900">
+        <div className="absolute top-0 left-1/3 w-[500px] h-[300px] bg-brand-500/10 blur-3xl rounded-full pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="label-tag bg-gray-900/90 border-gray-800 text-brand-400 mb-6 mx-auto w-fit backdrop-blur-md shadow-sm">
+            Core Offerings
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-white mb-5">
-            
+          <h1 className="text-5xl sm:text-6xl font-black text-white mb-5 tracking-tight">
             What We Build For You
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            
-            Every service is designed to save you time, cut costs, and scale
-            your operations without hiring more people.
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Every service is engineered to save you time, cut costs, and scale
+            your operations without adding headcount.
           </p>
         </div>
       </section>
       {/* Services list */}
-      <section className="section-padding bg-white">
-        
-        <div className="container-tight space-y-8">
-          
+      <section className="section-padding bg-gray-50/50">
+        <div className="container-tight space-y-10">
           {services.map((service: any, i: number) => {
             const IconComponent = ICON_MAP[service.icon || "Zap"] || Zap;
             return (
-              <div key={service.slug} className="card p-8 lg:p-10 group">
-                
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  
+              <div
+                key={service.slug}
+                className="card p-8 lg:p-10 group bg-white border border-gray-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 rounded-3xl"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                   <div>
-                    
-                    <div className="flex items-center gap-4 mb-5">
-                      
-                      <div className="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center">
-                        
-                        <IconComponent className="w-7 h-7 text-brand-500" />
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-2xl bg-brand-50 group-hover:bg-brand-500 flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-brand-500/30">
+                        <IconComponent className="w-7 h-7 text-brand-500 group-hover:text-white transition-colors duration-300" />
                       </div>
                       <div>
-                        
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                          
+                        <span className="text-xs font-bold text-brand-500 tracking-widest uppercase">
                           Service {String(i + 1).padStart(2, "0")}
                         </span>
-                        <h2 className="text-2xl font-bold text-gray-900">
+                        <h2 className="text-2xl font-bold text-gray-950 group-hover:text-brand-600 transition-colors">
                           {service.title}
                         </h2>
                       </div>
                     </div>
-                    <p className="text-gray-600 leading-relaxed mb-6">
+                    <p className="text-gray-600 leading-relaxed mb-8 text-base">
                       {service.shortDescription}
                     </p>
                     <Link
                       href={`/services/${service.slug}`}
-                      className="btn-primary"
+                      className="btn-primary shadow-lg shadow-brand-500/20"
                     >
-                      
-                      Learn More <ArrowRight className="w-4 h-4" />
+                      Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
                   {service.imageUrl || service.features?.length ? (
                     <div className="space-y-6">
                       {service.imageUrl && (
-                        <div className="relative aspect-video rounded-2xl overflow-hidden">
+                        <div className="relative aspect-video rounded-2xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
                           <Image
                             src={service.imageUrl}
                             alt={service.title ?? ""}
                             fill
-                            className="object-cover"
+                            className="object-cover group-hover:scale-103 transition-transform duration-500"
                           />
                         </div>
                       )}
                       {service.features?.length ? (
-                        <div className="bg-gray-50 rounded-2xl p-6">
-                          
+                        <div className="bg-gray-50/90 border border-gray-100 rounded-2xl p-6">
                           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
                             What&apos;s included
                           </p>
                           <ul className="space-y-3">
-                            
                             {service.features.map((f: string, fi: number) => (
                               <li
                                 key={fi}
-                                className="flex items-start gap-3 text-sm text-gray-700"
+                                className="flex items-start gap-3 text-sm text-gray-700 font-medium"
                               >
-                                
-                                <span className="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 mt-0.5">
-                                  
+                                <span className="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                                   <svg
                                     className="w-3 h-3"
                                     fill="currentColor"
                                     viewBox="0 0 12 12"
                                   >
-                                    
                                     <path
                                       d="M10 3L5 9 2 6"
                                       stroke="currentColor"

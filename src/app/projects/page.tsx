@@ -14,20 +14,19 @@ export default async function ProjectsPage() {
   return (
     <div className="pt-16">
       
-      <section className="bg-gray-950 py-24 px-4">
+      <section className="relative bg-gray-950 py-24 px-4 overflow-hidden border-b border-gray-900">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[300px] bg-brand-500/10 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
         
-        <div className="max-w-4xl mx-auto text-center">
-          
-          <div className="label-tag bg-gray-800 border-gray-700 text-brand-400 mb-6 mx-auto w-fit">
-            Portfolio
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="label-tag bg-gray-900/80 border-gray-800 text-brand-400 mb-6 mx-auto w-fit backdrop-blur-md shadow-sm shadow-brand-500/10">
+            Portfolio & Case Studies
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-white mb-5">
+          <h1 className="text-5xl sm:text-6xl font-black text-white mb-5 tracking-tight">
             Our Work
           </h1>
-          <p className="text-xl text-gray-400 max-w-xl mx-auto">
-            
-            Real automations. Real results. Browse our case studies and see
-            what&apos;s possible.
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Real automations. Real results. Browse our case studies and see what&apos;s possible for your business.
           </p>
         </div>
       </section>

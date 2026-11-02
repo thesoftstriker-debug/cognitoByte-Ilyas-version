@@ -86,18 +86,18 @@ export function ChatbotWidget() {
       >
         <div
           className={cn(
-            "rounded-2xl shadow-2xl border flex flex-col overflow-hidden",
-            isAdmin ? "border-indigo-200 bg-white" : "border-gray-100 bg-white"
+            "rounded-3xl shadow-2xl border flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-300",
+            isAdmin ? "border-indigo-200/80 bg-white/95 shadow-indigo-500/15" : "border-gray-200/80 bg-white/95 shadow-brand-500/15"
           )}
-          style={{ height: "65vh", maxHeight: "460px" }}
+          style={{ height: "65vh", maxHeight: "480px" }}
         >
           {/* Header */}
           <div className={cn(
-            "px-3 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between shrink-0",
-            isAdmin ? "bg-gradient-to-r from-indigo-600 to-brand-600" : "bg-brand-500"
+            "px-4 py-3 flex items-center justify-between shrink-0 shadow-sm",
+            isAdmin ? "bg-gradient-to-r from-indigo-600 via-indigo-500 to-brand-600" : "bg-gradient-to-r from-brand-600 to-brand-500"
           )}>
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-xs">
                 {isAdmin ? (
                   <ShieldCheck className="w-4 h-4 text-white" />
                 ) : (
@@ -105,17 +105,18 @@ export function ChatbotWidget() {
                 )}
               </div>
               <div>
-                <p className="text-white font-semibold text-xs sm:text-sm leading-tight">
+                <p className="text-white font-bold text-xs sm:text-sm leading-tight flex items-center gap-1.5">
                   {isAdmin ? "Admin Intelligence" : "CognitoByte AI"}
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 </p>
-                <p className="text-white/70 text-[10px]">
+                <p className="text-white/80 text-[10px]">
                   {isAdmin ? "Full data access enabled" : "Usually replies instantly"}
                 </p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white/70 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
+              className="text-white/80 hover:text-white transition-all p-1.5 rounded-lg hover:bg-white/15 active:scale-95"
             >
               <X className="w-4 h-4" />
             </button>
@@ -221,26 +222,26 @@ export function ChatbotWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed bottom-6 right-4 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110",
+          "fixed bottom-6 right-4 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group",
           isOpen
-            ? "bg-gray-800"
+            ? "bg-gray-900 shadow-gray-900/30"
             : isAdmin
-            ? "bg-gradient-to-br from-indigo-600 to-brand-600 hover:from-indigo-700 hover:to-brand-700"
-            : "bg-brand-500 hover:bg-brand-600",
+            ? "bg-gradient-to-br from-indigo-600 to-brand-600 hover:from-indigo-700 hover:to-brand-700 shadow-indigo-500/30 glow-brand-sm"
+            : "bg-gradient-to-br from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-brand-500/35 glow-brand-sm",
         )}
         aria-label="Open chat"
       >
         {isOpen ? (
-          <X className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <X className="w-5 h-5 text-white transition-transform duration-200 group-hover:rotate-90" />
         ) : isAdmin ? (
-          <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <ShieldCheck className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-110" />
         ) : (
-          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <MessageCircle className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-110" />
         )}
         {/* Pulse ring */}
         {!isOpen && (
           <span className={cn(
-            "absolute inset-0 rounded-full animate-ping opacity-30",
+            "absolute inset-0 rounded-full animate-ping opacity-25 pointer-events-none",
             isAdmin ? "bg-indigo-400" : "bg-brand-400"
           )} />
         )}

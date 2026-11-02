@@ -18,56 +18,63 @@ export function Footer() {
   const { socialLinks } = SITE;
 
   return (
-    <footer className="bg-gray-950 text-gray-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-8">
-          <div className="md:col-span-1">
-            <Link href="/" className="flex items-center mb-4">
+    <footer className="relative bg-gray-950 text-gray-400 border-t border-gray-900 overflow-hidden">
+      {/* Background glow accent */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[150px] bg-brand-500/10 blur-3xl pointer-events-none rounded-full" />
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="inline-flex items-center mb-4 transition-transform hover:scale-105 duration-200">
               <Logo variant="light" />
             </Link>
-            <p className="text-sm leading-relaxed text-gray-500">
-              AI automation agency building n8n workflows, AI agents, and chatbots that save you hours every day.
+            <p className="text-sm leading-relaxed text-gray-400 mb-6 max-w-sm">
+              AI automation agency building n8n workflows, custom AI agents, and intelligent chatbots that save you hundreds of hours every month.
             </p>
-            <div className="flex items-center gap-3 mt-4">
+            <div className="flex items-center gap-2.5">
               {socialLinks?.linkedin && (
                 <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-brand-500 flex items-center justify-center transition-colors">
+                  aria-label="LinkedIn"
+                  className="w-9 h-9 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 shadow-sm">
                   <Linkedin className="w-4 h-4" />
                 </a>
               )}
               {socialLinks?.twitter && (
                 <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-brand-500 flex items-center justify-center transition-colors">
+                  aria-label="Twitter"
+                  className="w-9 h-9 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 shadow-sm">
                   <Twitter className="w-4 h-4" />
                 </a>
               )}
               {socialLinks?.github && (
                 <a href={socialLinks.github} target="_blank" rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-brand-500 flex items-center justify-center transition-colors">
+                  aria-label="GitHub"
+                  className="w-9 h-9 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 shadow-sm">
                   <Github className="w-4 h-4" />
                 </a>
               )}
               {socialLinks?.youtube && (
                 <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-brand-500 flex items-center justify-center transition-colors">
+                  aria-label="YouTube"
+                  className="w-9 h-9 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-brand-600 hover:border-brand-500 flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 shadow-sm">
                   <Youtube className="w-4 h-4" />
                 </a>
               )}
             </div>
           </div>
           <div>
-            <h4 className="text-white font-semibold text-sm mb-3">Services</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="text-white font-bold text-sm mb-4 tracking-wider uppercase text-xs">Services</h4>
+            <ul className="space-y-2.5 text-sm">
               {["n8n Automations", "AI Agents", "Chatbot Building", "Workflow Design"].map((s) => (
                 <li key={s}>
-                  <Link href="/services" className="hover:text-white transition-colors">{s}</Link>
+                  <Link href="/services" className="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">{s}</Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-semibold text-sm mb-3">Company</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="text-white font-bold text-sm mb-4 tracking-wider uppercase text-xs">Company</h4>
+            <ul className="space-y-2.5 text-sm">
               {[
                 { href: "/about", label: "About" },
                 { href: "/projects", label: "Projects" },
@@ -76,16 +83,16 @@ export function Footer() {
                 { href: "/contact", label: "Contact" },
               ].map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="hover:text-white transition-colors">{l.label}</Link>
+                  <Link href={l.href} className="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">{l.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-semibold text-sm mb-3">Contact</h4>
-            <ul className="space-y-1.5 text-sm">
+            <h4 className="text-white font-bold text-sm mb-4 tracking-wider uppercase text-xs">Contact</h4>
+            <ul className="space-y-3 text-sm">
               {SITE.email && (
-                <li className="flex items-start gap-1.5">
+                <li className="flex items-start gap-2.5">
                   <Mail className="w-4 h-4 text-brand-400 shrink-0 mt-0.5" />
                   <a href={`mailto:${SITE.email}`} className="hover:text-white transition-colors break-words leading-tight">
                     {SITE.email}
@@ -93,7 +100,7 @@ export function Footer() {
                 </li>
               )}
               {SITE.location && (
-                <li className="flex items-center gap-1.5">
+                <li className="flex items-center gap-2.5">
                   <MapPin className="w-4 h-4 text-brand-400 shrink-0" />
                   <span>{SITE.location}</span>
                 </li>
@@ -101,9 +108,11 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+        <div className="mt-12 pt-8 border-t border-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <p>© {currentYear} CognitoByte. All rights reserved.</p>
-          <p className="text-gray-600">Built with Next.js · MongoDB</p>
+          <p className="flex items-center gap-2">
+            <span>Built with precision & high-performance modern tech</span>
+          </p>
         </div>
       </div>
     </footer>

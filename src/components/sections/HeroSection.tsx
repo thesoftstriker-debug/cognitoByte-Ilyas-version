@@ -16,17 +16,18 @@ interface Props {
 export function HeroSection({ hero }: Props) {
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-      <div className="absolute inset-0 dot-pattern opacity-50" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-50 rounded-full blur-3xl opacity-40 translate-y-1/2 -translate-x-1/3" />
+      <div className="absolute inset-0 dot-pattern opacity-40" />
+      <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-brand-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3 animate-pulse-slow" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-50 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/3 animate-pulse-slow animate-delay-300" />
+      <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-indigo-50 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="label-tag mb-6">
-              <span className="w-1.5 h-1.5 bg-brand-500 rounded-full" /> AI
+            <div className="label-tag mb-6 animate-fade-up">
+              <span className="w-2 h-2 bg-brand-500 rounded-full animate-pulse" /> AI
               Automation Agency
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-gray-950 mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-gray-950 mb-6 animate-fade-up animate-delay-100">
               {hero.headline.split(" ").map((word, i) =>
                 i >= 4 ? (
                   <span key={i} className="text-brand-500">
@@ -37,14 +38,14 @@ export function HeroSection({ hero }: Props) {
                 ),
               )}
             </h1>
-            <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-8 max-w-lg">
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-8 max-w-lg animate-fade-up animate-delay-200">
               {hero.subheadline}
             </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link href="/projects" className="btn-primary text-sm px-5 py-2.5">
+            <div className="flex flex-wrap items-center gap-4 animate-fade-up animate-delay-300">
+              <Link href="/projects" className="btn-primary text-sm px-6 py-3 shadow-lg shadow-brand-500/25">
                 {hero.ctaPrimary} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-              <Link href="/pricing" className="btn-secondary text-sm px-5 py-2.5">
+              <Link href="/pricing" className="btn-secondary text-sm px-6 py-3">
                 {hero.ctaSecondary}
               </Link>
             </div>
@@ -65,9 +66,9 @@ export function HeroSection({ hero }: Props) {
               </p>
             </div>
           </div>
-          <div className="relative hidden lg:block">
+          <div className="relative hidden lg:block animate-fade-up animate-delay-200">
             {hero.image && (
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-brand-200/40 aspect-[4/3] glow-brand">
                 <Image
                   src={hero.image}
                   alt="CognitoByte Automation"

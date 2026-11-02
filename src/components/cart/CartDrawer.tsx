@@ -74,19 +74,23 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       />
 
       {/* Drawer — compact size for all screens */}
-      <div className="fixed inset-y-0 right-0 z-50 w-[85vw] max-w-xs bg-white shadow-2xl flex flex-col transform transition-transform duration-300 animate-slide-left">
+      <div className="fixed inset-y-0 right-0 z-50 w-[85vw] max-w-sm bg-white shadow-2xl flex flex-col transform transition-transform duration-300 animate-slide-left border-l border-gray-100">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-          <div className="flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-brand-600" />
-            <h2 className="font-bold text-gray-900 text-lg">Your Cart</h2>
-            <span className="bg-brand-100 text-brand-700 text-xs font-semibold px-2 py-0.5 rounded-full">
-              {totalCount} {totalCount === 1 ? "item" : "items"}
-            </span>
+        <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-b from-gray-50/80 to-white">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="font-bold text-gray-950 text-base leading-tight">Your Cart</h2>
+              <span className="text-[11px] text-gray-500 font-medium">
+                {totalCount} {totalCount === 1 ? "item" : "items"} selected
+              </span>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 active:scale-95 transition-all"
           >
             <X className="w-5 h-5" />
           </button>
