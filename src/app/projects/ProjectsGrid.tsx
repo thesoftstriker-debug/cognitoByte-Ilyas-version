@@ -96,11 +96,11 @@ export function ProjectsGrid({ projects }: { projects: ProjectItem[] }) {
                     {project.shortDescription}
                   </p>
                   {project.results?.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       {project.results.slice(0, 2).map((r, i) => (
-                        <div key={i} className="bg-brand-50 border border-brand-100 rounded-lg px-3 py-1.5 text-center">
-                          <p className="text-brand-600 font-bold text-sm">{r.metric}</p>
-                          <p className="text-brand-400 text-xs">{r.label}</p>
+                        <div key={i} className="bg-brand-50 border border-brand-100 rounded-lg px-2 py-1.5 text-center min-w-0">
+                          <p className="text-brand-600 font-bold text-sm truncate">{r.metric}</p>
+                          <p className="text-brand-400 text-xs truncate">{r.label}</p>
                         </div>
                       ))}
                     </div>
