@@ -63,74 +63,72 @@ export default function AdminOrdersPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold mb-1 text-gray-900">Customer Orders</h1>
-          <p className="text-gray-500 text-xs sm:text-sm">Manage customer orders and status updates</p>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Customer Orders</h1>
+        <p className="text-gray-400 mt-1 text-xs sm:text-sm">Manage customer orders, fulfillment, and status updates</p>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="bg-gray-900/80 border border-white/10 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full text-sm text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase">
-                <th className="px-4 py-3">Order</th>
-                <th className="px-4 py-3">Buyer</th>
-                <th className="px-4 py-3">Items</th>
-                <th className="px-4 py-3">Total</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3 text-right">Update Status</th>
+              <tr className="bg-white/5 border-b border-white/10 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3.5">Order</th>
+                <th className="px-4 py-3.5">Buyer</th>
+                <th className="px-4 py-3.5">Items</th>
+                <th className="px-4 py-3.5">Total</th>
+                <th className="px-4 py-3.5">Status</th>
+                <th className="px-4 py-3.5 text-right">Update Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/5">
               {loading ? (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">Loading orders...</td></tr>
+                <tr><td colSpan={6} className="px-4 py-12 text-center text-gray-400">Loading orders...</td></tr>
               ) : orders.length === 0 ? (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No orders found</td></tr>
+                <tr><td colSpan={6} className="px-4 py-12 text-center text-gray-400">No orders found</td></tr>
               ) : (
                 orders.map((o) => (
-                  <tr key={o._id} className="hover:bg-gray-50/50">
-                    <td className="px-4 py-3">
-                      <div className="font-mono text-xs font-bold text-brand-600">#{o._id.slice(-6)}</div>
-                      <div className="text-[11px] text-gray-400">{new Date(o.createdAt).toLocaleDateString()}</div>
+                  <tr key={o._id} className="hover:bg-white/5 transition-colors">
+                    <td className="px-4 py-3.5">
+                      <div className="font-mono text-xs font-bold text-brand-300">#{o._id.slice(-6)}</div>
+                      <div className="text-[11px] text-gray-400 font-mono mt-0.5">{new Date(o.createdAt).toLocaleDateString()}</div>
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="font-medium text-gray-900">{o.userName || "Customer"}</div>
-                      <div className="text-xs text-gray-500">{o.userEmail}</div>
+                    <td className="px-4 py-3.5">
+                      <div className="font-semibold text-white">{o.userName || "Customer"}</div>
+                      <div className="text-xs text-gray-400 font-mono">{o.userEmail}</div>
                     </td>
-                    <td className="px-4 py-3 text-gray-600 text-xs">
+                    <td className="px-4 py-3.5 text-gray-300 text-xs">
                       {o.items.map((it, i) => (
                         <div key={i} className="line-clamp-1">
-                          {it.name} × {it.quantity}
+                          {it.name} <span className="text-brand-300 font-mono">× {it.quantity}</span>
                         </div>
                       ))}
                     </td>
-                    <td className="px-4 py-3 font-mono font-bold text-gray-900">${o.total.toFixed(2)}</td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider ${
+                    <td className="px-4 py-3.5 font-mono font-black text-white">${o.total.toFixed(2)}</td>
+                    <td className="px-4 py-3.5">
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider border ${
                         o.status === "completed" || o.status === "delivered"
-                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
                           : o.status === "processing"
-                          ? "bg-blue-50 text-blue-700 border border-blue-200"
+                          ? "bg-blue-500/10 text-blue-300 border-blue-500/20"
                           : o.status === "cancelled"
-                          ? "bg-rose-50 text-rose-700 border border-rose-200"
-                          : "bg-amber-50 text-amber-700 border border-amber-200"
+                          ? "bg-rose-500/10 text-rose-300 border-rose-500/20"
+                          : "bg-amber-500/10 text-amber-300 border-amber-500/20"
                       }`}>
                         {o.status || "pending"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3.5 text-right">
                       <select
                         value={o.status || "pending"}
                         onChange={(e) => updateStatus(o._id, e.target.value)}
-                        className="text-xs py-1.5 px-2 rounded-lg border border-gray-200 bg-white font-medium focus:ring-2 focus:ring-brand-500"
+                        className="text-xs py-1.5 px-2.5 rounded-lg border border-white/10 bg-black/60 text-white font-medium focus:ring-2 focus:ring-brand-500/30 outline-none"
                       >
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="pending" className="bg-gray-900 text-white">Pending</option>
+                        <option value="processing" className="bg-gray-900 text-white">Processing</option>
+                        <option value="completed" className="bg-gray-900 text-white">Completed</option>
+                        <option value="cancelled" className="bg-gray-900 text-white">Cancelled</option>
                       </select>
                     </td>
                   </tr>
@@ -142,11 +140,11 @@ export default function AdminOrdersPage() {
       </div>
 
       {total > limit && (
-        <div className="flex items-center justify-between mt-4">
-          <p className="text-sm text-gray-500">Page {page} of {Math.ceil(total / limit)}</p>
+        <div className="flex items-center justify-between pt-2">
+          <p className="text-xs sm:text-sm text-gray-400 font-mono">Page {page} of {Math.ceil(total / limit)}</p>
           <div className="flex gap-2">
-            <button disabled={page <= 1} onClick={() => setPage(page - 1)} className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40">Previous</button>
-            <button disabled={page >= Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40">Next</button>
+            <button disabled={page <= 1} onClick={() => setPage(page - 1)} className="px-3.5 py-1.5 text-xs sm:text-sm rounded-xl border border-white/10 hover:bg-white/10 text-white disabled:opacity-40 transition-colors">Previous</button>
+            <button disabled={page >= Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className="px-3.5 py-1.5 text-xs sm:text-sm rounded-xl border border-white/10 hover:bg-white/10 text-white disabled:opacity-40 transition-colors">Next</button>
           </div>
         </div>
       )}
