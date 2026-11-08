@@ -7,17 +7,35 @@ import { getServiceBySlugFromDb } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
+const BASE_URL = "https://cognitobyte.com";
+
 interface Props {
   params: { slug: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = await getServiceBySlugFromDb(params.slug);
+  const title = service?.title || "Service";
+  const description = service?.shortDescription || "";
+  const images = service?.imageUrl ? [{ url: service.imageUrl, alt: service.title }] : [];
   return {
-    title: service?.title || "Service",
-    description: service?.shortDescription || "",
+    title,
+    description,
     alternates: {
       canonical: `/services/${params.slug}`,
+    },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url: `/services/${params.slug}`,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: service?.imageUrl ? [service.imageUrl] : [],
     },
   };
 }
@@ -26,8 +44,42 @@ export default async function ServicePage({ params }: Props) {
   const service = await getServiceBySlugFromDb(params.slug);
   if (!service) notFound();
 
+  const serviceUrl = `${BASE_URL}/services/${params.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        name: service.title,
+        description: service.shortDescription || service.description || "",
+        url: serviceUrl,
+        serviceType: service.title,
+        image: service.imageUrl || undefined,
+        provider: {
+          "@type": "Organization",
+          "@id": `${BASE_URL}/#organization`,
+          name: "CognitoByte",
+          url: BASE_URL,
+        },
+        areaServed: "Worldwide",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Services", item: `${BASE_URL}/services` },
+          { "@type": "ListItem", position: 3, name: service.title, item: serviceUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="bg-gray-950 py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <Link

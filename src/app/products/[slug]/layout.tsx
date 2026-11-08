@@ -8,10 +8,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let name = "Product";
   let description = "";
+  let imageUrl: string | undefined;
   try {
     const product = await findProductBySlug(params.slug);
     name = product?.name || "Product";
     description = product?.description || "";
+    imageUrl = product?.imageUrl ?? undefined;
   } catch {
     // DB unavailable — fall back to generic metadata
   }
@@ -26,6 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: `/products/${params.slug}`,
+    },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url: `/products/${params.slug}`,
+      images: imageUrl ? [{ url: imageUrl, alt: name }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: imageUrl ? [imageUrl] : [],
     },
   };
 }

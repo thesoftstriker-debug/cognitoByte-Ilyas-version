@@ -8,17 +8,37 @@ import { getYouTubeEmbedUrl, isDirectVideoUrl, formatDate, CATEGORY_LABELS } fro
 
 export const dynamic = "force-dynamic";
 
+const BASE_URL = "https://cognitobyte.com";
+
 interface Props {
   params: { slug: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = await getProjectBySlugFromDb(params.slug);
+  const title = project?.title || "Project";
+  const description = project?.shortDescription || "";
+  const images = project?.imageUrl
+    ? [{ url: project.imageUrl, alt: project.title }]
+    : [];
   return {
-    title: project?.title || "Project",
-    description: project?.shortDescription || "",
+    title,
+    description,
     alternates: {
       canonical: `/projects/${params.slug}`,
+    },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url: `/projects/${params.slug}`,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: project?.imageUrl ? [project.imageUrl] : [],
     },
   };
 }
@@ -27,6 +47,36 @@ export default async function ProjectPage({ params }: Props) {
   const project = await getProjectBySlugFromDb(params.slug);
   if (!project) notFound();
 
+  const projectUrl = `${BASE_URL}/projects/${params.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        name: project.title,
+        description: project.shortDescription || project.description || "",
+        url: projectUrl,
+        image: project.imageUrl || undefined,
+        datePublished: project.publishedAt || undefined,
+        keywords: project.tags?.length ? project.tags.join(", ") : undefined,
+        creator: {
+          "@type": "Organization",
+          "@id": `${BASE_URL}/#organization`,
+          name: "CognitoByte",
+          url: BASE_URL,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Projects", item: `${BASE_URL}/projects` },
+          { "@type": "ListItem", position: 3, name: project.title, item: projectUrl },
+        ],
+      },
+    ],
+  };
+
   const videoEmbedUrl = project.videoUrl
     ? getYouTubeEmbedUrl(project.videoUrl)
     : null;
@@ -34,6 +84,10 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <div className="pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="relative bg-gray-950 py-20 px-4 overflow-hidden border-b border-gray-900">
         <div className="absolute top-0 right-1/4 w-[500px] h-[300px] bg-brand-500/10 blur-3xl rounded-full pointer-events-none" />
         <div className="relative max-w-4xl mx-auto">

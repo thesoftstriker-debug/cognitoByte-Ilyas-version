@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Zap, Shield, Users, Lightbulb, Settings, Workflow, Sparkles } from "lucide-react";
+import { TeamSection } from "@/components/sections/TeamSection";
 
 export const metadata: Metadata = {
   title: "About",
@@ -151,6 +152,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Team Section */}
+      <TeamSection />
 
       {/* Metrics Row */}
       <section className="py-16 bg-[#090b14] border-t border-white/5">

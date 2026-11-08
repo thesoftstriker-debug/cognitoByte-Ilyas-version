@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/admin", "/login", "/signup", "/api"],
+      disallow: ["/admin", "/login", "/signup", "/api", "/cart", "/wishlist", "/my-orders"],
     },
     sitemap: "https://cognitobyte.com/sitemap.xml",
   };

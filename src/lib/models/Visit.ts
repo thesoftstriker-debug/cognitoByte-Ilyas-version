@@ -22,6 +22,38 @@ export interface VisitStats {
   topPages: { path: string; count: number }[];
 }
 
+function startOfTodayInPakistan(): Date {
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Karachi",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  return new Date(`${today}T00:00:00+05:00`);
+}
+
+export async function getTodayVisits(): Promise<{
+  totalToday: number;
+  uniqueToday: number;
+}> {
+  const db = await getMongoDb();
+  const startOfToday = startOfTodayInPakistan();
+  const filter = {
+    createdAt: { $gte: startOfToday },
+    path: { $not: /^\/admin/ },
+  };
+
+  const [totalToday, uniqueToday] = await Promise.all([
+    db.collection("visits").countDocuments(filter),
+    db
+      .collection("visits")
+      .distinct("ip", filter)
+      .then((ips) => ips.length),
+  ]);
+
+  return { totalToday, uniqueToday };
+}
+
 export async function getVisitStats(days = 7): Promise<VisitStats> {
   const db = await getMongoDb();
   const startOfToday = new Date();

@@ -10,6 +10,7 @@ import { STORAGE_KEY } from "@/store/store";
 import { clearCart } from "@/store/cartSlice";
 import { Menu, X, LogIn, ShoppingCart, LogOut, LayoutDashboard, Package } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
+import { VisitCounter } from "@/components/layout/VisitCounter";
 
 const navLinks = [
   { href: "/services", label: "Services" },
@@ -59,9 +60,12 @@ export function Navbar({ isCartOpen, onCartOpen }: NavbarProps) {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-3 items-center h-16">
           {/* Logo — left col */}
-          <Link href="/" className="flex items-center hover:scale-105 transition-transform duration-200">
-            <Logo variant="light" />
-          </Link>
+          <div className="flex items-center gap-2.5 min-w-0">
+            <Link href="/" className="flex items-center hover:scale-105 transition-transform duration-200">
+              <Logo variant="light" />
+            </Link>
+            <VisitCounter className="hidden md:inline-flex" />
+          </div>
 
           {/* Desktop nav — truly centered col */}
           <div className="hidden lg:flex items-center justify-center gap-1">
@@ -187,6 +191,7 @@ export function Navbar({ isCartOpen, onCartOpen }: NavbarProps) {
             </Link>
           ))}
           <div className="pt-4 flex flex-col items-start gap-2.5 border-t border-white/10 mt-2 w-full">
+            <VisitCounter />
             {!loading && user && user.role !== "admin" && (
               <Link href="/my-orders" className="btn-ghost justify-center text-sm w-full border border-white/10">
                 <Package className="w-4 h-4" /> My Orders

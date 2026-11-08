@@ -5,6 +5,8 @@ import { ProductDetailClient, type ProductDetail, type Review } from "./ProductD
 
 export const dynamic = "force-dynamic";
 
+const BASE_URL = "https://cognitobyte.com";
+
 interface Props {
   params: { slug: string };
 }
@@ -61,13 +63,59 @@ export default async function ProductDetailPage({ params }: Props) {
     );
   }
 
+  const productUrl = `${BASE_URL}/products/${product.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        name: product.name,
+        description: product.description,
+        image: product.imageUrl || undefined,
+        sku: product._id,
+        category: product.category || undefined,
+        brand: { "@type": "Brand", name: "CognitoByte" },
+        offers: {
+          "@type": "Offer",
+          price: product.price,
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+          url: productUrl,
+        },
+        ...(reviewCount > 0
+          ? {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: avgRating,
+                reviewCount,
+              },
+            }
+          : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Products", item: `${BASE_URL}/products` },
+          { "@type": "ListItem", position: 3, name: product.name, item: productUrl },
+        ],
+      },
+    ],
+  };
+
   return (
-    <ProductDetailClient
-      product={product}
-      slug={params.slug}
-      initialReviews={reviews}
-      initialAvgRating={avgRating}
-      initialReviewCount={reviewCount}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ProductDetailClient
+        product={product}
+        slug={params.slug}
+        initialReviews={reviews}
+        initialAvgRating={avgRating}
+        initialReviewCount={reviewCount}
+      />
+    </>
   );
 }

@@ -72,16 +72,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@graph": [
                 {
                   "@type": "Organization",
+                  "@id": `${BASE_URL}/#organization`,
                   name: SITE.name,
                   url: BASE_URL,
                   logo: `${BASE_URL}/logo-text.png`,
+                  image: `${BASE_URL}/og-image.png`,
                   description: SITE.description,
+                  email: "automations@cognitobyte.com",
+                  sameAs: [
+                    "https://www.linkedin.com/in/hassan-khan-4a6a063b7/",
+                  ],
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: "Islamabad",
+                    addressCountry: "PK",
+                  },
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    email: "automations@cognitobyte.com",
+                    contactType: "sales",
+                    availableLanguage: ["English", "Urdu"],
+                  },
                 },
                 {
                   "@type": "WebSite",
+                  "@id": `${BASE_URL}/#website`,
                   name: SITE.name,
                   url: BASE_URL,
                   description: SITE.description,
+                  inLanguage: "en",
+                  publisher: { "@id": `${BASE_URL}/#organization` },
                 },
               ],
             }),

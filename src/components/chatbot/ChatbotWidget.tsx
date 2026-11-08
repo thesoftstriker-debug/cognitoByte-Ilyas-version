@@ -15,7 +15,7 @@ export function ChatbotWidget() {
     role: "assistant",
     content: isAdmin
       ? "Hello Admin! 👋 I have full access to all live CognitoByte data. Ask me anything — revenue, top products, orders, users, coupons, or website content."
-      : "Hi! I'm the CognitoByte AI assistant. I can answer questions about our web development projects, AI automations, chatbots, services, and pricing. How can I help you today?",
+      : "Hi! I'm the CognitoByte AI consultant. Tell me what you're trying to build or automate — e.g. \"WhatsApp automation for my store\" or \"I need an online shop\" — and I'll ask a few quick questions to recommend the right solution, timeline, and price range.",
   };
 
   const [isOpen, setIsOpen] = useState(false);

@@ -12,10 +12,55 @@ export const metadata: Metadata = {
     canonical: "/pricing",
   },
 };
+
+const FAQS = [
+  {
+    q: "How long does a project take?",
+    a: "Starter automations ship in 5-10 business days, WhatsApp chatbots in 2-3 weeks, and full-stack web apps in 4-8 weeks depending on scope.",
+  },
+  {
+    q: "Do you offer a free consultation?",
+    a: "Yes. Every plan includes a free 30-minute discovery call where we audit your workflow, identify what is worth automating, and recommend the right solution.",
+  },
+  {
+    q: "Who owns the code and workflows?",
+    a: "You do. Code and automation workflows are handed over on delivery and are built in your own accounts wherever possible, so there is no vendor lock-in.",
+  },
+  {
+    q: "Can you integrate with the tools I already use?",
+    a: "Yes. We connect 400+ apps through n8n, including Shopify, Google Sheets, CRMs, Slack, Stripe, and any service that exposes a REST API.",
+  },
+  {
+    q: "Do prices include support after launch?",
+    a: "Yes. Every project includes a post-launch support window for fixes and adjustments. Ongoing maintenance and monitoring plans are also available.",
+  },
+  {
+    q: "What if I am not sure which plan fits?",
+    a: "Start with the free discovery call. We will scope your use case and tell you honestly whether the Starter, Growth, or a custom build is the right fit.",
+  },
+  {
+    q: "Do you build custom projects outside these plans?",
+    a: "Yes. Enterprise AI systems, multi-step agents, and full-stack web applications are scoped custom after a short technical conversation.",
+  },
+];
+
 export default async function PricingPage() {
   const data = await getPricingFromDb();
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: { "@type": "Answer", text: faq.a },
+    })),
+  };
   return (
     <div className="pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       
       {/* Header */}
       <section className="relative bg-gradient-to-b from-[#0c0e1a] via-[#08090f] to-[#08090f] py-24 px-4 text-center border-b border-white/10 overflow-hidden">
@@ -136,6 +181,35 @@ export default async function PricingPage() {
             <Link href="/contact" className="btn-secondary">
               Talk to us first <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="section-padding bg-[#090b14] border-t border-white/5">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="label-tag mb-4 mx-auto w-fit">FAQ</div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-3 tracking-tight">
+              Questions, answered
+            </h2>
+            <p className="text-gray-400">The things clients ask before starting a project.</p>
+          </div>
+          <div className="space-y-3">
+            {FAQS.map((faq) => (
+              <details
+                key={faq.q}
+                className="group rounded-2xl border border-white/10 bg-gray-900/70 p-5 sm:p-6 transition-colors open:border-brand-500/40"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left font-semibold text-white">
+                  <span>{faq.q}</span>
+                  <span className="text-xl leading-none text-brand-400 transition-transform duration-200 group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-gray-400">{faq.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
