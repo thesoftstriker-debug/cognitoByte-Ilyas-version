@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 export function VisitCounter({ className = "" }: { className?: string }) {
   const [total, setTotal] = useState<number | null>(null);
-  const [unique, setUnique] = useState<number | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -15,7 +14,6 @@ export function VisitCounter({ className = "" }: { className?: string }) {
         const data = await res.json();
         if (!active) return;
         setTotal(typeof data.totalToday === "number" ? data.totalToday : 0);
-        setUnique(typeof data.uniqueToday === "number" ? data.uniqueToday : 0);
       } catch {
         // Keep the last known value on network errors
       }
@@ -32,7 +30,7 @@ export function VisitCounter({ className = "" }: { className?: string }) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold leading-none text-emerald-300 ${className}`}
-      title={unique !== null ? `${unique.toLocaleString()} unique visitors today` : "Visits today"}
+      title="Total visits today"
       aria-label="Today's website visits"
     >
       <span className="relative flex h-1.5 w-1.5">

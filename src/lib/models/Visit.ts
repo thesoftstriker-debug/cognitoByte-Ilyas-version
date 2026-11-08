@@ -1,150 +1,72 @@
 import { getMongoDb } from "../mongodb";
 
-export interface VisitDoc {
-  path: string;
-  ip: string;
-  userAgent?: string;
-  referrer?: string;
-  createdAt: Date;
+const COLLECTION = "visit_counts";
+const PKT_OFFSET_MS = 5 * 60 * 60 * 1000;
+
+function pakistanDayKey(date = new Date()): string {
+  const shifted = new Date(date.getTime() + PKT_OFFSET_MS);
+  return shifted.toISOString().slice(0, 10);
 }
 
-export async function trackVisit(visit: VisitDoc) {
-  const db = await getMongoDb();
-  return db.collection("visits").insertOne(visit);
+function lastDayKeys(days: number): string[] {
+  const shiftedNow = Date.now() + PKT_OFFSET_MS;
+  const keys: string[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    keys.push(new Date(shiftedNow - i * 86400000).toISOString().slice(0, 10));
+  }
+  return keys;
 }
 
 export interface VisitStats {
   totalToday: number;
-  uniqueToday: number;
   totalAllTime: number;
-  uniqueAllTime: number;
-  daily: { date: string; count: number; unique: number }[];
-  topPages: { path: string; count: number }[];
+  daily: { date: string; count: number }[];
 }
 
-function startOfTodayInPakistan(): Date {
-  const today = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Karachi",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
-  return new Date(`${today}T00:00:00+05:00`);
+interface VisitCountDoc {
+  _id: string;
+  count: number;
+  updatedAt?: Date;
 }
 
-export async function getTodayVisits(): Promise<{
-  totalToday: number;
-  uniqueToday: number;
-}> {
+export async function trackVisit(): Promise<void> {
   const db = await getMongoDb();
-  const startOfToday = startOfTodayInPakistan();
-  const filter = {
-    createdAt: { $gte: startOfToday },
-    path: { $not: /^\/admin/ },
-  };
+  const day = pakistanDayKey();
+  await db.collection<VisitCountDoc>(COLLECTION).updateOne(
+    { _id: day },
+    { $inc: { count: 1 }, $set: { updatedAt: new Date() } },
+    { upsert: true }
+  );
+}
 
-  const [totalToday, uniqueToday] = await Promise.all([
-    db.collection("visits").countDocuments(filter),
-    db
-      .collection("visits")
-      .distinct("ip", filter)
-      .then((ips) => ips.length),
-  ]);
-
-  return { totalToday, uniqueToday };
+export async function getTodayVisits(): Promise<{ totalToday: number }> {
+  const db = await getMongoDb();
+  const doc = await db
+    .collection<VisitCountDoc>(COLLECTION)
+    .findOne({ _id: pakistanDayKey() });
+  return { totalToday: typeof doc?.count === "number" ? doc.count : 0 };
 }
 
 export async function getVisitStats(days = 7): Promise<VisitStats> {
   const db = await getMongoDb();
-  const startOfToday = new Date();
-  startOfToday.setHours(0, 0, 0, 0);
+  const collection = db.collection<VisitCountDoc>(COLLECTION);
+  const keys = lastDayKeys(days);
 
-  const [totalToday, uniqueToday, totalAllTime, uniqueAllTime] =
-    await Promise.all([
-      db.collection("visits").countDocuments({ createdAt: { $gte: startOfToday } }),
-      db
-        .collection("visits")
-        .distinct("ip", { createdAt: { $gte: startOfToday } })
-        .then((ips) => ips.length),
-      db.collection("visits").countDocuments({}),
-      db.collection("visits").distinct("ip").then((ips) => ips.length),
-    ]);
+  const [sumAgg, docs] = await Promise.all([
+    collection
+      .aggregate([{ $group: { _id: null, total: { $sum: "$count" } } }])
+      .toArray(),
+    collection.find({ _id: { $in: keys } }).toArray(),
+  ]);
 
-  const startOfRange = new Date(startOfToday);
-  startOfRange.setDate(startOfRange.getDate() - (days - 1));
-
-  const dailyAgg = await db
-    .collection("visits")
-    .aggregate([
-      { $match: { createdAt: { $gte: startOfRange } } },
-      {
-        $group: {
-          _id: {
-            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
-          },
-          count: { $sum: 1 },
-          ips: { $addToSet: "$ip" },
-        },
-      },
-      { $sort: { _id: 1 } },
-    ])
-    .toArray();
-
-  const dailyMap = new Map(
-    dailyAgg.map((d: any) => [d._id, { date: d._id, count: d.count, unique: d.ips.length }])
+  const counts = new Map(
+    docs.map((doc) => [doc._id, Number(doc.count) || 0])
   );
-  const daily: { date: string; count: number; unique: number }[] = [];
-  for (let i = 0; i < days; i++) {
-    const date = new Date(startOfRange);
-    date.setDate(startOfRange.getDate() + i);
-    const key = date.toISOString().slice(0, 10);
-    const existing = dailyMap.get(key);
-    daily.push(existing || { date: key, count: 0, unique: 0 });
-  }
-
-  const topPages = await db
-    .collection("visits")
-    .aggregate([
-      { $match: { createdAt: { $gte: startOfRange } } },
-      { $group: { _id: "$path", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 10 },
-    ])
-    .toArray();
+  const daily = keys.map((date) => ({ date, count: counts.get(date) || 0 }));
 
   return {
-    totalToday,
-    uniqueToday,
-    totalAllTime,
-    uniqueAllTime,
+    totalToday: counts.get(pakistanDayKey()) || 0,
+    totalAllTime: Number(sumAgg[0]?.total) || 0,
     daily,
-    topPages: topPages.map((p: any) => ({ path: p._id, count: p.count })),
   };
-}
-
-export async function findVisits(
-  {
-    search,
-    page = 1,
-    limit = 20,
-  }: { search?: string; page?: number; limit?: number } = {}
-) {
-  const db = await getMongoDb();
-  const query: Record<string, unknown> = {};
-  if (search) {
-    query.$or = [
-      { ip: { $regex: search, $options: "i" } },
-      { path: { $regex: search, $options: "i" } },
-      { userAgent: { $regex: search, $options: "i" } },
-    ];
-  }
-  const total = await db.collection("visits").countDocuments(query);
-  const visits = await db
-    .collection("visits")
-    .find(query)
-    .sort({ createdAt: -1 })
-    .skip((page - 1) * limit)
-    .limit(limit)
-    .toArray();
-  return { visits, total, page, totalPages: Math.ceil(total / limit) };
 }

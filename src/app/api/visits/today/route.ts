@@ -8,6 +8,6 @@ export async function GET() {
     const stats = await getTodayVisits();
     return NextResponse.json(stats);
   } catch {
-    return NextResponse.json({ totalToday: 0, uniqueToday: 0 });
+    return NextResponse.json({ totalToday: 0 });
   }
 }
