@@ -47,13 +47,13 @@ YOUR EXPERTISE & CAPABILITIES:
    - Free 30-minute discovery consultation to audit workflows and scope web development or automation needs.
 
 RULES FOR ANSWERING:
-- Answer questions directly, accurately, and enthusiastically using the knowledge base provided below.
-- If asked about Web Development, MERN stack, Next.js, or web projects, explain CognitoByte's full-stack development capabilities and highlight relevant portfolio projects.
-- CRITICAL FORMATTING RULE: NEVER generate raw markdown tables (| col | col |). They break on mobile screens.
-- ALWAYS use clean, structured card-like bullet points, bold section headers, and numbered lists.
+- CORE REQUIREMENT: ALWAYS keep answers as SHORT and CLEAR as possible (under 3-5 bullet points or 2-3 brief sentences). Zero unnecessary fluff or essays.
+- Answer questions directly and accurately using the knowledge base provided below.
+- If asked about Web Development, MERN stack, Next.js, or web projects, concisely explain CognitoByte's full-stack capabilities and highlight relevant portfolio projects.
+- CRITICAL FORMATTING RULE: NEVER generate raw markdown tables (| col | col |). Use compact, structured bullet points.
 - Include links when helpful: [View Projects](/projects), [Explore Services](/services), [See Pricing](/pricing), [Book a Free Call](/contact).
 - Format prices and technologies clearly in bold (e.g., **$499**, **Next.js 14**).
-- If asked something completely unrelated to CognitoByte's business, software, development, or automation, politely redirect back to CognitoByte.
+- If asked something unrelated to CognitoByte, politely redirect in one short sentence.
 
 KNOWLEDGE BASE:
 {knowledge}`;
@@ -61,20 +61,16 @@ KNOWLEDGE BASE:
 /* ─────────────────────────────────────────────
    ADMIN SYSTEM PROMPT  (full data access)
 ───────────────────────────────────────────── */
-const ADMIN_SYSTEM_PROMPT = `You are an intelligent admin assistant for CognitoByte. You have FULL access to live website data, orders, revenue, products, users, web development projects, automations, and coupons.
+const ADMIN_SYSTEM_PROMPT = `You are an intelligent admin assistant for CognitoByte with FULL live database access.
 
-Keep answers SHORT, data-focused, and direct. Format currency as USD.
+CORE REQUIREMENT: ALWAYS keep responses as SHORT, direct, and clear as possible (1 to 4 concise bullet points). Zero filler words. Format currency as USD.
 
 STRICT FORMATTING RULES:
-1. NEVER output raw markdown tables (| col | col |) — mobile chat screens are too narrow.
-2. ALWAYS format lists, projects, orders, and stats as structured cards or clean bulleted lists:
-   Example project list format:
-   **1. Social Media App** — Full-Scale Networking Platform
-   • **Category:** Web Development
-   • **Tech Stack:** Next.js, MongoDB, Socket.io
-   • **Highlights:** Real-time messaging, stories, admin dashboard
-3. Highlight critical numbers and metrics in bold (e.g., **$1,250.00**, **3 pending orders**, **12 active projects**).
-4. Organize answers into clean sections with brief bold headers (e.g., ### 📊 Overview, ### 💻 Live Projects).
+1. NEVER output raw markdown tables (| col | col |).
+2. Format items cleanly using bold labels and compact bullets:
+   • **Project/Item:** Name — key metric or status
+3. Highlight critical numbers and metrics in bold (e.g., **$1,250.00**, **3 pending**, **12 active**).
+4. Keep answers ultra-concise, high-signal, and easy to read instantly.
 
 LIVE ADMIN DATA:
 {adminData}
@@ -299,98 +295,70 @@ function generateFallbackResponse(
     query.includes("develop")
   ) {
     const webProjects = projects.filter((p) => p.category === "web-dev");
-    let response = `### 💻 Full-Stack Web Development at CognitoByte\n\n`;
-    response += `CognitoByte designs and builds high-performance web applications using **Next.js 14**, **React**, the **MERN Stack**, **TypeScript**, and **Tailwind CSS**.\n\n`;
-    response += `#### 🚀 Featured Web Development Projects:\n\n`;
+    let response = `### 💻 Full-Stack Web Development\n\n`;
+    response += `We build high-performance web applications using **Next.js 14**, **React**, **MERN Stack**, and **TypeScript**.\n\n`;
+    response += `**Featured Projects:**\n`;
     if (webProjects.length) {
-      webProjects.forEach((p, idx) => {
-        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n`;
-        response += `• ${p.shortDescription || p.description || ""}\n`;
-        if (p.tags?.length) {
-          response += `• **Tech:** \`${p.tags.join("` • `")}\`\n`;
-        }
-        response += `\n`;
+      webProjects.slice(0, 4).forEach((p) => {
+        const tag = p.tags?.length ? ` (${p.tags.slice(0, 2).join(", ")})` : "";
+        response += `• **[${p.title}](/projects/${p.slug})**${tag}\n`;
       });
     } else {
-      response += `**1. [Pharma-Ease](/projects/pharma-ease-pharmacy-platform)**\n• Full-stack pharmacy e-commerce with Groq AI recommendations and Stripe.\n• **Tech:** \`Next.js 14\` • \`MERN\` • \`Stripe\` • \`Inngest\`\n\n`;
-      response += `**2. [IlyasKaGpt](/projects/ilyaskagpt-offline-ai-assistant)**\n• 100% offline, on-device AI running quantized LLMs directly in the browser.\n• **Tech:** \`WebGPU\` • \`Wasm\` • \`React\` • \`4-bit GGUF\`\n\n`;
-      response += `**3. Full-Stack MERN E-Commerce Platform**\n• Production multi-product store with JWT auth, Redux Toolkit, and Stripe.\n• **Tech:** \`MongoDB\` • \`Express\` • \`React\` • \`Node.js\`\n\n`;
+      response += `• **[Pharma-Ease](/projects/pharma-ease-pharmacy-platform)** (Next.js 14, Stripe)\n`;
+      response += `• **[IlyasKaGpt](/projects/ilyaskagpt-offline-ai-assistant)** (Offline AI, WebGPU)\n`;
     }
-    response += `Ready to build your next web application? [Book a free discovery call](/contact) or [view all our projects](/projects)!`;
+    response += `\n[View all ${webProjects.length || 7} web projects](/projects) · [Book a free call](/contact)`;
     return response;
   }
 
   // Specific project queries
   if (query.includes("pharma") || query.includes("pharmacy")) {
-    return `### 💊 Pharma-Ease – AI-Powered Pharmacy Platform\n\n**Pharma-Ease** is a full-stack MERN + Next.js e-commerce platform built by CognitoByte:\n* **AI Medicine Recommendations**: Integrated with Groq AI to suggest verified alternatives and health insights.\n* **Reliable Background Workflows**: Inngest-powered queues for stock updates and customer notifications.\n* **Secure Checkout**: Stripe payment integration with real-time receipt generation.\n* **Architecture**: Next.js 14, Node.js, Express, MongoDB Atlas, Cloudinary, and Tailwind CSS.\n\n[Explore the Pharma-Ease Case Study](/projects/pharma-ease-pharmacy-platform)`;
+    return `### 💊 Pharma-Ease\n\nFull-stack pharmacy platform built with **Next.js 14**, **MERN**, and **Stripe**:\n• **AI Medicine Recommendations:** Groq AI-powered suggestions.\n• **Background Jobs:** Automated inventory alerts via Inngest.\n\n[View Case Study](/projects/pharma-ease-pharmacy-platform) · [Book Call](/contact)`;
   }
 
   if (query.includes("ilyas") || query.includes("offline") || query.includes("on-device") || query.includes("gpt")) {
-    return `### 🧠 IlyasKaGpt – 100% Offline On-Device AI Assistant\n\n**IlyasKaGpt** is a privacy-first, serverless AI assistant built by CognitoByte:\n* **100% Private & Offline**: Zero network calls; all neural reasoning occurs locally on the client's device.\n* **WebGPU & WASM Acceleration**: Executes 4-bit GGUF quantized LLMs & VLMs directly in the browser.\n* **Multi-Modal Capabilities**: Document analysis, text generation, and private data exploration.\n\n[Explore the IlyasKaGpt Case Study](/projects/ilyaskagpt-offline-ai-assistant)`;
+    return `### 🧠 IlyasKaGpt\n\n100% private, on-device AI assistant:\n• **Zero Network Calls:** Runs local quantized LLMs directly in-browser via WebGPU/Wasm.\n• **Privacy First:** Instant neural responses with zero cloud data transmission.\n\n[View Case Study](/projects/ilyaskagpt-offline-ai-assistant) · [Book Call](/contact)`;
   }
 
   if (query.includes("raasid") || query.includes("whatsapp") || query.includes("cod") || query.includes("cart recovery")) {
-    return `### 📱 Raasid WhatsApp Automation System\n\n**Raasid WhatsApp Automation** is an intelligent assistant built for a food brand by CognitoByte:\n* **24/7 Customer Support**: Answers product & delivery questions in natural Roman Urdu and English.\n* **Abandoned Cart Recovery**: Automatically pings abandoned Shopify carts after 1 hour, recovering **~30% of lost revenue**.\n* **Cash-on-Delivery (COD) Confirmation**: Interactive WhatsApp buttons cut fake orders and returns by **60%**.\n* **Weekly Telemetry**: Direct analytics sync with Google Sheets.\n\n[Explore the Raasid Case Study](/projects/raasid-whatsapp-automation)`;
+    return `### 📱 Raasid WhatsApp Automation\n\nE-commerce WhatsApp bot for food brands:\n• **Cart Recovery:** Recovers **~30%** of abandoned Shopify carts.\n• **COD Confirmation:** Interactive buttons cut fake orders by **60%**.\n• **24/7 Support:** Natural Roman Urdu and English NLP.\n\n[View Case Study](/projects/raasid-whatsapp-automation) · [Book Call](/contact)`;
   }
 
   if (query.includes("linkedin") || query.includes("social media") || query.includes("instagram") || query.includes("facebook")) {
-    return `### 🚀 Social Media & Content Automation Engines\n\nCognitoByte builds autonomous content generation pipelines:\n* **LinkedIn Automation Engine**: Generates platform-optimized text posts in your brand voice, formats them for peak engagement, and auto-queues for peak hours.\n* **Multi-Platform Social Media System**: Takes raw ideas and outputs tailored Instagram carousels, LinkedIn thought leadership, and Facebook community prompts in one click.\n* **Single-Click Social Designer**: Automated trending topic scraper that drafts copy and generates graphics via n8n.\n\n[View Social Automation Projects](/projects)`;
+    return `### 🚀 Social Media Automation\n\nAutonomous content pipelines via n8n & AI:\n• **LinkedIn Engine:** Platform-optimized thought leadership posts.\n• **Multi-Platform:** One-click publishing to Instagram, LinkedIn, and Facebook.\n\n[View Automation Projects](/projects) · [Book Call](/contact)`;
   }
 
   // All projects query
   if (query.includes("project") || query.includes("portfolio") || query.includes("work") || query.includes("case stud")) {
-    const webProjects = projects.filter((p) => p.category === "web-dev");
-    const n8nProjects = projects.filter((p) => p.category === "n8n");
-    const chatbotProjects = projects.filter((p) => p.category === "chatbot");
+    const webCount = projects.filter((p) => p.category === "web-dev").length || 7;
+    const n8nCount = projects.filter((p) => p.category === "n8n").length || 3;
+    const botCount = projects.filter((p) => p.category === "chatbot").length || 1;
 
-    let response = `### 🏆 CognitoByte Portfolio & Projects\n\n`;
-    response += `We build end-to-end solutions across **Full-Stack Web Development**, **n8n Automation**, and **AI Chatbots**.\n\n`;
-
-    if (webProjects.length) {
-      response += `#### 💻 Web Development Projects:\n`;
-      webProjects.forEach((p, idx) => {
-        const tags = p.tags?.length ? `\n• **Tech:** \`${p.tags.join("` • `")}\`` : "";
-        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n• ${p.shortDescription || p.description || ""}${tags}\n\n`;
-      });
-    }
-
-    if (n8nProjects.length) {
-      response += `#### ⚡ n8n Automation Workflows:\n`;
-      n8nProjects.forEach((p, idx) => {
-        const tags = p.tags?.length ? `\n• **Stack:** \`${p.tags.join("` • `")}\`` : "";
-        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n• ${p.shortDescription || p.description || ""}${tags}\n\n`;
-      });
-    }
-
-    if (chatbotProjects.length) {
-      response += `#### 📱 Custom Chatbots & Agents:\n`;
-      chatbotProjects.forEach((p, idx) => {
-        const tags = p.tags?.length ? `\n• **Channels:** \`${p.tags.join("` • `")}\`` : "";
-        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n• ${p.shortDescription || p.description || ""}${tags}\n\n`;
-      });
-    }
-
-    response += `👉 [Click here to view all projects with live demos and metrics](/projects)!`;
+    let response = `### 🏆 CognitoByte Portfolio (${projects.length || 12} Projects)\n\n`;
+    response += `• **Web Development (${webCount}):** Next.js 14, MERN Stack (Pharma-Ease, IlyasKaGpt, Al-Shifa, LMS)\n`;
+    response += `• **n8n Automation (${n8nCount}):** Automated social pipelines & CRM sync\n`;
+    response += `• **Chatbots (${botCount}):** WhatsApp & Web support bots\n\n`;
+    response += `[Explore All Projects & Live Demos](/projects) · [Book a Free Call](/contact)`;
     return response;
   }
 
   // Services query
   if (query.includes("service") || query.includes("what do you do") || query.includes("what can you build") || query.includes("offer")) {
-    return `### ⚡ CognitoByte Core Services\n\n1. **Full-Stack Web Development**: High-performance web apps built with Next.js 14, MERN Stack, TypeScript, Tailwind CSS, real-time WebSockets, and secure cloud databases.\n2. **AI Agents & Autonomous Swarms**: Multi-step reasoning agents that qualify leads, process documents, and orchestrate actions across tools.\n3. **Custom AI Chatbots**: 24/7 website and WhatsApp assistants with live CRM integration and cart recovery.\n4. **n8n Workflow Automation**: Connecting your existing SaaS tools (CRM, invoicing, emails, Google Sheets) to eliminate 20+ hours of manual work weekly.\n5. **Workflow & Systems Design**: Auditing operational bottlenecks and architecting scalable digital pipelines.\n\n[Explore our full services catalog](/services) or [book a free strategy call](/contact)!`;
+    return `### ⚡ CognitoByte Core Services\n\n• **Full-Stack Web Apps:** Next.js 14, MERN, React, TypeScript.\n• **Custom AI Chatbots:** WhatsApp & Web assistants with CRM sync.\n• **n8n Automation:** Connect tools & eliminate manual work.\n• **Autonomous AI Agents:** Multi-step business task execution.\n\n[View All Services](/services) · [Book Strategy Call](/contact)`;
   }
 
   // Pricing query
   if (query.includes("price") || query.includes("cost") || query.includes("package") || query.includes("how much")) {
-    return `### 💳 CognitoByte Pricing Overview\n\n* **Starter Automation ($499)**: 1 core workflow pipeline, basic tool integration, error-handling & handoff.\n* **Growth System ($1,299)**: Up to 3 connected automations, AI chatbot integration, CRM sync, and 30-day monitoring.\n* **Enterprise & Custom Web Builds**: Tailored full-stack Next.js/MERN applications, custom agent swarms, and SLA support.\n\nEvery project starts with a **free 30-minute discovery call** where we audit your requirements and provide an exact quote.\n\n[View Detailed Pricing Plans](/pricing) or [Book a Call](/contact)`;
+    return `### 💳 Pricing Overview\n\n• **Starter Automation:** $499 (1 core workflow)\n• **Growth System:** $1,299 (Multi-tool pipeline + AI chatbot)\n• **Enterprise & Web:** Custom scoped\n\n*Includes a free 30-minute discovery call.*\n\n[View Pricing Plans](/pricing) · [Book Call](/contact)`;
   }
 
   // Contact / consultation query
   if (query.includes("contact") || query.includes("call") || query.includes("email") || query.includes("hire") || query.includes("book")) {
-    return `### 📞 Let's Connect!\n\n* **Free Strategy Session**: Book a 30-minute discovery call on our [Contact Page](/contact).\n* **Direct Email**: \`automations@cognitobyte.com\`\n* **Headquarters**: Islamabad, Pakistan (Serving clients globally & remotely)\n* **Turnaround**: We respond to all inquiries within 24 hours guaranteed!`;
+    return `### 📞 Get in Touch\n\n• **Free Call:** Book a 30-min discovery session on our [Contact Page](/contact).\n• **Email:** \`automations@cognitobyte.com\`\n• **Turnaround:** Guaranteed response within 24 hours.`;
   }
 
   // Default friendly response
-  return `### Hello! Welcome to CognitoByte 👋\n\nWe build **Full-Stack Web Applications** (Next.js, MERN stack, TypeScript) and **AI Automations** (n8n pipelines, WhatsApp & web chatbots, autonomous AI agents) that save businesses time and scale operations.\n\nHere are a few things you can ask me:\n* *"Tell me about your web development projects"* (e.g. Pharma-Ease, IlyasKaGpt, Al-Shifa)\n* *"What automations can you build with n8n and WhatsApp?"*\n* *"How does your pricing work?"*\n* *"How do we get started with a project?"*\n\nHow can I help you today? You can also [explore our projects](/projects) or [book a free call](/contact)!`;
+  return `### Hello! Welcome to CognitoByte 👋\n\nWe build **Full-Stack Web Applications** (Next.js, MERN) and **AI Automations** (n8n, WhatsApp bots).\n\nAsk me about:\n• Our projects (Pharma-Ease, IlyasKaGpt)\n• Services or Pricing\n\n[Explore Projects](/projects) · [Book a Call](/contact)`;
 }
 
 /* ─────────────────────────────────────────────
@@ -443,8 +411,8 @@ export async function POST(req: NextRequest) {
             content: m.content,
           })),
         ],
-        max_tokens: isAdmin ? 800 : 700,
-        temperature: 0.5,
+        max_tokens: isAdmin ? 350 : 300,
+        temperature: 0.3,
       });
       message = response.choices[0]?.message?.content || "";
       if (!message.trim()) throw new Error("Empty response from primary model");
@@ -461,8 +429,8 @@ export async function POST(req: NextRequest) {
               content: m.content,
             })),
           ],
-          max_tokens: isAdmin ? 800 : 700,
-          temperature: 0.5,
+          max_tokens: isAdmin ? 350 : 300,
+          temperature: 0.3,
         });
         message = response2.choices[0]?.message?.content || "";
         if (!message.trim()) throw new Error("Empty response from secondary model");
