@@ -1,10 +1,11 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, Loader2, ShieldCheck } from "lucide-react";
+import { MessageCircle, X, Send, Bot, Loader2, ShieldCheck, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/AuthProvider";
 import type { ChatMessage } from "@/types";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export function ChatbotWidget() {
   const { user } = useAuth();
@@ -78,7 +79,7 @@ export function ChatbotWidget() {
       {/* Chat window */}
       <div
         className={cn(
-          "fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-84 max-w-sm transition-all duration-300 origin-bottom-right",
+          "fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[420px] max-w-md transition-all duration-300 origin-bottom-right",
           isOpen
             ? "scale-100 opacity-100 pointer-events-auto"
             : "scale-95 opacity-0 pointer-events-none",
@@ -91,7 +92,7 @@ export function ChatbotWidget() {
               ? "border-indigo-500/30 shadow-indigo-500/20"
               : "border-white/10 shadow-brand-500/20"
           )}
-          style={{ height: "65vh", maxHeight: "490px" }}
+          style={{ height: "70vh", maxHeight: "540px" }}
         >
           {/* Header */}
           <div
@@ -129,7 +130,7 @@ export function ChatbotWidget() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2 sm:space-y-3 scrollbar-thin">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5 sm:space-y-3.5 scrollbar-thin">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -156,15 +157,147 @@ export function ChatbotWidget() {
                 )}
                 <div
                   className={cn(
-                    "text-xs sm:text-sm rounded-2xl px-3.5 py-2.5 max-w-[85%] leading-relaxed",
+                    "text-xs sm:text-sm rounded-2xl px-3.5 py-2.5 max-w-[88%] sm:max-w-[85%] leading-relaxed break-words",
                     msg.role === "user"
                       ? "bg-gradient-to-r from-brand-500 to-indigo-600 text-white rounded-br-xs shadow-md"
                       : "bg-white/5 border border-white/10 text-gray-200 rounded-bl-xs"
                   )}
                 >
                   {msg.role === "assistant" ? (
-                    <div className="prose-chat text-gray-200 space-y-1">
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    <div className="prose-chat text-gray-200">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({ href, children, ...props }) => {
+                            const isExternal = href?.startsWith("http");
+                            return (
+                              <a
+                                href={href}
+                                target={isExternal ? "_blank" : undefined}
+                                rel={isExternal ? "noopener noreferrer" : undefined}
+                                className="inline-flex items-center gap-0.5 text-brand-400 hover:text-brand-300 underline font-medium transition-colors"
+                                {...props}
+                              >
+                                {children}
+                                {isExternal && (
+                                  <ExternalLink className="w-2.5 h-2.5 opacity-70 inline ml-0.5" />
+                                )}
+                              </a>
+                            );
+                          },
+                          h1: ({ children }) => (
+                            <h1 className="text-sm font-bold text-white mt-2.5 mb-1 pb-1 border-b border-white/10 flex items-center gap-1.5">
+                              {children}
+                            </h1>
+                          ),
+                          h2: ({ children }) => (
+                            <h2 className="text-xs sm:text-sm font-bold text-brand-300 mt-2 mb-1">
+                              {children}
+                            </h2>
+                          ),
+                          h3: ({ children }) => (
+                            <h3 className="text-xs sm:text-sm font-semibold text-indigo-200 mt-2 mb-1">
+                              {children}
+                            </h3>
+                          ),
+                          h4: ({ children }) => (
+                            <h4 className="text-[11px] font-semibold text-gray-300 uppercase tracking-wider mt-1.5 mb-0.5">
+                              {children}
+                            </h4>
+                          ),
+                          p: ({ children }) => (
+                            <p className="mb-2 last:mb-0 leading-relaxed text-gray-200 text-xs sm:text-[13px]">
+                              {children}
+                            </p>
+                          ),
+                          ul: ({ children }) => (
+                            <ul className="list-disc pl-4 space-y-1 my-1.5 text-gray-200 text-xs sm:text-[13px]">
+                              {children}
+                            </ul>
+                          ),
+                          ol: ({ children }) => (
+                            <ol className="list-decimal pl-4 space-y-1 my-1.5 text-gray-200 text-xs sm:text-[13px]">
+                              {children}
+                            </ol>
+                          ),
+                          li: ({ children }) => (
+                            <li className="leading-relaxed">
+                              {children}
+                            </li>
+                          ),
+                          strong: ({ children }) => (
+                            <strong className="font-semibold text-white">
+                              {children}
+                            </strong>
+                          ),
+                          em: ({ children }) => (
+                            <em className="italic text-gray-300">
+                              {children}
+                            </em>
+                          ),
+                          blockquote: ({ children }) => (
+                            <blockquote className="border-l-2 border-brand-500/80 bg-white/5 pl-2.5 py-1 my-2 rounded-r italic text-gray-300 text-xs">
+                              {children}
+                            </blockquote>
+                          ),
+                          code: ({ className, children, ...props }: any) => {
+                            const isInline = !className;
+                            if (isInline) {
+                              return (
+                                <code
+                                  className="bg-black/50 text-brand-300 px-1.5 py-0.5 rounded text-[11px] font-mono border border-white/10"
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              );
+                            }
+                            return (
+                              <code
+                                className="block bg-black/70 p-2.5 rounded-xl text-[11px] font-mono text-gray-200 overflow-x-auto border border-white/10 my-2 shadow-inner"
+                                {...props}
+                              >
+                                {children}
+                              </code>
+                            );
+                          },
+                          table: ({ children }) => (
+                            <div className="overflow-x-auto my-2.5 rounded-xl border border-white/15 bg-black/40 shadow-md">
+                              <table className="min-w-full divide-y divide-white/10 text-left text-[11px]">
+                                {children}
+                              </table>
+                            </div>
+                          ),
+                          thead: ({ children }) => (
+                            <thead className="bg-white/10 text-white font-semibold">
+                              {children}
+                            </thead>
+                          ),
+                          tbody: ({ children }) => (
+                            <tbody className="divide-y divide-white/5">
+                              {children}
+                            </tbody>
+                          ),
+                          tr: ({ children }) => (
+                            <tr className="hover:bg-white/5 transition-colors">
+                              {children}
+                            </tr>
+                          ),
+                          th: ({ children }) => (
+                            <th className="px-2.5 py-2 text-left font-semibold text-brand-300 uppercase tracking-wider text-[10px] whitespace-nowrap">
+                              {children}
+                            </th>
+                          ),
+                          td: ({ children }) => (
+                            <td className="px-2.5 py-1.5 text-gray-200 align-top leading-snug">
+                              {children}
+                            </td>
+                          ),
+                          hr: () => <hr className="border-white/10 my-2.5" />,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
                     </div>
                   ) : (
                     msg.content

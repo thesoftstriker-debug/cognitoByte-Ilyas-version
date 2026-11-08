@@ -49,8 +49,10 @@ YOUR EXPERTISE & CAPABILITIES:
 RULES FOR ANSWERING:
 - Answer questions directly, accurately, and enthusiastically using the knowledge base provided below.
 - If asked about Web Development, MERN stack, Next.js, or web projects, explain CognitoByte's full-stack development capabilities and highlight relevant portfolio projects.
-- Use clean formatting with concise bullet points and bold headers.
+- CRITICAL FORMATTING RULE: NEVER generate raw markdown tables (| col | col |). They break on mobile screens.
+- ALWAYS use clean, structured card-like bullet points, bold section headers, and numbered lists.
 - Include links when helpful: [View Projects](/projects), [Explore Services](/services), [See Pricing](/pricing), [Book a Free Call](/contact).
+- Format prices and technologies clearly in bold (e.g., **$499**, **Next.js 14**).
 - If asked something completely unrelated to CognitoByte's business, software, development, or automation, politely redirect back to CognitoByte.
 
 KNOWLEDGE BASE:
@@ -61,7 +63,18 @@ KNOWLEDGE BASE:
 ───────────────────────────────────────────── */
 const ADMIN_SYSTEM_PROMPT = `You are an intelligent admin assistant for CognitoByte. You have FULL access to live website data, orders, revenue, products, users, web development projects, automations, and coupons.
 
-Keep answers SHORT, data-focused, and direct. Use bullet points and numbers. Format currency as USD.
+Keep answers SHORT, data-focused, and direct. Format currency as USD.
+
+STRICT FORMATTING RULES:
+1. NEVER output raw markdown tables (| col | col |) — mobile chat screens are too narrow.
+2. ALWAYS format lists, projects, orders, and stats as structured cards or clean bulleted lists:
+   Example project list format:
+   **1. Social Media App** — Full-Scale Networking Platform
+   • **Category:** Web Development
+   • **Tech Stack:** Next.js, MongoDB, Socket.io
+   • **Highlights:** Real-time messaging, stories, admin dashboard
+3. Highlight critical numbers and metrics in bold (e.g., **$1,250.00**, **3 pending orders**, **12 active projects**).
+4. Organize answers into clean sections with brief bold headers (e.g., ### 📊 Overview, ### 💻 Live Projects).
 
 LIVE ADMIN DATA:
 {adminData}
@@ -204,32 +217,47 @@ async function buildAdminData(): Promise<string> {
       date: new Date(o.createdAt).toLocaleDateString(),
     }));
 
-    let data = `📊 BUSINESS OVERVIEW (Live Data as of ${now.toLocaleDateString()})\n\n`;
-    data += `REVENUE:\n- Total all-time: $${totalRevenue.toFixed(2)}\n- This month: $${monthlyRevenue.toFixed(2)} (${monthlyOrders.length} orders)\n\n`;
-    data += `ORDERS:\n- Total orders: ${orders.length}\n- Pending: ${pending} | Processing: ${processing} | Completed: ${completed} | Cancelled: ${cancelled}\n\n`;
+    let data = `### 📊 Live Admin Telemetry\n*Live system metrics as of ${now.toLocaleDateString()}*\n\n`;
+    data += `#### 💰 Revenue Overview\n`;
+    data += `• **Total All-Time:** $${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n`;
+    data += `• **This Month:** $${monthlyRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${monthlyOrders.length} orders)\n\n`;
 
-    data += `TOP SELLING PRODUCTS:\n`;
+    data += `#### 📦 Orders Summary (${orders.length} total)\n`;
+    data += `• **Pending:** ${pending} | **Processing:** ${processing}\n`;
+    data += `• **Completed:** ${completed} | **Cancelled:** ${cancelled}\n\n`;
+
+    data += `#### 🏆 Top Selling Products\n`;
     if (topProducts.length) {
       topProducts.forEach((p, i) => {
-        data += `${i + 1}. ${p.name} — ${p.qty} sold — $${p.revenue.toFixed(2)} revenue\n`;
+        data += `**${i + 1}. ${p.name}**\n• ${p.qty} sold • **$${p.revenue.toFixed(2)}** revenue\n`;
       });
     } else {
-      data += "- No product sales yet\n";
+      data += "• *No product sales yet.*\n";
     }
 
-    data += `\nRECENT ORDERS:\n`;
-    recentOrders.forEach((o) => {
-      data += `- #${o.id} | ${o.buyer} | $${(o.total || 0).toFixed(2)} | ${o.status} | ${o.date}\n`;
-    });
+    data += `\n#### 🕒 Recent Orders\n`;
+    if (recentOrders.length) {
+      recentOrders.forEach((o) => {
+        data += `• **Order #${o.id}** — ${o.buyer} • **$${(o.total || 0).toFixed(2)}** • \`${o.status}\` (${o.date})\n`;
+      });
+    } else {
+      data += "• *No orders yet.*\n";
+    }
 
-    data += `\nCONTENT COUNTS:\n`;
-    data += `- Products: ${products.length} (${products.filter((p: any) => p.isActive).length} active)\n`;
-    data += `- Services: ${services.length}\n`;
-    data += `- Projects: ${projects.length} (${projects.filter((p: any) => p.category === "web-dev").length} Web Dev, ${projects.filter((p: any) => p.category === "n8n").length} n8n, ${projects.filter((p: any) => p.category === "chatbot").length} Chatbots)\n`;
-    data += `- Blog posts: ${blogs.length}\n`;
-    data += `- Pricing plans: ${pricing.length}\n`;
-    data += `- Users registered: ${users.length}\n`;
-    data += `- Coupons: ${coupons.length} (${coupons.filter((c: any) => c.isActive).length} active)\n`;
+    data += `\n#### 🗂️ Live Database Counts\n`;
+    data += `• **Projects:** ${projects.length} (${projects.filter((p: any) => p.category === "web-dev").length} Web Dev, ${projects.filter((p: any) => p.category === "n8n").length} n8n, ${projects.filter((p: any) => p.category === "chatbot").length} Chatbots)\n`;
+    data += `• **Products:** ${products.length} (${products.filter((p: any) => p.isActive).length} active)\n`;
+    data += `- Services: ${services.length} | Blog posts: ${blogs.length} | Coupons: ${coupons.length}\n`;
+    data += `• **Users Registered:** ${users.length}\n`;
+
+    if (projects.length) {
+      data += `\n#### 🚀 Active Projects List (${projects.length})\n`;
+      projects.forEach((p: any, i: number) => {
+        const cat = p.category === "web-dev" ? "Web Dev" : p.category === "n8n" ? "n8n" : p.category === "chatbot" ? "Chatbot" : "Workflow";
+        const tags = p.tags?.length ? ` [${p.tags.slice(0, 3).join(", ")}]` : "";
+        data += `**${i + 1}. [${p.title}](/projects/${p.slug})**\n• **Category:** ${cat}${tags}\n`;
+      });
+    }
 
     return data;
   } catch (err) {
@@ -252,8 +280,8 @@ function generateFallbackResponse(
 ): string {
   const query = userQuery.toLowerCase().trim();
 
-  if (isAdmin && (query.includes("revenue") || query.includes("order") || query.includes("user") || query.includes("stat") || query.includes("sale"))) {
-    return `### 📊 Live Admin Telemetry\n\n${adminData}`;
+  if (isAdmin && (query.includes("revenue") || query.includes("order") || query.includes("user") || query.includes("stat") || query.includes("sale") || query.includes("admin") || query.includes("telemetry") || query.includes("metric"))) {
+    return adminData;
   }
 
   // Web Development queries
@@ -272,20 +300,23 @@ function generateFallbackResponse(
   ) {
     const webProjects = projects.filter((p) => p.category === "web-dev");
     let response = `### 💻 Full-Stack Web Development at CognitoByte\n\n`;
-    response += `CognitoByte designs and engineers modern, high-performance web applications using **Next.js 14 (App Router)**, **React**, the **MERN Stack** (MongoDB, Express, React, Node.js), **TypeScript**, and **Tailwind CSS**.\n\n`;
-    response += `#### Featured Web Development Projects:\n`;
+    response += `CognitoByte designs and builds high-performance web applications using **Next.js 14**, **React**, the **MERN Stack**, **TypeScript**, and **Tailwind CSS**.\n\n`;
+    response += `#### 🚀 Featured Web Development Projects:\n\n`;
     if (webProjects.length) {
-      webProjects.forEach((p) => {
-        response += `* **[${p.title}](/projects/${p.slug})**: ${p.shortDescription || p.description || ""}\n  * *Tech Stack:* ${p.tags?.join(", ") || "Next.js, TypeScript, Tailwind"}\n`;
+      webProjects.forEach((p, idx) => {
+        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n`;
+        response += `• ${p.shortDescription || p.description || ""}\n`;
+        if (p.tags?.length) {
+          response += `• **Tech:** \`${p.tags.join("` • `")}\`\n`;
+        }
+        response += `\n`;
       });
     } else {
-      response += `* **Pharma-Ease**: AI-powered pharmacy platform with Groq AI recommendations, Stripe payments, and Inngest background jobs.\n`;
-      response += `* **IlyasKaGpt**: 100% offline, on-device AI assistant running quantized LLMs & VLMs directly in the browser with WebGPU/Wasm.\n`;
-      response += `* **Full-Stack MERN E-Commerce Platform**: Complete production storefront with JWT auth, Stripe checkout, and Redux Toolkit.\n`;
-      response += `* **Al-Shifa Hospital Platform**: Healthcare platform with MySQL (Aiven Cloud), Bcrypt authentication, and Cloudinary image hosting.\n`;
-      response += `* **Web Testing Tool**: Automated BDD QA framework with Puppeteer and Cucumber.js/Gherkin.\n`;
+      response += `**1. [Pharma-Ease](/projects/pharma-ease-pharmacy-platform)**\n• Full-stack pharmacy e-commerce with Groq AI recommendations and Stripe.\n• **Tech:** \`Next.js 14\` • \`MERN\` • \`Stripe\` • \`Inngest\`\n\n`;
+      response += `**2. [IlyasKaGpt](/projects/ilyaskagpt-offline-ai-assistant)**\n• 100% offline, on-device AI running quantized LLMs directly in the browser.\n• **Tech:** \`WebGPU\` • \`Wasm\` • \`React\` • \`4-bit GGUF\`\n\n`;
+      response += `**3. Full-Stack MERN E-Commerce Platform**\n• Production multi-product store with JWT auth, Redux Toolkit, and Stripe.\n• **Tech:** \`MongoDB\` • \`Express\` • \`React\` • \`Node.js\`\n\n`;
     }
-    response += `\nNeed a custom web platform or application? [Book a free discovery call](/contact) or [view all our projects](/projects)!`;
+    response += `Ready to build your next web application? [Book a free discovery call](/contact) or [view all our projects](/projects)!`;
     return response;
   }
 
@@ -308,19 +339,38 @@ function generateFallbackResponse(
 
   // All projects query
   if (query.includes("project") || query.includes("portfolio") || query.includes("work") || query.includes("case stud")) {
-    let response = `### 🏆 CognitoByte Portfolio & Case Studies\n\n`;
-    response += `We build end-to-end solutions across **Full-Stack Web Development**, **n8n Automation**, and **AI Chatbots**:\n\n`;
-    response += `#### 💻 Web Development:\n`;
-    response += `* **Pharma-Ease**: AI-powered pharmacy platform with Groq AI recommendations & Stripe.\n`;
-    response += `* **IlyasKaGpt**: 100% offline on-device AI assistant running local LLMs via WebGPU.\n`;
-    response += `* **Full-Stack MERN E-Commerce**: Production multi-product store with JWT & Stripe.\n`;
-    response += `* **Al-Shifa Hospital Platform**: Healthcare platform with Next.js & Cloud MySQL.\n`;
-    response += `* **Web Testing Tool**: Automated BDD browser testing framework with Puppeteer & Cucumber.js.\n\n`;
-    response += `#### ⚡ AI & n8n Automation:\n`;
-    response += `* **Raasid WhatsApp Automation**: 24/7 bot recovering ~30% of abandoned carts with Roman Urdu NLP.\n`;
-    response += `* **LinkedIn Automation Engine**: 10x faster AI content generation & automated scheduling.\n`;
-    response += `* **Multi-Platform Social System**: Content engine publishing across Instagram, LinkedIn, and Facebook.\n\n`;
-    response += `[Click here to view all projects with live demos and metrics](/projects)!`;
+    const webProjects = projects.filter((p) => p.category === "web-dev");
+    const n8nProjects = projects.filter((p) => p.category === "n8n");
+    const chatbotProjects = projects.filter((p) => p.category === "chatbot");
+
+    let response = `### 🏆 CognitoByte Portfolio & Projects\n\n`;
+    response += `We build end-to-end solutions across **Full-Stack Web Development**, **n8n Automation**, and **AI Chatbots**.\n\n`;
+
+    if (webProjects.length) {
+      response += `#### 💻 Web Development Projects:\n`;
+      webProjects.forEach((p, idx) => {
+        const tags = p.tags?.length ? `\n• **Tech:** \`${p.tags.join("` • `")}\`` : "";
+        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n• ${p.shortDescription || p.description || ""}${tags}\n\n`;
+      });
+    }
+
+    if (n8nProjects.length) {
+      response += `#### ⚡ n8n Automation Workflows:\n`;
+      n8nProjects.forEach((p, idx) => {
+        const tags = p.tags?.length ? `\n• **Stack:** \`${p.tags.join("` • `")}\`` : "";
+        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n• ${p.shortDescription || p.description || ""}${tags}\n\n`;
+      });
+    }
+
+    if (chatbotProjects.length) {
+      response += `#### 📱 Custom Chatbots & Agents:\n`;
+      chatbotProjects.forEach((p, idx) => {
+        const tags = p.tags?.length ? `\n• **Channels:** \`${p.tags.join("` • `")}\`` : "";
+        response += `**${idx + 1}. [${p.title}](/projects/${p.slug})**\n• ${p.shortDescription || p.description || ""}${tags}\n\n`;
+      });
+    }
+
+    response += `👉 [Click here to view all projects with live demos and metrics](/projects)!`;
     return response;
   }
 

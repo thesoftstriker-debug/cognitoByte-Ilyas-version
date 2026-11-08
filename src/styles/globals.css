@@ -119,22 +119,37 @@
   }
 
   /* Chatbot markdown formatting */
+  .prose-chat {
+    word-break: break-word;
+  }
   .prose-chat p {
     margin: 0 0 0.5rem 0;
+    line-height: 1.55;
   }
   .prose-chat p:last-child {
     margin-bottom: 0;
   }
   .prose-chat ul,
   .prose-chat ol {
-    margin: 0.25rem 0 0.5rem 1rem;
+    margin: 0.25rem 0 0.5rem 0.5rem;
     padding-left: 0.75rem;
   }
   .prose-chat li {
     margin-bottom: 0.25rem;
+    line-height: 1.5;
   }
   .prose-chat strong {
-    font-weight: 700;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  .prose-chat a {
+    color: #748dff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+  }
+  .prose-chat a:hover {
+    color: #9db4ff;
   }
 
   /* Scrollbar */
