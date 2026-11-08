@@ -28,7 +28,6 @@ YOUR EXPERTISE & CAPABILITIES:
      * Al-Shifa Hospital Platform: Healthcare management system using Next.js, MySQL (Aiven Cloud), Bcrypt auth, Cloudinary medical hosting.
      * Web Testing Tool: Automated BDD QA testing tool using Puppeteer and Cucumber.js/Gherkin with Clerk auth.
      * E-Commerce Store Hub: Premium MERN + Shadcn UI storefront with Clerk auth, Redux Toolkit, and multi-API integrations.
-     * Social Media Networking App: Real-time social platform with Socket.io messaging, stories, and an admin customer support dashboard.
 
 2. AI Automation & Workflow Orchestration:
    - Complex n8n pipelines, custom API connectors, CRM sync, auto-retry logic, and zero-touch operations.
