@@ -12,67 +12,61 @@ function getGroq() {
 
 /* ─────────────────────────────────────────────
    PUBLIC SYSTEM PROMPT  (normal users)
+   Sales + Support Assistant for CognitoByte
 ───────────────────────────────────────────── */
-const USER_SYSTEM_PROMPT = `You are the knowledgeable AI assistant for CognitoByte (https://cognitobyte.com), an agency specializing in AI Automation, Autonomous Agents, Custom Chatbots, and Full-Stack Web Development.
+const USER_SYSTEM_PROMPT = `You are the sales and support AI assistant for CognitoByte (https://cognitobyte.com), an agency specializing in AI automation, autonomous agents, custom chatbots, and full-stack web development.
 
-YOUR EXPERTISE & CAPABILITIES:
-1. Full-Stack Web Development:
-   - Next.js 14 (App Router), React, MERN stack (MongoDB, Express, React, Node.js), TypeScript, Tailwind CSS, Shadcn UI.
-   - Authentication (Clerk, JWT, Bcrypt), Cloud databases (MongoDB Atlas, MySQL on Aiven Cloud).
-   - Real-time WebSockets (Socket.io), background job workers (Inngest), payment gateways (Stripe), and media hosting (Cloudinary).
-   - Automated QA and BDD testing frameworks (Puppeteer, Cucumber.js, Gherkin).
-   - Key Web Development Projects:
-     * Pharma-Ease: Full-stack MERN + Next.js pharmacy e-commerce with Groq AI medicine recommendations, Stripe checkout, Inngest background jobs.
-     * IlyasKaGpt: 100% offline, on-device serverless AI assistant running quantized local LLMs & VLMs directly in the browser via WebGPU/Wasm with zero internet needed.
-     * Full-Stack MERN E-Commerce Platform: Scalable store with Stripe, JWT auth, Redux Toolkit, MongoDB, Tailwind CSS.
-     * Al-Shifa Hospital Platform: Healthcare management system using Next.js, MySQL (Aiven Cloud), Bcrypt auth, Cloudinary medical hosting.
-     * Web Testing Tool: Automated BDD QA testing tool using Puppeteer and Cucumber.js/Gherkin with Clerk auth.
-     * E-Commerce Store Hub: Premium MERN + Shadcn UI storefront with Clerk auth, Redux Toolkit, and multi-API integrations.
+TONE & STYLE:
+- Short, clear, and friendly language.
+- Think step-by-step internally before answering, then provide a simple, direct answer.
+- Keep answers scannable: use compact bullet points or short paragraphs.
+- Never output raw markdown tables (| col | col |); mobile screens are narrow.
 
+OUR SERVICES & WHAT WE CAN DO:
+1. Custom AI Chatbots & WhatsApp Automation:
+   - 24/7 customer support, WhatsApp Cloud API integration, website chat widgets, abandoned cart recovery, and COD verification.
+   - Project proof: Raasid WhatsApp bot for a food brand (recovered ~30% abandoned carts, cut fake COD orders by ~60%).
 2. AI Automation & Workflow Orchestration:
-   - Complex n8n pipelines, custom API connectors, CRM sync, auto-retry logic, and zero-touch operations.
-   - Key Automation Projects:
-     * LinkedIn Automation Engine: AI-driven content generation, hook optimization, and automated scheduling.
-     * Multi-Platform Social Media Automation: Cross-platform content pipeline publishing across Instagram, LinkedIn, and Facebook.
-     * Intelligent AI Workflow Automation: End-to-end operation elimination for manual repetitive tasks.
+   - n8n pipelines connecting 400+ apps (Shopify, WooCommerce, CRMs, Google Sheets, Slack, Stripe, REST APIs) to eliminate repetitive manual work.
+   - Project proof: Multi-platform automated content distribution (LinkedIn, Instagram) and CRM synchronization.
+3. Autonomous AI Agents:
+   - Multi-step reasoning agents that browse, process documents, qualify leads, and perform tasks end-to-end.
+4. Full-Stack Web Development:
+   - High-performance web apps built with Next.js 14, React, MERN stack (MongoDB, Express, React, Node.js), TypeScript, and Tailwind CSS.
+   - Project proof: Pharma-Ease (Next.js + MERN + Stripe + Groq AI recommendations), IlyasKaGpt (100% offline, on-device AI in-browser via WebGPU).
 
-3. Custom AI Agents & Chatbots:
-   - WhatsApp Cloud API assistants, website chatbots, customer support routing, abandoned cart recovery, and COD confirmation.
-   - Key Chatbot Project:
-     * Raasid WhatsApp Automation System: WhatsApp bot for food brand with Roman Urdu NLP, 24/7 customer support, abandoned cart recovery (~30% recovery rate), COD order confirmation, and Google Sheets sync.
+OUR PRICING TIERS:
+- Starter Automation: **$499** (Single core pipeline or basic bot integration).
+- Growth System: **$1,299** (Multi-tool automation, AI chatbot, CRM sync, 30-day support).
+- Custom Builds / Enterprise: Custom scoping (Full-stack web apps, complex agent swarms).
+- Standard timelines: Starter automation is **5-10 business days**, Chatbots are **2-3 weeks**, Full-stack web apps are **4-8 weeks**.
 
-4. Pricing & Services:
-   - Flexible pricing tiers (Starter Automation, Growth System, Enterprise Scale, and Custom Web Builds).
-   - Free 30-minute discovery consultation to audit workflows and scope web development or automation needs.
+EXACT PAGE LINKS (USE ONLY THESE VALID LINKS):
+- Services overview: [Explore Services](/services)
+- Pricing plans: [View Pricing](/pricing)
+- Contact & strategy calls: [Book a Free Call](/contact)
+- Projects & case studies: [View Projects](/projects)
+- Order inquiry & scoping: [Contact & Order](/contact)
+Never invent nonexistent URLs.
 
-5. Our Team:
-   - Rasheed — Networking Expert (infrastructure, secure networking, deployment connectivity).
-   - Muhammad Ilyas — Full-Stack Web App Software Developer (Next.js 14, React, MERN, TypeScript).
-   - Hassan — Automation Expert & Engineer (n8n pipelines, AI agents, API integrations).
-   - Mudassir — Graphic Designer (brand identity, UI graphics, visual assets).
-
-RULES FOR ANSWERING:
-- BE A CONSULTANT, NOT A LINK DISPENSER. Never reply to a project inquiry with only a link or "book a call" — links never replace a real, informative answer.
-- WHEN THE USER STATES A NEED (e.g. "I need WhatsApp automation", "I want an online store", "can you build a chatbot"):
-  1. Acknowledge it in one short sentence and show relevant proof (a similar project/result) when useful.
-  2. Ask 2-4 focused qualifying questions in a numbered list to scope the work (see guides below).
-  3. Do NOT include a booking link in this first response.
-- WHEN THE USER ANSWERS YOUR QUESTIONS: summarize their requirements in one line, then give a tailored recommendation — suggested solution, why it fits (reasoning), approximate timeline, and price range/package from the knowledge base — and state the next step.
-- SHARE the [Book a Free Call](/contact) link ONLY when the user asks about calls/contact/pricing, has answered your scoping questions, or shows clear buying intent. Never end every reply with it.
-- IF THE USER ASKS A DIRECT QUESTION (pricing, timeline, tech stack, process, support, project details), answer it fully with specifics and brief reasoning first, then optionally ONE relevant follow-up question.
-- USE THE FAQ KNOWLEDGE BASE below for common questions. Give specific, detailed answers with reasoning — not one-line deflections.
-- Keep replies scannable: short paragraphs and bullets. Default to 3-5 bullets, up to 7 when the question genuinely needs detail. No fluff, no essays.
-- If asked about Web Development, MERN stack, Next.js, or web projects, explain CognitoByte's full-stack capabilities and highlight relevant portfolio projects.
-- CRITICAL FORMATTING RULE: NEVER generate raw markdown tables (| col | col |). Use compact, structured bullet points.
-- You may include useful links: [View Projects](/projects), [Explore Services](/services), [See Pricing](/pricing) — only when relevant.
-- Format prices and technologies clearly in bold (e.g., **$499**, **Next.js 14**).
-- If asked something unrelated to CognitoByte, politely redirect in one short sentence.
-
-QUALIFYING QUESTIONS BY SERVICE (pick 2-4, never ask more than 4 at once):
-- WhatsApp / Chatbots: Which platform (WhatsApp Business API, website, Instagram)? What should it do (support, orders, COD confirmation, abandoned-cart recovery, lead qualification)? Current tools (Shopify/WooCommerce, Google Sheets, CRM)? Languages (English/Urdu/Roman Urdu) and rough daily message volume?
-- n8n / Workflow Automation: Which apps/tools need connecting? What manual process should disappear? How often does it run and at what volume? Any existing subscriptions or API access?
-- AI Agents: What business task should the agent handle? What data/tools does it need access to? How much human approval/review is required?
-- Web Development: What type of product (landing page, e-commerce, SaaS, dashboard, platform)? Key features/pages? Existing design or branding? Admin panel/CMS needed? Timeline and budget range?
+BEHAVIOR & CONVERSATION RULES:
+1. Context & Follow-Ups:
+   - Actively resolve pronouns and follow-up references like "it", "that", "how much?", "how long?", "timeline" based on the previous conversation history.
+   - If the user discussed a website chatbot earlier and then asks "how long?", understand they mean "how long does it take to build a website chatbot?".
+2. Clarification:
+   - If a user's question or requirement is ambiguous or unclear, ask exactly ONE short clarifying question instead of guessing.
+3. Sales & Scoping:
+   - Explain our relevant services and what we can do for the client.
+   - Ask smart, focused questions (1-3 questions) to understand the client's needs, then recommend the best service.
+   - Guide the client to action: provide the exact relevant page link ([View Services](/services), [See Pricing](/pricing), or [Book a Free Call](/contact) / [Contact & Order](/contact)).
+4. Handling Objections:
+   - Price: Mention our **$499 Starter** tier, explain that automation pays for itself by saving 15-20+ hours of manual labor per week, and note we offer fixed pricing (50% upfront, 50% on delivery) with zero hidden fees.
+   - Time / Timeline: Outline our quick 5-10 day to 2-3 week sprints and clear milestone-based deliveries.
+   - Trust / Proof: Cite our real case studies (Raasid, Pharma-Ease), highlight that clients retain 100% ownership of code/accounts, and offer our free 30-minute discovery consultation on the [Contact Page](/contact).
+5. Honesty & Boundaries:
+   - If you do not know an answer or if something is outside our documented capabilities, say: "I'm not sure about that specific detail, let me connect you with our team on our [Contact Page](/contact)!" Never invent prices, features, or links.
+6. Anti-Looping:
+   - Never repeat the exact same canned response or repeat the same list of questions back-to-back. Progress the conversation forward based on what the user just said.
 
 KNOWLEDGE BASE:
 {knowledge}`;
@@ -339,50 +333,154 @@ async function buildAdminData(): Promise<string> {
    (Guarantees accurate answers on all projects & web dev
    even if external LLM provider is offline or rate-limited)
 ───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   Fallback Intelligent Responder
+   (Guarantees accurate answers on all projects & web dev
+   with multi-turn follow-up resolution and anti-looping)
+───────────────────────────────────────────── */
+interface ChatHistoryMessage {
+  role: "user" | "assistant" | "system";
+  content: string;
+}
+
+function buildRollingSummary(olderMessages: ChatHistoryMessage[]): string {
+  if (!olderMessages.length) return "";
+  const keyTurns = olderMessages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .map((m) => `${m.role === "user" ? "User" : "Bot"}: ${m.content.slice(0, 100).replace(/\n+/g, " ")}`);
+  return `PREVIOUS CONVERSATION SUMMARY (EARLIER TURNS):\n${keyTurns.join("\n")}`;
+}
+
+function resolveTopicFromHistory(recentMessages: ChatHistoryMessage[]): {
+  topic: "chatbot" | "whatsapp" | "n8n" | "web-dev" | "general";
+  detail: string;
+} {
+  // Look back through recent turns to identify what the user was discussing
+  const reversed = [...recentMessages].reverse();
+  for (const msg of reversed) {
+    const text = (msg.content || "").toLowerCase();
+    if (text.includes("whatsapp") || text.includes("raasid") || text.includes("cart recovery") || text.includes("cod")) {
+      return { topic: "whatsapp", detail: "WhatsApp Automation / Bot" };
+    }
+    if (text.includes("chatbot") || text.includes("chat bot") || /\bbot\b/.test(text)) {
+      if (text.includes("website") || text.includes("web")) {
+        return { topic: "chatbot", detail: "Website Chatbot" };
+      }
+      return { topic: "chatbot", detail: "Custom Chatbot" };
+    }
+    if (text.includes("n8n") || text.includes("automation") || text.includes("pipeline") || text.includes("workflow")) {
+      return { topic: "n8n", detail: "Workflow Automation / n8n" };
+    }
+    // Match standalone "website" only when not already identified as a chatbot
+    if (text.includes("web app") || text.includes("mern") || text.includes("next.js") || text.includes("store") || text.includes("ecommerce") || text.includes("e-commerce") || text.includes("frontend") || text.includes("backend") || text.includes("full stack")) {
+      return { topic: "web-dev", detail: "Web Development" };
+    }
+  }
+  return { topic: "general", detail: "CognitoByte Services" };
+}
+
 function generateFallbackResponse(
   userQuery: string,
+  history: ChatHistoryMessage[],
   projects: any[],
   services: any[],
   isAdmin: boolean,
   adminData: string
 ): string {
   const query = userQuery.toLowerCase().trim();
+  const lastAssistantMsg = [...history].reverse().find((m) => m.role === "assistant")?.content || "";
+  const context = resolveTopicFromHistory(history);
 
   if (isAdmin && (query.includes("revenue") || query.includes("order") || query.includes("user") || query.includes("stat") || query.includes("sale") || query.includes("admin") || query.includes("telemetry") || query.includes("metric"))) {
     return adminData;
   }
 
-  // Team queries
-  if (query.includes("team") || query.includes("who are you") || query.includes("founder") || query.includes("rasheed") || query.includes("muhammad ilyas") || query.includes("mudassir") || query.includes("hassan")) {
-    return `### 👥 Meet the CognitoByte Team\n\n• **Rasheed** — Networking Expert: infrastructure, secure networking, and deployment connectivity.\n• **Muhammad Ilyas** — Full-Stack Web App Developer: **Next.js 14**, **React**, **MERN**, **TypeScript**.\n• **Hassan** — Automation Expert & Engineer: **n8n** pipelines, AI agents, and API integrations.\n• **Mudassir** — Graphic Designer: brand identity, UI graphics, and visual assets.\n\nA small senior team that delivers projects end to end. [Learn more about us](/about)`;
+  // Follow-up resolution for ambiguous pronouns or short inquiries ("how long?", "how much?", "timeline", "it", "that")
+  const isTimelineQuery = query.includes("how long") || query.includes("timeline") || query.includes("turnaround") || query.includes("time frame") || query.includes("duration");
+  const isCostQuery = query.includes("how much") || query.includes("cost") || query.includes("price") || query.includes("pricing") || query.includes("budget") || query.includes("rate");
+
+  // Handle timeline follow-up
+  if (isTimelineQuery) {
+    if (context.topic === "chatbot") {
+      return `For a **${context.detail}**, our build timeline is **2 to 3 weeks** from kickoff to deployment.\n\n• **Week 1:** Conversation flow design and knowledge base training.\n• **Week 2:** Integration with your tools and testing.\n• **Week 3:** Live deployment, testing, and team handoff.\n\nReady to get started? You can [Contact & Order](/contact) or [Book a Free Call](/contact).`;
+    }
+    if (context.topic === "whatsapp") {
+      return `A **WhatsApp Automation System** typically takes **2 to 3 weeks**.\n\n• **5-10 business days** for starter single-flow automations.\n• **2-3 weeks** for custom multi-flow setups with cart recovery and CRM sync.\n\nLet's get your setup started: [Contact & Order](/contact).`;
+    }
+    if (context.topic === "web-dev") {
+      return `For **Full-Stack Web Development**, timelines typically range from **4 to 8 weeks** depending on requirements:\n\n• **Landing page or MVP:** 2-3 weeks.\n• **Full-stack web application or E-commerce:** 4-6 weeks.\n• **Complex custom platform:** 6-8 weeks.\n\nYou can review our work at [View Projects](/projects) or reach out at [Contact & Order](/contact).`;
+    }
+    if (context.topic === "n8n") {
+      return `For **n8n Workflow Automation**, a starter single workflow takes **5-10 business days**, while multi-app enterprise pipelines take **2-4 weeks**.\n\nReady to automate your workflows? [Contact & Order](/contact).`;
+    }
+    return `Our project timelines depend on scope:\n\n• **Starter Automations:** 5-10 business days\n• **Website & WhatsApp Chatbots:** 2-3 weeks\n• **Full-Stack Web Apps:** 4-8 weeks\n\nWhich timeline fits your project? Reach out at [Contact & Order](/contact).`;
   }
 
-  // WhatsApp automation intent — qualify before pitching
+  // Handle cost/pricing follow-up
+  if (isCostQuery) {
+    if (context.topic === "chatbot" || context.topic === "whatsapp") {
+      return `For a **${context.detail}**, pricing typically ranges from **$499** (Starter single flow) to **$1,299** (Growth System with multi-tool integration, cart recovery, and CRM sync).\n\nAll packages include source code ownership and post-launch support. Check our [View Pricing](/pricing) or [Contact & Order](/contact) for a quick quote.`;
+    }
+    if (context.topic === "web-dev") {
+      return `For **Full-Stack Web Development**, projects are scoped based on features:\n\n• **Starter MVP / Landing:** Custom scoped starting from **$499** - **$999**\n• **Full MERN/Next.js Application:** Quoted based on page count and APIs\n\nWe provide 50% upfront / 50% on delivery terms. See details at [View Pricing](/pricing) or talk to us at [Contact & Order](/contact).`;
+    }
+    return `### 💳 Pricing Overview\n\n• **Starter Automation:** **$499** (1 core workflow or basic bot)\n• **Growth System:** **$1,299** (Multi-tool pipeline + AI chatbot + CRM sync)\n• **Enterprise & Web:** Custom scoped\n\nExplore our tiers at [View Pricing](/pricing) or let's discuss your scope at [Contact & Order](/contact).`;
+  }
+
+  // Team & Ownership queries
+  if (
+    query.includes("team") ||
+    query.includes("who are you") ||
+    query.includes("founder") ||
+    query.includes("who builds") ||
+    query.includes("who build") ||
+    query.includes("own the code") ||
+    query.includes("code ownership") ||
+    query.includes("rasheed") ||
+    query.includes("muhammad ilyas") ||
+    query.includes("mudassir") ||
+    query.includes("hassan")
+  ) {
+    return `### 👥 The CognitoByte Team & Ownership\n\n• **Muhammad Ilyas** — Full-Stack Web Developer (**Next.js 14**, **React**, **MERN**, **TypeScript**).\n• **Hassan** — Automation Expert & Engineer (**n8n** pipelines, AI agents, API integrations).\n• **Rasheed** — Networking & Infrastructure Expert.\n• **Mudassir** — Graphic Designer & UI visual assets.\n\n**100% Code Ownership:** You own 100% of the source code, automations, and accounts upon delivery with zero vendor lock-in. [Learn more on About](/about) or [Book a Free Call](/contact).`;
+  }
+
+  // WhatsApp automation intent
   if (query.includes("whatsapp") || query.includes("raasid") || query.includes("cart recovery") || query.includes("cod order") || query.includes("cod confirmation")) {
-    return `### 📱 WhatsApp Automation — let's scope it\n\nWe build **WhatsApp Cloud API** assistants for support, order updates, COD confirmation, and abandoned-cart recovery. Our **Raasid** bot for a food brand recovered **~30%** of abandoned carts and cut fake COD orders by **~60%**.\n\nTo recommend the right setup, tell me:\n1. **Business type** — e-commerce, restaurant, clinic, or service business?\n2. **Main job** — support, order/cart recovery, COD confirmation, or lead qualification?\n3. **Current tools** — Shopify/WooCommerce, Google Sheets, CRM, or something else?\n4. **Language & volume** — English/Urdu/Roman Urdu, and roughly how many chats per day?\n\nOnce I know these, I'll suggest the exact flows, timeline, and price range.`;
+    // Prevent repeating questions if already asked in the last assistant message
+    if (lastAssistantMsg.includes("Business type") || lastAssistantMsg.includes("Main job")) {
+      return `Got it! Based on those details, we recommend our **Growth System ($1,299)** with WhatsApp Cloud API integration, automated order notifications, and CRM sync. Delivery is typically **2-3 weeks**.\n\nReady to get started? [Book a Free Call](/contact) or [Contact & Order](/contact).`;
+    }
+    return `### 📱 WhatsApp Automation & Chatbots\n\nWe build custom **WhatsApp Cloud API** systems for customer support, order updates, COD confirmation, and cart recovery. For example, our **Raasid** bot recovered **~30%** of abandoned carts for a food brand.\n\nTo recommend the best setup, could you share:\n1. Is this for support, lead generation, or order/cart recovery?\n2. What tools do you currently use (Shopify, WooCommerce, Google Sheets)?\n\nYou can also [Explore Services](/services) or [Contact & Order](/contact).`;
   }
 
   // Specific project queries
   if (query.includes("pharma") || query.includes("pharmacy")) {
-    return `### 💊 Pharma-Ease\n\nFull-stack pharmacy platform built with **Next.js 14**, **MERN**, and **Stripe**:\n• **AI Medicine Recommendations:** Groq AI-powered suggestions.\n• **Background Jobs:** Automated inventory alerts via Inngest.\n\n[View Case Study](/projects/pharma-ease-pharmacy-platform) · Want something similar? Tell me about your business and I'll scope it.`;
+    return `### 💊 Pharma-Ease\n\nA full-stack pharmacy e-commerce platform built with **Next.js 14**, **MERN**, and **Stripe**:\n• **AI Medicine Recommendations:** Powered by Groq AI.\n• **Background Jobs:** Automated inventory and order alerts via Inngest.\n\n[View Case Study](/projects/pharma-ease-pharmacy-platform) · Need a similar web platform? [Contact & Order](/contact).`;
   }
 
-  if (query.includes("ilyas") || query.includes("offline") || query.includes("on-device") || query.includes("gpt")) {
-    return `### 🧠 IlyasKaGpt\n\n100% private, on-device AI assistant:\n• **Zero Network Calls:** Runs local quantized LLMs directly in-browser via WebGPU/Wasm.\n• **Privacy First:** Instant neural responses with zero cloud data transmission.\n\n[View Case Study](/projects/ilyaskagpt-offline-ai-assistant) · Want something similar? Tell me about your use case and I'll scope it.`;
+  if (query.includes("ilyas") || query.includes("offline") || query.includes("on-device") || (query.includes("gpt") && !query.includes("chat"))) {
+    return `### 🧠 IlyasKaGpt\n\n100% private, on-device AI assistant:\n• **Zero Network Calls:** Runs local quantized LLMs directly in the browser via WebGPU/Wasm.\n• **Privacy First:** Instant responses with zero cloud data transmission.\n\n[View Case Study](/projects/ilyaskagpt-offline-ai-assistant) · [Contact & Order](/contact) to scope a private AI build.`;
   }
 
   if (query.includes("linkedin") || query.includes("social media") || query.includes("instagram") || query.includes("facebook")) {
-    return `### 🚀 Social Media Automation\n\nAutonomous content pipelines via n8n & AI:\n• **LinkedIn Engine:** Platform-optimized thought leadership posts.\n• **Multi-Platform:** One-click publishing to Instagram, LinkedIn, and Facebook.\n\n[View Automation Projects](/projects) · Tell me your content volume and platforms and I'll suggest a pipeline.`;
+    return `### 🚀 Social Media Automation Engine\n\nAutonomous content pipelines built with n8n & AI:\n• **LinkedIn Engine:** AI-driven thought leadership generation and scheduling.\n• **Multi-Platform:** One-click publishing to Instagram, LinkedIn, and Facebook.\n\n[View Projects](/projects) · [Contact & Order](/contact) to build your pipeline.`;
   }
 
-  // n8n / workflow automation intent — qualify before pitching
+  // n8n / workflow automation intent
   if (query.includes("n8n") || query.includes("automation") || query.includes("automate") || query.includes("workflow") || query.includes("zapier") || query.includes("make.com")) {
-    return `### ⚙️ Workflow Automation — let's scope it\n\nWe use **n8n** to connect your tools and eliminate manual work — 400+ integrations including Shopify, Google Sheets, CRMs, Slack, Stripe, and any REST API. Typical wins: lead routing, invoice generation, order sync, reporting, and follow-up sequences.\n\nTo design the right pipeline, tell me:\n1. Which tools should talk to each other?\n2. Which manual task do you want to remove?\n3. How often does it run (daily, per order, real-time) and at what volume?\n4. **Timeline and budget range** — e.g. this month, under $1,000?\n\nI'll then map the workflow steps and give you a realistic timeline and price.`;
+    if (lastAssistantMsg.includes("Which tools should talk")) {
+      return `Understood! We can integrate those tools using custom **n8n pipelines** with error-recovery and automated retry logic. Timeline is usually **5-10 business days** for single flows, or **2-3 weeks** for multi-app systems.\n\nCheck our plans at [View Pricing](/pricing) or [Contact & Order](/contact).`;
+    }
+    return `### ⚙️ Workflow Automation with n8n\n\nWe connect your tools to eliminate repetitive manual work — 400+ integrations including Shopify, Google Sheets, CRMs, Slack, and Stripe.\n\n• **Starter Tier:** **$499** (1 core workflow)\n• **Growth Tier:** **$1,299** (Multi-tool pipeline + AI logic)\n\nWhich tools do you want connected? [Explore Services](/services) or [Contact & Order](/contact).`;
   }
 
-  // Generic chatbot intent — qualify before pitching
+  // Generic chatbot intent
   if (query.includes("chatbot") || query.includes("chat bot") || /\bbot\b/.test(query)) {
-    return `### 🤖 Custom Chatbots — let's scope it\n\nWe build website and WhatsApp chatbots that answer customers 24/7, qualify leads, route support tickets, and sync conversations to your CRM or Google Sheets.\n\nTo recommend the right bot, tell me:\n1. **Where should it live?** Website, WhatsApp, Instagram, or all?\n2. **What should it do?** Answer FAQs, capture leads, track orders, book appointments?\n3. **What knowledge/tools does it need?** Docs, product catalog, order system, CRM?\n4. **Language and volume** — English/Urdu/Roman Urdu, and chats per day?\n\nI'll then suggest the bot architecture, timeline, and price range.`;
+    // If user specified platform or answered previous question
+    if (query.includes("website") || query.includes("web") || lastAssistantMsg.includes("Where should it live")) {
+      return `Yes, we build custom **Website Chatbots** trained on your business knowledge! They can answer FAQs, capture leads, and sync chats to your CRM.\n\n• **Timeline:** **2-3 weeks**\n• **Pricing:** Starting at **$499**\n\nReady to get started? [View Pricing](/pricing) or [Contact & Order](/contact).`;
+    }
+    return `### 🤖 Custom AI Chatbots\n\nYes! We build intelligent chatbots for both websites and WhatsApp to handle 24/7 customer support, capture leads, and route inquiries.\n\nDo you need the chatbot for your website, WhatsApp, or both? [Explore Services](/services) · [Contact & Order](/contact)`;
   }
 
   // Web Development queries
@@ -399,54 +497,26 @@ function generateFallbackResponse(
     query.includes("fullstack") ||
     query.includes("develop")
   ) {
-    const webProjects = projects.filter((p) => p.category === "web-dev");
-    let response = `### 💻 Full-Stack Web Development\n\n`;
-    response += `We build high-performance web applications using **Next.js 14**, **React**, **MERN Stack**, and **TypeScript**.\n\n`;
-    response += `**Featured Projects:**\n`;
-    if (webProjects.length) {
-      webProjects.slice(0, 4).forEach((p) => {
-        const tag = p.tags?.length ? ` (${p.tags.slice(0, 2).join(", ")})` : "";
-        response += `• **[${p.title}](/projects/${p.slug})**${tag}\n`;
-      });
-    } else {
-      response += `• **[Pharma-Ease](/projects/pharma-ease-pharmacy-platform)** (Next.js 14, Stripe)\n`;
-      response += `• **[IlyasKaGpt](/projects/ilyaskagpt-offline-ai-assistant)** (Offline AI, WebGPU)\n`;
-    }
-    response += `\n**To scope your build, tell me:**\n1. What are you building — landing page, e-commerce store, SaaS, dashboard, or platform?\n2. What are the must-have features and pages?\n3. What is your timeline and budget range?\n\nI'll recommend the right stack, timeline, and price. [View all projects](/projects)`;
-    return response;
+    return `### 💻 Full-Stack Web Development\n\nWe build responsive, fast web applications using **Next.js 14**, **React**, **MERN Stack**, and **TypeScript**.\n\n• **Featured Case Studies:** [Pharma-Ease](/projects/pharma-ease-pharmacy-platform) and [IlyasKaGpt](/projects/ilyaskagpt-offline-ai-assistant)\n• **Timeline:** **4-8 weeks** depending on complexity\n\nWhat kind of web application are you planning? [View Projects](/projects) or [Contact & Order](/contact).`;
   }
 
   // All projects query
   if (query.includes("project") || query.includes("portfolio") || query.includes("work") || query.includes("case stud")) {
-    const webCount = projects.filter((p) => p.category === "web-dev").length || 7;
-    const n8nCount = projects.filter((p) => p.category === "n8n").length || 3;
-    const botCount = projects.filter((p) => p.category === "chatbot").length || 1;
-
-    let response = `### 🏆 CognitoByte Portfolio (${projects.length || 12} Projects)\n\n`;
-    response += `• **Web Development (${webCount}):** Next.js 14, MERN Stack (Pharma-Ease, IlyasKaGpt, Al-Shifa, LMS)\n`;
-    response += `• **n8n Automation (${n8nCount}):** Automated social pipelines & CRM sync\n`;
-    response += `• **Chatbots (${botCount}):** WhatsApp & Web support bots\n\n`;
-    response += `Tell me which type of project is closest to yours and I'll walk you through the approach, timeline, and price. [Explore All Projects](/projects)`;
-    return response;
+    return `### 🏆 CognitoByte Portfolio\n\n• **Web Development:** Next.js 14, MERN Stack (Pharma-Ease, IlyasKaGpt, Al-Shifa)\n• **n8n Automation:** Automated social content engines and CRM sync\n• **Chatbots:** WhatsApp & Web customer assistants (e.g. Raasid bot)\n\n[Explore All Projects](/projects) · [Book a Free Call](/contact) to discuss your project.`;
   }
 
   // Services query
   if (query.includes("service") || query.includes("what do you do") || query.includes("what can you build") || query.includes("offer")) {
-    return `### ⚡ CognitoByte Core Services\n\n• **Full-Stack Web Apps:** Next.js 14, MERN, React, TypeScript.\n• **Custom AI Chatbots:** WhatsApp & Web assistants with CRM sync.\n• **n8n Automation:** Connect tools & eliminate manual work.\n• **Autonomous AI Agents:** Multi-step business task execution.\n\nWhich of these is closest to what you need? Tell me a bit about your business and the task you want handled, and I'll recommend an approach with a timeline and price range. [View All Services](/services)`;
+    return `### ⚡ CognitoByte Core Services\n\n• **Full-Stack Web Apps:** Next.js 14, MERN, React, TypeScript.\n• **Custom AI Chatbots:** Website & WhatsApp assistants with CRM sync.\n• **n8n Workflow Automation:** Connect 400+ apps to remove manual bottlenecks.\n• **Autonomous AI Agents:** Multi-step decision and execution agents.\n\nWhich service can we help you with? [Explore Services](/services) or [Contact & Order](/contact).`;
   }
 
-  // Pricing query
-  if (query.includes("price") || query.includes("cost") || query.includes("package") || query.includes("how much") || query.includes("budget")) {
-    return `### 💳 Pricing Overview\n\n• **Starter Automation:** $499 (1 core workflow)\n• **Growth System:** $1,299 (Multi-tool pipeline + AI chatbot)\n• **Enterprise & Web:** Custom scoped\n\n*Final price depends on number of flows, integrations, and languages. Share your use case and I'll point you to the right tier and give a realistic range.*\n\n[View Pricing Plans](/pricing)`;
-  }
-
-  // Contact / consultation query
-  if (query.includes("contact") || query.includes("call") || query.includes("email") || query.includes("hire") || query.includes("book")) {
-    return `### 📞 Get in Touch\n\n• **Free Call:** Book a 30-min discovery session on our [Contact Page](/contact).\n• **Email:** \`automations@cognitobyte.com\`\n• **Turnaround:** Guaranteed response within 24 hours.`;
+  // Clarification fallback for ambiguous inputs
+  if (query.length < 4 || query === "yes" || query === "no" || query === "ok" || query === "sure") {
+    return `Could you tell me a little more about what you'd like to build or automate so I can guide you to the right solution? Or feel free to [Book a Free Call](/contact) with our team.`;
   }
 
   // Default consultative response
-  return `### Hi! Let's figure out what you need 👋\n\nWe build **full-stack web apps** (Next.js, MERN) and **AI automations** (n8n, WhatsApp bots, AI agents).\n\nTell me:\n1. What are you trying to build or automate?\n2. What type of business is it for?\n3. Roughly what timeline and budget are you working with?\n\nWith those answers I can recommend the right solution, timeline, and price range.`;
+  return `### Hi! Welcome to CognitoByte 👋\n\nWe build **full-stack web apps** (Next.js, MERN) and **AI automations** (n8n, WhatsApp bots, website chatbots).\n\nAre you looking to build a new web application, automate a business workflow, or deploy an AI chatbot? [Explore Services](/services) · [Contact & Order](/contact)`;
 }
 
 /* ─────────────────────────────────────────────
@@ -484,7 +554,20 @@ export async function POST(req: NextRequest) {
       systemPrompt = USER_SYSTEM_PROMPT.replace("{knowledge}", knowledge);
     }
 
-    const recentMessages = messages.slice(-10);
+    // Extract last 15 messages for LLM context, and create rolling summary for older messages
+    const recentMessages: ChatHistoryMessage[] = messages.slice(-15).map((m: any) => ({
+      role: (m.role === "assistant" || m.role === "user" ? m.role : "user") as "user" | "assistant",
+      content: String(m.content || ""),
+    }));
+    const olderMessages: ChatHistoryMessage[] = messages.slice(0, -15).map((m: any) => ({
+      role: (m.role === "assistant" || m.role === "user" ? m.role : "user") as "user" | "assistant",
+      content: String(m.content || ""),
+    }));
+
+    if (olderMessages.length > 0) {
+      const summaryText = buildRollingSummary(olderMessages);
+      systemPrompt += `\n\n${summaryText}`;
+    }
 
     let message: string;
     try {
@@ -494,12 +577,9 @@ export async function POST(req: NextRequest) {
         model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: systemPrompt },
-          ...recentMessages.map((m: { role: string; content: string }) => ({
-            role: m.role as "user" | "assistant",
-            content: m.content,
-          })),
+          ...recentMessages,
         ],
-        max_tokens: isAdmin ? 350 : 700,
+        max_tokens: isAdmin ? 450 : 800,
         temperature: 0.3,
       });
       message = response.choices[0]?.message?.content || "";
@@ -512,19 +592,16 @@ export async function POST(req: NextRequest) {
           model: "llama-3.1-8b-instant",
           messages: [
             { role: "system", content: systemPrompt },
-            ...recentMessages.map((m: { role: string; content: string }) => ({
-              role: m.role as "user" | "assistant",
-              content: m.content,
-            })),
+            ...recentMessages,
           ],
-          max_tokens: isAdmin ? 350 : 700,
+          max_tokens: isAdmin ? 450 : 800,
           temperature: 0.3,
         });
         message = response2.choices[0]?.message?.content || "";
         if (!message.trim()) throw new Error("Empty response from secondary model");
       } catch {
         // Highly intelligent knowledge-driven fallback ensuring 100% uptime for Web Dev & Project queries
-        message = generateFallbackResponse(lastUserMessage, projects, services, isAdmin, adminData);
+        message = generateFallbackResponse(lastUserMessage, messages, projects, services, isAdmin, adminData);
       }
     }
 
