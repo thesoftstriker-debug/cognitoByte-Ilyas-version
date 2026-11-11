@@ -1,9 +1,20 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, Loader2, ShieldCheck, ExternalLink } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Bot,
+  Loader2,
+  ShieldCheck,
+  ExternalLink,
+  UserCheck,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
+import { useChat } from "@ai-sdk/react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/AuthProvider";
-import type { ChatMessage } from "@/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -11,23 +22,42 @@ export function ChatbotWidget() {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  const welcomeMessage: ChatMessage = {
-    role: "assistant",
-    content: isAdmin
-      ? "Hello Admin! 👋 I have full access to all live CognitoByte data. Ask me anything — revenue, top products, orders, users, coupons, or website content."
-      : "Hi! I'm the CognitoByte AI consultant. Tell me what you're trying to build or automate — e.g. \"WhatsApp automation for my store\" or \"I need an online shop\" — and I'll ask a few quick questions to recommend the right solution, timeline, and price range.",
-  };
-
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [showLeadModal, setShowLeadModal] = useState(false);
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadSuccess, setLeadSuccess] = useState(false);
+  const [leadSubmitting, setLeadSubmitting] = useState(false);
+
+  const initialGreeting = isAdmin
+    ? "Hello Admin! 👋 I am your CognitoByte assistant powered by Grok. You can ask me to search projects, check services, or analyze our system."
+    : "Hi! 👋 I'm the CognitoByte AI assistant. Ask me anything about our custom chatbots, n8n automations, AI agents, or full-stack web development!";
+
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    error,
+    reload,
+  } = useChat({
+    api: "/api/chat",
+    initialMessages: [
+      {
+        id: "welcome-message",
+        role: "assistant",
+        content: initialGreeting,
+      },
+    ],
+  });
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   useEffect(() => {
     if (isOpen) {
@@ -35,42 +65,35 @@ export function ChatbotWidget() {
     }
   }, [isOpen]);
 
-  async function handleSend() {
-    const trimmed = input.trim();
-    if (!trimmed || isLoading) return;
-    const userMessage: ChatMessage = { role: "user", content: trimmed };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsLoading(true);
+  async function handleLeadSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!leadName.trim() || !leadEmail.trim() || leadSubmitting) return;
+
+    setLeadSubmitting(true);
     try {
-      const response = await fetch("/api/chat", {
+      const res = await fetch("/api/chat/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
+        body: JSON.stringify({
+          name: leadName,
+          email: leadEmail,
+          note: "Lead submitted through chatbot contact step",
+        }),
       });
-      if (!response.ok) throw new Error("Failed to get response");
-      const data = await response.json();
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.message },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "Sorry, I ran into an issue. Please try again or email us directly.",
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+      if (res.ok) {
+        setLeadSuccess(true);
+        setTimeout(() => {
+          setShowLeadModal(false);
+          setLeadSuccess(false);
+          setLeadName("");
+          setLeadEmail("");
+        }, 2200);
+      }
+    } catch (err) {
+      console.error("Lead submission error:", err);
+    } finally {
+      setLeadSubmitting(false);
     }
   }
 
@@ -79,10 +102,10 @@ export function ChatbotWidget() {
       {/* Chat window */}
       <div
         className={cn(
-          "fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[420px] max-w-md transition-all duration-300 origin-bottom-right",
+          "fixed bottom-20 sm:bottom-24 right-2 sm:right-6 z-50 w-[calc(100vw-1rem)] sm:w-[420px] max-w-md transition-all duration-300 origin-bottom-right",
           isOpen
             ? "scale-100 opacity-100 pointer-events-auto"
-            : "scale-95 opacity-0 pointer-events-none",
+            : "scale-95 opacity-0 pointer-events-none"
         )}
       >
         <div
@@ -117,26 +140,36 @@ export function ChatbotWidget() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 </p>
                 <p className="text-white/80 text-[10px]">
-                  {isAdmin ? "Full live DB query access" : "Replies in <1 second"}
+                  {isAdmin ? "Live Grok Database Search" : "Powered by Grok · Live Project Search"}
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white/80 hover:text-white transition-all p-1.5 rounded-lg hover:bg-white/15 active:scale-95"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setShowLeadModal(true)}
+                title="Leave your contact info"
+                className="text-white/80 hover:text-white transition-all p-1.5 rounded-lg hover:bg-white/15 active:scale-95 text-xs flex items-center gap-1"
+              >
+                <UserCheck className="w-3.5 h-3.5" />
+                <span className="text-[10px] hidden sm:inline">Connect</span>
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-white/80 hover:text-white transition-all p-1.5 rounded-lg hover:bg-white/15 active:scale-95"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5 sm:space-y-3.5 scrollbar-thin">
-            {messages.map((msg, i) => (
+            {messages.map((msg) => (
               <div
-                key={i}
+                key={msg.id}
                 className={cn(
                   "flex",
-                  msg.role === "user" ? "justify-end" : "justify-start",
+                  msg.role === "user" ? "justify-end" : "justify-start"
                 )}
               >
                 {msg.role === "assistant" && (
@@ -185,26 +218,6 @@ export function ChatbotWidget() {
                               </a>
                             );
                           },
-                          h1: ({ children }) => (
-                            <h1 className="text-sm font-bold text-white mt-2.5 mb-1 pb-1 border-b border-white/10 flex items-center gap-1.5">
-                              {children}
-                            </h1>
-                          ),
-                          h2: ({ children }) => (
-                            <h2 className="text-xs sm:text-sm font-bold text-brand-300 mt-2 mb-1">
-                              {children}
-                            </h2>
-                          ),
-                          h3: ({ children }) => (
-                            <h3 className="text-xs sm:text-sm font-semibold text-indigo-200 mt-2 mb-1">
-                              {children}
-                            </h3>
-                          ),
-                          h4: ({ children }) => (
-                            <h4 className="text-[11px] font-semibold text-gray-300 uppercase tracking-wider mt-1.5 mb-0.5">
-                              {children}
-                            </h4>
-                          ),
                           p: ({ children }) => (
                             <p className="mb-2 last:mb-0 leading-relaxed text-gray-200 text-xs sm:text-[13px]">
                               {children}
@@ -221,79 +234,13 @@ export function ChatbotWidget() {
                             </ol>
                           ),
                           li: ({ children }) => (
-                            <li className="leading-relaxed">
-                              {children}
-                            </li>
+                            <li className="leading-relaxed">{children}</li>
                           ),
                           strong: ({ children }) => (
                             <strong className="font-semibold text-white">
                               {children}
                             </strong>
                           ),
-                          em: ({ children }) => (
-                            <em className="italic text-gray-300">
-                              {children}
-                            </em>
-                          ),
-                          blockquote: ({ children }) => (
-                            <blockquote className="border-l-2 border-brand-500/80 bg-white/5 pl-2.5 py-1 my-2 rounded-r italic text-gray-300 text-xs">
-                              {children}
-                            </blockquote>
-                          ),
-                          code: ({ className, children, ...props }: any) => {
-                            const isInline = !className;
-                            if (isInline) {
-                              return (
-                                <code
-                                  className="bg-black/50 text-brand-300 px-1.5 py-0.5 rounded text-[11px] font-mono border border-white/10"
-                                  {...props}
-                                >
-                                  {children}
-                                </code>
-                              );
-                            }
-                            return (
-                              <code
-                                className="block bg-black/70 p-2.5 rounded-xl text-[11px] font-mono text-gray-200 overflow-x-auto border border-white/10 my-2 shadow-inner"
-                                {...props}
-                              >
-                                {children}
-                              </code>
-                            );
-                          },
-                          table: ({ children }) => (
-                            <div className="overflow-x-auto my-2.5 rounded-xl border border-white/15 bg-black/40 shadow-md">
-                              <table className="min-w-full divide-y divide-white/10 text-left text-[11px]">
-                                {children}
-                              </table>
-                            </div>
-                          ),
-                          thead: ({ children }) => (
-                            <thead className="bg-white/10 text-white font-semibold">
-                              {children}
-                            </thead>
-                          ),
-                          tbody: ({ children }) => (
-                            <tbody className="divide-y divide-white/5">
-                              {children}
-                            </tbody>
-                          ),
-                          tr: ({ children }) => (
-                            <tr className="hover:bg-white/5 transition-colors">
-                              {children}
-                            </tr>
-                          ),
-                          th: ({ children }) => (
-                            <th className="px-2.5 py-2 text-left font-semibold text-brand-300 uppercase tracking-wider text-[10px] whitespace-nowrap">
-                              {children}
-                            </th>
-                          ),
-                          td: ({ children }) => (
-                            <td className="px-2.5 py-1.5 text-gray-200 align-top leading-snug">
-                              {children}
-                            </td>
-                          ),
-                          hr: () => <hr className="border-white/10 my-2.5" />,
                         }}
                       >
                         {msg.content}
@@ -305,6 +252,7 @@ export function ChatbotWidget() {
                 </div>
               </div>
             ))}
+
             {isLoading && (
               <div className="flex justify-start">
                 <div
@@ -315,37 +263,112 @@ export function ChatbotWidget() {
                       : "bg-brand-500/20 border-brand-500/30 text-brand-300"
                   )}
                 >
-                  {isAdmin ? (
-                    <ShieldCheck className="w-3 h-3" />
-                  ) : (
-                    <Bot className="w-3 h-3" />
-                  )}
+                  <Bot className="w-3 h-3" />
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl rounded-bl-xs px-3.5 py-2.5 flex items-center gap-1.5 text-xs text-gray-400">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-brand-400" />
-                  <span>{isAdmin ? "Querying database..." : "Thinking..."}</span>
+                  <span>Searching database & generating response...</span>
                 </div>
               </div>
             )}
+
+            {error && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-2xl text-xs text-red-300 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                  <span>{error.message || "Something went wrong."}</span>
+                </div>
+                <button
+                  onClick={() => reload()}
+                  className="px-2 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-[10px] text-white font-medium"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Quick Lead Capture Overlay */}
+          {showLeadModal && (
+            <div className="absolute inset-x-0 bottom-0 bg-[#0e1122]/98 border-t border-white/15 p-4 z-20 backdrop-blur-md animate-fade-in">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <UserCheck className="w-3.5 h-3.5 text-brand-400" />
+                  Connect With CognitoByte Team
+                </p>
+                <button
+                  onClick={() => setShowLeadModal(false)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              {leadSuccess ? (
+                <div className="py-3 text-center text-xs text-emerald-300 flex items-center justify-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  Thanks! We will reach out within 24 hours.
+                </div>
+              ) : (
+                <form onSubmit={handleLeadSubmit} className="space-y-2">
+                  <input
+                    type="text"
+                    required
+                    placeholder="Your Name"
+                    value={leadName}
+                    onChange={(e) => setLeadName(e.target.value)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder:text-gray-500 outline-none focus:border-brand-500"
+                  />
+                  <input
+                    type="email"
+                    required
+                    placeholder="Your Email"
+                    value={leadEmail}
+                    onChange={(e) => setLeadEmail(e.target.value)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder:text-gray-500 outline-none focus:border-brand-500"
+                  />
+                  <div className="flex items-center justify-end gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setShowLeadModal(false)}
+                      className="px-2.5 py-1 text-xs text-gray-400 hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={leadSubmitting}
+                      className="btn-primary text-xs py-1 px-3"
+                    >
+                      {leadSubmitting ? "Saving..." : "Submit"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
           {/* Input */}
           <div className="border-t border-white/10 p-2 sm:p-3 shrink-0 bg-white/5">
-            <div className="flex items-center gap-2 rounded-xl px-3 py-1.5 bg-black/40 border border-white/10">
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-center gap-2 rounded-xl px-3 py-1.5 bg-black/40 border border-white/10"
+            >
               <input
                 ref={inputRef}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onChange={handleInputChange}
                 placeholder={
-                  isAdmin ? "Ask about revenue, orders, products..." : "Ask me anything..."
+                  isAdmin
+                    ? "Ask Grok to search projects or services..."
+                    : "Ask about WordPress, WhatsApp bots, Next.js..."
                 }
                 className="flex-1 bg-transparent text-xs sm:text-sm outline-none text-white placeholder:text-gray-500"
                 disabled={isLoading}
               />
               <button
-                onClick={handleSend}
+                type="submit"
                 disabled={!input.trim() || isLoading}
                 className={cn(
                   "w-8 h-8 rounded-lg flex items-center justify-center transition-all",
@@ -356,11 +379,9 @@ export function ChatbotWidget() {
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
-            </div>
+            </form>
             <p className="text-center text-gray-500 text-[10px] mt-1.5">
-              {isAdmin
-                ? "🔒 Admin mode · Live system context"
-                : "Powered by Groq LPU · Specialized CognitoByte Assistant"}
+              Powered by Grok (xAI) · Database-Grounded Assistant
             </p>
           </div>
         </div>
@@ -386,7 +407,6 @@ export function ChatbotWidget() {
         ) : (
           <MessageCircle className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-110" />
         )}
-        {/* Pulse ring */}
         {!isOpen && (
           <span
             className={cn(
