@@ -43,6 +43,9 @@ export function ChatbotWidget() {
     reload,
   } = useChat({
     api: "/api/chat",
+    headers: {
+      "X-AI-Stream": "true",
+    },
     initialMessages: [
       {
         id: "welcome-message",
@@ -140,7 +143,7 @@ export function ChatbotWidget() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 </p>
                 <p className="text-white/80 text-[10px]">
-                  {isAdmin ? "Live Grok Database Search" : "Powered by Grok · Live Project Search"}
+                  {isAdmin ? "Admin Telemetry & Live Search" : "AI Sales & Tech Consultant · Live Support"}
                 </p>
               </div>
             </div>
@@ -361,8 +364,8 @@ export function ChatbotWidget() {
                 onChange={handleInputChange}
                 placeholder={
                   isAdmin
-                    ? "Ask Grok to search projects or services..."
-                    : "Ask about WordPress, WhatsApp bots, Next.js..."
+                    ? "Ask to search live telemetry, projects, or orders..."
+                    : "Ask about WhatsApp bots, n8n automations, Next.js, or custom ideas..."
                 }
                 className="flex-1 bg-transparent text-xs sm:text-sm outline-none text-white placeholder:text-gray-500"
                 disabled={isLoading}
