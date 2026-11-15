@@ -104,6 +104,28 @@ const toughScenarios = [
       const hasProjectsLink = res.includes("/projects") || res.includes("/contact");
       return comparesStack && hasProjectsLink;
     }
+  },
+  {
+    name: "Tough Q9: Exact User Screenshot (WordPress Inquiry)",
+    query: "i need wordpress u meake wordpress? or u have listed anty wordpress website project?",
+    validate: (res) => {
+      const lower = res.toLowerCase();
+      const directlyDeclinesWp = lower.includes("do not build wordpress") || lower.includes("no projects related to wordpress");
+      const mentionsNextJs = lower.includes("next.js") || lower.includes("mern");
+      const hasLink = res.includes("/projects") || res.includes("/contact");
+      return directlyDeclinesWp && mentionsNextJs && hasLink;
+    }
+  },
+  {
+    name: "Tough Q10: Random Non-Supported Tech (Flutter / Django / Laravel)",
+    query: "can you build a flutter mobile app or do you have any flutter projects listed?",
+    validate: (res) => {
+      const lower = res.toLowerCase();
+      const directlyDeclinesFlutter = lower.includes("do not build flutter") || lower.includes("no projects related to flutter");
+      const mentionsSpecialization = lower.includes("next.js") || lower.includes("mern") || lower.includes("react");
+      const hasLink = res.includes("/projects") || res.includes("/contact");
+      return directlyDeclinesFlutter && mentionsSpecialization && hasLink;
+    }
   }
 ];
 

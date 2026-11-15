@@ -48,17 +48,24 @@ EXACT ALLOWED LINKS (Never invent other URLs):
 • [About Us](/about)
 
 SALESGPT CONVERSATIONAL RULES:
-1. CONSULTATIVE PROBLEM SOLVING (HANDLE OUT-OF-THE-BOX / OUGHT QUESTIONS):
-   - Never say "We don't do that" or "We only do X".
-   - If a client asks for something unusual (e.g. competitor scraping, restaurant kitchen thermal printing, IoT farm sensors, sentiment escalation, PDF invoice OCR, automated trading alerts):
+1. STRICT TRUTH ON PORTFOLIO & TECHNOLOGIES (NEVER CLAIM UNCONFIRMED TECH):
+   - If the user asks whether we make, build, offer, or have projects in a specific technology or CMS (e.g. "Do you make WordPress?", "Any WordPress projects listed?", "Do you use Flutter/Laravel/Django?"):
+     • IF NOT IN OUR PORTFOLIO (WordPress, Flutter, Laravel, Django, PHP, Wix, Webflow, Magento):
+       Be 100% direct and honest: say clearly that "No, we do not build with [Tech] and have no projects related to [Tech] listed in our portfolio."
+       Explain that we specialize exclusively in high-performance custom web applications with Next.js 14, React, MERN, and n8n AI automations.
+       Briefly explain why our custom stack is superior (sub-second load speed, 95+ PageSpeed, zero bloated plugins, modern AI ready) and invite them to [View Projects](/projects) or [Book a Free Call](/contact).
+     • IF IN OUR PORTFOLIO (Next.js, React, MERN, Stripe, Puppeteer, MySQL, Socket.io, n8n, WhatsApp Cloud API):
+       Say yes clearly and name the specific matching projects from our database (e.g. Pharma-Ease, Raasid, LMS, Al-Shifa) with links.
+2. CONSULTATIVE PROBLEM SOLVING (HANDLE OUT-OF-THE-BOX / OUGHT QUESTIONS):
+   - When a client brings a unique business problem (e.g. competitor price scraping, restaurant thermal printing, IoT alerts, PDF invoice OCR):
      Break down the business problem, map it to technical architecture (Next.js, n8n webhooks, APIs, AI models), explain how CognitoByte can build it reliably, and provide a clear timeline/cost estimate.
-2. NATURAL & MULTILINGUAL:
+3. NATURAL & MULTILINGUAL:
    - Match the user's language and tone! If they ask in Roman Urdu ("bhai", "kya banate ho", "kitne ka hoga"), reply in natural, professional, respectful Roman Urdu. If in English, reply in crisp English.
-3. OBJECTION HANDLING:
+4. OBJECTION HANDLING:
    - Price objection: Explain the ROI. A $499 automation saves 15-20 hours of manual labor every week, paying for itself in the first month.
    - Trust objection: Point to real case studies (Raasid, Pharma-Ease), 100% code ownership in client accounts, and offer a free 30-minute discovery call at [Book a Free Call](/contact).
    - Hallucination / AI risk: Explain RAG guardrails, deterministic fallback logic, and human handoff mechanisms.
-4. HIGH-CONVERTING CLOSING (CALL TO ACTION):
+5. HIGH-CONVERTING CLOSING (CALL TO ACTION):
    - Always conclude with a natural, low-friction next step: e.g. inviting them to [Book a Free Call](/contact), check [View Pricing](/pricing), or leave their contact details.`;
 
 /* ─────────────────────────────────────────────
@@ -188,6 +195,132 @@ function resolveTopicFromHistory(recentMessages: ChatHistoryMessage[]): {
    (Answers out-of-the-box questions, handles objections,
    supports English & Roman Urdu, closes leads)
 ───────────────────────────────────────────── */
+function handleTechnologyInquiry(
+  query: string,
+  projects: any[],
+  services: any[],
+  isRomanUrdu: boolean
+): string | null {
+  const isAskingCapability =
+    /\b(make|meake|build|create|offer|work with|support|use|develop|bana|banate|listed|have any|projects? in|apps? in|websites? in|experience with|using|have|need)\b/i.test(query) ||
+    /\b(do you|can you|do u|can u|i need|looking for|have you|kya aap|kya ap|kya tum)\b/i.test(query);
+
+  const hasSpecificTechWord =
+    /wordpress|\bwp\b|\bflutter\b|\blaravel\b|\bdjango\b|\bphp\b|\bwebflow\b|\bwix\b|\bsquarespace\b|\bmagento\b|\bdrupal\b|\bruby\b|\brails\b|\bangular\b|\bvue\b|\bpuppeteer\b|\bstripe\b|\bmysql\b|\bsocket\.io\b|\bsocketio\b/i.test(query);
+
+  if (!isAskingCapability && !hasSpecificTechWord) {
+    return null;
+  }
+
+  // 1. Non-supported technologies catalogue
+  const nonSupported = [
+    {
+      name: "WordPress",
+      regex: /wordpress|\bwp\b/i,
+      reasonEn: "WordPress sites frequently suffer from plugin bloat (20+ plugins), slow page loads that hurt Google SEO, and constant security vulnerabilities. Custom Next.js 14 gives you **95+ Google PageSpeed**, instant navigation, zero plugin subscription fees, and clean, enterprise-grade code ownership.",
+      reasonUrdu: "WordPress 20-30 plugins ki wajah se bohot slow ho jata hai aur hack hone ka khatra rehta hai. Next.js 14 par aapki website super-fast (sub-second load), 100% secure aur modern AI ready hoti hai.",
+    },
+    {
+      name: "Flutter",
+      regex: /\bflutter\b/i,
+      reasonEn: "We specialize in modern web ecosystems (Next.js 14, React, MERN) and on-device AI architectures (such as [IlyasKaGpt](/projects/ilyaskagpt-offline-ai-assistant)). For web applications, Next.js provides superior SEO indexing and instant load times.",
+      reasonUrdu: "Hum Next.js 14, React aur MERN stack par custom web applications aur AI systems banate hain jo browser me instant load hoti hain.",
+    },
+    {
+      name: "Laravel",
+      regex: /\blaravel\b/i,
+      reasonEn: "We build modern JavaScript/TypeScript full-stack applications with Next.js 14, Node.js, Express, and MongoDB. This unified stack enables shared typing, serverless scaling, and seamless AI agent integrations.",
+      reasonUrdu: "Hum Next.js 14 aur Node.js/MERN stack par kaam karte hain jo modern cloud infrastructure par lightning fast perform karta hai.",
+    },
+    {
+      name: "Django",
+      regex: /\bdjango\b/i,
+      reasonEn: "We develop full-stack platforms using Next.js 14, Node.js, and TypeScript, connecting Python AI microservices via lightweight REST/FastAPI endpoints when specialized ML models are required.",
+      reasonUrdu: "Hum Next.js 14 aur MERN stack par production web platforms banate hain jo high-traffic aur real-time data ke liye optimized hain.",
+    },
+    {
+      name: "PHP",
+      regex: /\bphp\b/i,
+      reasonEn: "We build modern React and Next.js 14 web applications paired with Node.js and MongoDB/MySQL for higher concurrency, instant client-side routing, and real-time WebSocket communication.",
+      reasonUrdu: "Hum legacy PHP ke bajaye Next.js 14 aur TypeScript use karte hain jo modern aur scalable hai.",
+    },
+    {
+      name: "Webflow",
+      regex: /\bwebflow\b/i,
+      reasonEn: "While Webflow is useful for static design, custom Next.js 14 gives you total database freedom, complex authentication, custom backend logic, and zero platform vendor lock-in.",
+      reasonUrdu: "Webflow static design ke liye theek hai lekin complex custom features aur database ke liye Next.js 14 10x zyada powerful hai.",
+    },
+    {
+      name: "Wix / Squarespace",
+      regex: /\bwix\b|\bsquarespace\b/i,
+      reasonEn: "Template site-builders like Wix lock you into their closed ecosystems. A custom Next.js 14 web application is 100% owned by you, runs lightning-fast, and scales without arbitrary platform limits.",
+      reasonUrdu: "Wix jaise template builders slow hote hain aur customization limited hoti hai. Custom Next.js 14 par aapka complete control hota hai.",
+    },
+    {
+      name: "Magento",
+      regex: /\bmagento\b|\bdrupal\b|\bjoomla\b/i,
+      reasonEn: "We build modern e-commerce storefronts using Next.js 14, MERN stack, and Stripe (like our [Pharma-Ease](/projects/pharma-ease-pharmacy-platform) case study) or headless Shopify architectures.",
+      reasonUrdu: "Hum Next.js 14 aur Stripe par custom fast e-commerce platforms banate hain jo zero lag ke sath orders process karte hain.",
+    },
+    {
+      name: "Angular",
+      regex: /\bangular\b/i,
+      reasonEn: "We build exclusively with React and Next.js 14 for optimal server-side rendering, component ecosystem, and unmatched developer velocity.",
+      reasonUrdu: "Hum exclusively Next.js 14 aur React par kaam karte hain jo modern web ka gold standard hai.",
+    },
+    {
+      name: "Vue.js",
+      regex: /\bvue\b|\bvuejs\b|\bnuxt\b/i,
+      reasonEn: "Our frontend engineering is centered on Next.js 14 and React 18, allowing seamless integration with our full-stack MERN solutions and AI SDK tooling.",
+      reasonUrdu: "Hum Next.js 14 aur React par focus karte hain jo best performance deliver karta hai.",
+    },
+  ];
+
+  for (const item of nonSupported) {
+    if (item.regex.test(query)) {
+      if (isRomanUrdu) {
+        return `### ℹ️ Hum ${item.name} Websites/Apps Nahi Banate\n\nBilkul saaf aur transparent baat: **Nahi, hum ${item.name} par kaam nahi karte, aur na hi hamari portfolio me ${item.name} ka koi project listed hai.**\n\nCognitoByte par hamari engineering team (**Muhammad Ilyas** aur team) exclusively **Next.js 14, React, TypeScript aur MERN stack** par custom high-speed web platforms banati hai (jaise hamara [Pharma-Ease](/projects/pharma-ease-pharmacy-platform)).\n\n**Hum ${item.name} ke bajaye Next.js kyun use karte hain:**\n• ${item.reasonUrdu}\n• Next.js 14 par aapki website super-fast (sub-second load), 100% secure aur future-proof AI features ke sath tayar hoti hai.\n\nAgar aap Next.js par custom solution discuss karna chahte hain to zaroor batayein: [View Projects](/projects) ya ek free 15-minute consultation ke liye [Book a Free Call](/contact).`;
+      }
+      return `### ℹ️ We Do Not Build With ${item.name}\n\nTo be completely honest and transparent: **No, we do not build ${item.name} websites/apps, and we have no projects related to ${item.name} listed in our portfolio.**\n\nAt CognitoByte, our software engineering team (led by **Muhammad Ilyas**) specializes exclusively in **high-performance custom web applications** built with **Next.js 14, React, TypeScript, and the MERN stack**, alongside **n8n AI automations** and **custom chatbots**.\n\n**Why we focus on Next.js instead of ${item.name}:**\n• ${item.reasonEn}\n• Custom Next.js 14 applications deliver **95+ Google PageSpeed scores**, instant transitions, zero recurring plugin license fees, and seamless AI agent integrations.\n\nIf you are open to a fast, modern custom web application that out-converts standard ${item.name} templates, we would love to help you build it!\n\nExplore our real case studies at [View Projects](/projects) or [Book a Free Call](/contact) to discuss your vision.`;
+    }
+  }
+
+  // 2. Check if query matches supported technologies in DB projects
+  const supportedTechs = [
+    { name: "Puppeteer", regex: /\bpuppeteer\b|\bheadless\b/i },
+    { name: "Stripe", regex: /\bstripe\b/i },
+    { name: "Socket.io", regex: /\bsocket\.io\b|\bsocketio\b|\brealtime\b/i },
+    { name: "MySQL", regex: /\bmysql\b|\baiven\b/i },
+    { name: "Next.js", regex: /\bnext\.?js\b/i },
+    { name: "MERN Stack", regex: /\bmern\b/i },
+    { name: "n8n", regex: /\bn8n\b/i },
+    { name: "WhatsApp Cloud API", regex: /\bwhatsapp\b/i },
+    { name: "Inngest", regex: /\binngest\b|\bbackground job\b/i },
+    { name: "Cloudinary", regex: /\bcloudinary\b/i },
+  ];
+
+  for (const tech of supportedTechs) {
+    if (tech.regex.test(query)) {
+      const matched = (projects || []).filter((p: any) => {
+        const str = `${p.title} ${(p.tags || []).join(" ")} ${p.description || ""}`.toLowerCase();
+        return tech.regex.test(str);
+      });
+
+      if (matched.length > 0) {
+        let msg = `### ✅ Yes, We Build With ${tech.name}!\n\n**Yes, we actively build production solutions with ${tech.name}.** In our portfolio, we have:\n`;
+        matched.slice(0, 3).forEach((p: any) => {
+          const tags = p.tags?.length ? ` [${p.tags.slice(0, 4).join(", ")}]` : "";
+          msg += `• **[${p.title}](/projects/${p.slug})**${tags}: ${p.shortDescription || p.description?.slice(0, 140) || ""}\n`;
+        });
+        msg += `\nWould you like to scope a project with ${tech.name}? [View Projects](/projects) · [Book a Free Call](/contact) · [Contact & Order](/contact).`;
+        return msg;
+      }
+    }
+  }
+
+  return null;
+}
+
 function generateFallbackResponse(
   userQuery: string,
   history: ChatHistoryMessage[],
@@ -199,14 +332,20 @@ function generateFallbackResponse(
   const query = userQuery.toLowerCase().trim();
   const context = resolveTopicFromHistory(history);
 
-  // Admin Telemetry request
-  if (isAdmin && (query.includes("revenue") || query.includes("order") || query.includes("user") || query.includes("stat") || query.includes("admin") || query.includes("metric"))) {
-    return adminData;
-  }
-
   // Detect Roman Urdu input
   const isRomanUrdu =
     /\b(kya|kaise|kitna|kitne|bhai|yr|yar|mujhe|chahiye|hoga|karo|batao|paisay|paise|karna|hai|nahi|hota|karwa|lenge|bhejo|advance|hum|aap|bhi|wala|wale|sakta)\b/i.test(query);
+
+  // FIRST PRIORITY: Check if user is asking about a specific technology, CMS, or framework
+  const techResponse = handleTechnologyInquiry(query, projects, services, isRomanUrdu);
+  if (techResponse) {
+    return techResponse;
+  }
+
+  // Admin Telemetry request (only if asking for telemetry specifically)
+  if (isAdmin && (query.includes("revenue") || query.includes("order") || query.includes("user") || query.includes("stat") || query.includes("telemetry") || query.includes("metric"))) {
+    return adminData;
+  }
 
   // 1. Specific project follow-up: "What tech stack was it built with?" or pronoun "it" for Pharma-Ease
   if (
